@@ -165,3 +165,6 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
+
+#Editor configs
+.idea/codeStyles/
