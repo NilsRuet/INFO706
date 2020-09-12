@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Resources/appColors.dart';
-import 'Student/skillsPage.dart';
+import 'Student/Pages/skillsPage.dart';
 
 void main() {
   runApp(MyApp());
