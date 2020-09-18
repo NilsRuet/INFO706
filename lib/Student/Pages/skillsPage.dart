@@ -14,26 +14,7 @@ class _MySkillsPageState extends State<MySkillsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _skillsPageAppBar(),
-      drawer: StudentDrawer(),
-      floatingActionButton: _addingSkillButton(),
-      body : _skillsList()
-    );
-  }
-
-  AppBar _skillsPageAppBar() {
-    return AppBar(
-      title: Text(AppStrings.SKILLS_PAGE_TITLE),
-      centerTitle: true,
-    );
-  }
-
-  FloatingActionButton _addingSkillButton(){
-    return FloatingActionButton(
-      onPressed: _addingSkillForm,
-      child: Icon(Icons.add),
-    );
+    return _skillsList();
   }
 
   Widget _skillsList() {
@@ -61,11 +42,6 @@ class _MySkillsPageState extends State<MySkillsPage> {
 
     return panels;
   }
-
-  void _addingSkillForm() {}
-
-
-
 }
 
 
