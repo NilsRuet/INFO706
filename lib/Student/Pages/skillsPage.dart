@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:info706/Resources/appColors.dart';
 import 'package:info706/Resources/appStrings.dart';
 import 'package:info706/Student/Common/studentDrawer.dart';
 
@@ -41,6 +43,8 @@ class _MySkillsPageState extends State<MySkillsPage> {
         padding: EdgeInsets.all(20.0),
         child: Container(
             child:ExpansionPanelList(
+                expandedHeaderPadding: EdgeInsets.all(10.0),
+                animationDuration: Duration(milliseconds: 800),
                 expansionCallback: (int index, bool isExpanded) {
                   setState(() {
                     _skillsBlocksList[index].isExpanded= !isExpanded;
@@ -55,64 +59,57 @@ class _MySkillsPageState extends State<MySkillsPage> {
     for (SkillBlock block in _skillsBlocksList)
       panels.add(ExpansionPanel(
         headerBuilder: (BuildContext context, bool isExpanded) { return block.header;},
-        body: block.generateSkillsList(),
+        body: _generateSkillsList(block.skills),
         isExpanded: block.isExpanded,
         canTapOnHeader: true));
 
     return panels;
   }
 
+  Widget _generateSkillsList(List<String> skills) {
+    final List<Widget> skillsList = new List.empty(growable:true);
+    for (String skill in skills){
+      skillsList.add(_generateSkillItem(skill));
+    }
+    return Container(
+      padding: EdgeInsets.fromLTRB(10.0, .0, 10.0, 10.0),
+      child: Column(
+        children: skillsList,
+        mainAxisSize: MainAxisSize.min,
+      ),
+    );
+  }
+
+  Widget _generateSkillItem(String skill) {
+    final level = AppStrings.LEVELS_BY_SKILL[skill];
+    return Card(child: ListTile(
+      title: Row(children: [
+        Expanded(child: Text(level, style: TextStyle(color: AppColors.LEVELS_COLORS[level]))),
+        Checkbox(value: true, onChanged: (bool newVal) {}), Icon(Icons.check_box)],),
+      subtitle: Text(skill),
+      contentPadding: EdgeInsets.fromLTRB(16.0, .0, 16.0, 16.0),
+      ),
+    elevation: 20.0,
+    semanticContainer: false,);
+
+  }
+
   void _addingSkillForm() {}
-
-
 
 }
 
 
-class SkillBlock{
+class SkillBlock {
   ListTile header;
   List<String> skills;
   bool isExpanded;
 
-  SkillBlock(String blockName){
+  SkillBlock(String blockName) {
     header = ListTile(title: Text(
         blockName,
         style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)));
     skills = AppStrings.SKILLS_BY_BLOC[blockName];
     isExpanded = true;
-  }
-
-  Widget generateSkillsList() {
-    /*final List<Widget> skillsList = new List.empty(growable:true);
-    //print(skills);
-   /*for (String skill in skills){
-      skillsList.add(new ListTile(title: Text(skill)));
-    }*/
-    return ListView(children: skillsList);*/
-    return SingleChildScrollView(
-        padding: EdgeInsets.all(20.0),
-        child: Container(
-        child:ListView(
-      shrinkWrap:true,
-      padding: const EdgeInsets.all(8),
-      children: <Widget>[
-        Container(
-          height: 50,
-          color: Colors.amber[600],
-          child: const Center(child: Text('Entry A')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[500],
-          child: const Center(child: Text('Entry B')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[100],
-          child: const Center(child: Text('Entry C')),
-        ),
-      ],
-    )));
   }
 }
 
