@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Student/Pages/skillsPage.dart';
-import 'package:info706/Teacher/StudentListRoute.dart';
+import 'package:info706/Teacher/studentListRoute.dart';
 
 import 'Resources/appStrings.dart';
 import 'Student/Common/studentDrawer.dart';
