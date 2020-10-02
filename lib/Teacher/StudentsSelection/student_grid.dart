@@ -7,18 +7,21 @@ import 'package:info706/Common/navigation_drawer_route.dart';
 
 class _StudentGridState extends State<StudentGrid>{
 
-  List<String> names = ["Alain","Bastien","Ceopzj","jsdpfksdf","kljfdssdfkj"];//TODO
+  List<String> _students = ["Alain","Bastien","Ccc","Xavier","Alex","Jean","Jeanne","qdqsdf","sdlflkjl","soepo","dsmfksqdfkm"];//TODO student class
+  List<String> _filteredStudents;
+  String _filter = "";
 
   @override
   Widget build(BuildContext context) {
+    _filteredStudents = _students.where((student) => matches(student, _filter)).toList();
     return GridView.builder(
-      itemCount: names.length,
+      itemCount: _filteredStudents.length,
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3),
       itemBuilder: (BuildContext context, int index){
-        return _getStudentWidget(names[index]);
+        return _getStudentWidget(_filteredStudents[index]);
       },
     );
   }
@@ -32,9 +35,30 @@ class _StudentGridState extends State<StudentGrid>{
         )
     );
   }
+
+  bool matches(String name, String filter){
+    if(filter.length == 0) return true;
+    return name.toLowerCase().contains(filter.toLowerCase());
+  }
+
+  void filter(String filter){
+    setState(() {
+      this._filter = filter;
+    });
+  }
 }
 
 class StudentGrid extends StatefulWidget{
+
+  _StudentGridState _currentState;
+
   @override
-  State<StatefulWidget> createState() => _StudentGridState();
+  State<StatefulWidget> createState(){
+    _currentState = _StudentGridState();
+    return _currentState;
+  }
+
+  void filter(String filter){
+    _currentState.filter(filter);
+  }
 }

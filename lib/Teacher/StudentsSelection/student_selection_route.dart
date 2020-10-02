@@ -20,6 +20,7 @@ class MyStudentsDrawerView implements NavigationDrawerRoute{
 class StudentSelectionRoute extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
+      var studentGrid = StudentGrid();
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
 
@@ -32,6 +33,7 @@ class StudentSelectionRoute extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.fromLTRB(10,0,10,0),
                       child: TextField(
+                        onChanged: (text) => studentGrid.filter(text),
                         decoration: new InputDecoration(
                             filled: true,
                             fillColor: Colors.blueGrey
@@ -52,7 +54,7 @@ class StudentSelectionRoute extends StatelessWidget {
             ),
           ),
           Expanded(
-            child:StudentGrid()
+            child: studentGrid
           )
         ],
       );
