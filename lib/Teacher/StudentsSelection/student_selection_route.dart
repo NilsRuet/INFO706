@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:info706/Teacher/studentGridView.dart';
+import 'package:info706/Common/navigation_drawer_route.dart';
+import 'package:info706/Resources/app_strings.dart';
+import 'package:info706/Teacher/StudentsSelection/student_grid.dart';
 
-class StudentListRoute extends StatelessWidget {
+
+class MyStudentsDrawerView implements NavigationDrawerRoute{
+  @override
+  Widget build() {
+    return StudentSelectionRoute();
+  }
+
+  @override
+  String getViewName() {
+    return  AppStrings.NAVIGATION_DRAWER[1];
+  }
+
+}
+
+class StudentSelectionRoute extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
       return Column(
@@ -36,7 +52,7 @@ class StudentListRoute extends StatelessWidget {
             ),
           ),
           Expanded(
-            child:StudentGridView()
+            child:StudentGrid()
           )
         ],
       );

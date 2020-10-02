@@ -3,10 +3,11 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:info706/Common/navigation_drawer_route.dart';
 
-class _StudentGridState extends State<StudentGridView>{
+class _StudentGridState extends State<StudentGrid>{
 
-  List<String> names = ["Alain","Bastien","Ceopzj","jsdpfksdf","kljfdssdfkj"];
+  List<String> names = ["Alain","Bastien","Ceopzj","jsdpfksdf","kljfdssdfkj"];//TODO
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +18,12 @@ class _StudentGridState extends State<StudentGridView>{
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3),
       itemBuilder: (BuildContext context, int index){
-        return getStudentWidget(names[index]);
+        return _getStudentWidget(names[index]);
       },
     );
   }
 
-  Widget getStudentWidget(String name){//TODO student class
+  Widget _getStudentWidget(String name){//TODO student class
     return Align(
         alignment: Alignment.center,
         child:FlatButton(
@@ -33,7 +34,7 @@ class _StudentGridState extends State<StudentGridView>{
   }
 }
 
-class StudentGridView extends StatefulWidget{
+class StudentGrid extends StatefulWidget{
   @override
   State<StatefulWidget> createState() => _StudentGridState();
 }
