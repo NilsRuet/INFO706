@@ -38,7 +38,7 @@ class _StudentGridState extends State<StudentGrid>{
 
   bool matches(String name, String filter){
     if(filter.length == 0) return true;
-    return name.toLowerCase().contains(filter.toLowerCase());
+    return name.toLowerCase().startsWith(filter.toLowerCase());
   }
 
   void filter(String filter){
