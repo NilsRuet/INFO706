@@ -3,15 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:info706/Resources/appColors.dart';
 import 'package:info706/Resources/appStrings.dart';
 import 'package:info706/Student/Common/studentDrawer.dart';
+import 'package:info706/Common/navigation_drawer_route.dart';
+import 'package:info706/Resources/app_strings.dart';
 
 // The Student skills page
 
-class MySkillsPage extends StatefulWidget {
+class MySkillsDrawerRoute implements NavigationDrawerRoute{
   @override
-  _MySkillsPageState createState() => _MySkillsPageState();
+  Widget build() {
+    return _MySkillsView();
+  }
+
+  @override
+  String getViewName() {
+    return AppStrings.NAVIGATION_DRAWER[0];
+  }
 }
 
-class _MySkillsPageState extends State<MySkillsPage> {
+class _MySkillsView extends StatefulWidget {
+  @override
+  _MySkillsViewState createState() => _MySkillsViewState();
+}
+
+class _MySkillsViewState extends State<_MySkillsView> {
   String sortBy = AppStrings.SORT_BY_BLOCK;
   bool isSortedByBlock = true;
 
@@ -19,7 +33,6 @@ class _MySkillsPageState extends State<MySkillsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: _skillsPageAppBar(),
-        drawer: StudentDrawer(),
         floatingActionButton: _addingSkillButton(),
         body: Column(
             children: [_sortingButton(), Expanded(child: isSortedByBlock?_skillsListBySkillsBlock():_skillsListByLevelBlock())]));
