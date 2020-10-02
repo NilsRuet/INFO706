@@ -12,16 +12,17 @@ class MySkillsPage extends StatefulWidget {
 }
 
 class _MySkillsPageState extends State<MySkillsPage> {
-  final _skillsBlocksList = generateSkillsBlocks();
+  String sortBy = AppStrings.SORT_BY_BLOCK;
+  bool isSortedByBlock = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _skillsPageAppBar(),
-      drawer: StudentDrawer(),
-      floatingActionButton: _addingSkillButton(),
-      body : _skillsList()
-    );
+        appBar: _skillsPageAppBar(),
+        drawer: StudentDrawer(),
+        floatingActionButton: _addingSkillButton(),
+        body: Column(
+            children: [_sortingButton(), Expanded(child: isSortedByBlock?_skillsListBySkillsBlock():_skillsListByLevelBlock())]));
   }
 
   AppBar _skillsPageAppBar() {
@@ -31,44 +32,106 @@ class _MySkillsPageState extends State<MySkillsPage> {
     );
   }
 
-  FloatingActionButton _addingSkillButton(){
+  Widget _sortingButton() {
+    return Container(
+        child: DropdownButton<String>(
+          value: sortBy,
+        underline: Container(
+           height: 2,
+           color: Theme.of(context).accentColor,
+         ),
+          onChanged: (String newValue) {
+            setState(() {
+              sortBy = newValue;
+              isSortedByBlock = (sortBy == AppStrings.SORT_BY_BLOCK);
+            });
+            },
+          items: <String>[AppStrings.SORT_BY_BLOCK, AppStrings.SORT_BY_LEVEL]
+              .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+        ),
+      alignment: Alignment(1.0, -1.0),
+    );
+  }
+
+  FloatingActionButton _addingSkillButton() {
     return FloatingActionButton(
       onPressed: _addingSkillForm,
       child: Icon(Icons.add),
     );
   }
 
-  Widget _skillsList() {
+  Widget _skillsListBySkillsBlock() {
+    List<SkillBlock> blocksList = generateSkillsBlocks();
     return SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
         child: Container(
-            child:ExpansionPanelList(
+            child: ExpansionPanelList(
                 expandedHeaderPadding: EdgeInsets.all(10.0),
                 animationDuration: Duration(milliseconds: 800),
                 expansionCallback: (int index, bool isExpanded) {
                   setState(() {
-                    _skillsBlocksList[index].isExpanded= !isExpanded;
+                    blocksList[index].isExpanded = !isExpanded;
                   });
                 },
-                children: _skillsBlocksPanel())));
+                children: _blocksPanelBySkillsBlock(blocksList))));
   }
 
-  List<ExpansionPanel> _skillsBlocksPanel() {
+  _skillsListByLevelBlock() {
+    List<LevelBlock> blocksList = generateLevelBlocks();
+    return SingleChildScrollView(
+        padding: EdgeInsets.all(20.0),
+        child: Container(
+            child: ExpansionPanelList(
+                expandedHeaderPadding: EdgeInsets.all(10.0),
+                animationDuration: Duration(milliseconds: 800),
+                expansionCallback: (int index, bool isExpanded) {
+                  setState(() {
+                    blocksList[index].isExpanded = !isExpanded;
+                  });
+                },
+                children: _blocksPanelByLevelBlock(blocksList))));
+  }
+
+
+  List<ExpansionPanel> _blocksPanelBySkillsBlock(List<SkillBlock> blocksList) {
     List<ExpansionPanel> panels = new List.empty(growable: true);
 
-    for (SkillBlock block in _skillsBlocksList)
+    for (SkillBlock block in blocksList)
       panels.add(ExpansionPanel(
-        headerBuilder: (BuildContext context, bool isExpanded) { return block.header;},
-        body: _generateSkillsList(block.skills),
-        isExpanded: block.isExpanded,
-        canTapOnHeader: true));
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            return block.header;
+          },
+          body: _generateSkillsList(block.skills),
+          isExpanded: block.isExpanded,
+          canTapOnHeader: true));
 
     return panels;
   }
 
-  Widget _generateSkillsList(List<String> skills) {
-    final List<Widget> skillsList = new List.empty(growable:true);
-    for (String skill in skills){
+  _blocksPanelByLevelBlock(List<LevelBlock> blocksList) {
+    List<ExpansionPanel> panels = new List.empty(growable: true);
+
+    for (LevelBlock block in blocksList)
+      panels.add(ExpansionPanel(
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            return block.header;
+          },
+          body: _generateSkillsList(block.skills),
+          isExpanded: block.isExpanded,
+          canTapOnHeader: true));
+
+    return panels;
+  }
+
+
+  Widget _generateSkillsList(List<Skill> skills) {
+    final List<Widget> skillsList = new List.empty(growable: true);
+    for (Skill skill in skills) {
       skillsList.add(_generateSkillItem(skill));
     }
     return Container(
@@ -80,18 +143,30 @@ class _MySkillsPageState extends State<MySkillsPage> {
     );
   }
 
-  Widget _generateSkillItem(String skill) {
-    final level = AppStrings.LEVELS_BY_SKILL[skill];
-    return Card(child: ListTile(
-      title: Row(children: [
-        Expanded(child: Text(level, style: TextStyle(color: AppColors.LEVELS_COLORS[level]))),
-        Checkbox(value: true, onChanged: (bool newVal) {}), Icon(Icons.check_box)],),
-      subtitle: Text(skill),
-      contentPadding: EdgeInsets.fromLTRB(16.0, .0, 16.0, 16.0),
+  Widget _generateSkillItem(Skill skill) {
+    return Card(
+      child: ListTile(
+        title: Row(
+          children: [
+            Expanded(child: isSortedByBlock?skill.level:skill.block),
+            Checkbox(
+                value: skill.isAutoChecked,
+                onChanged: (bool newVal) {
+                  setState(() {
+                    skill.isAutoChecked = newVal;
+                  });
+                }),
+            Icon(skill.isCheckedByTeacher
+                ? Icons.check_box
+                : Icons.check_box_outline_blank)
+          ],
+        ),
+        subtitle: skill.entitle,
+        contentPadding: EdgeInsets.fromLTRB(16.0, .0, 16.0, 16.0),
       ),
-    elevation: 20.0,
-    semanticContainer: false,);
-
+      elevation: 20.0,
+      semanticContainer: false,
+    );
   }
 
   void _addingSkillForm() {}
@@ -99,20 +174,59 @@ class _MySkillsPageState extends State<MySkillsPage> {
 }
 
 
+class Skill {
+  Text level;
+  Text block;
+  bool isAutoChecked;
+  bool isCheckedByTeacher;
+  Text entitle;
+
+  Skill(String skill) {
+    final levelName = AppStrings.LEVELS_BY_SKILL[skill];
+    final blockName = AppStrings.BLOCKS_BY_SKILL[skill];
+    level = Text(levelName,
+        style: TextStyle(color: AppColors.LEVELS_COLORS[levelName]));
+    block = Text(blockName,
+        style: TextStyle(color: AppColors.BLOCKS_COLORS[blockName]));
+    isAutoChecked = AppStrings.AUTO_CHECKS_BY_SKILL[skill];
+    isCheckedByTeacher = AppStrings.TEACHERS_CHECKS_BY_SKILL[skill];
+    entitle = Text(skill);
+  }
+}
+
 class SkillBlock {
   ListTile header;
-  List<String> skills;
+  List<Skill> skills;
   bool isExpanded;
 
   SkillBlock(String blockName) {
-    header = ListTile(title: Text(
-        blockName,
-        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)));
-    skills = AppStrings.SKILLS_BY_BLOC[blockName];
+    header = ListTile(
+        title: Text(blockName,
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)));
+    skills = generateSkills(AppStrings.SKILLS_BY_BLOC[blockName]);
     isExpanded = true;
   }
 }
 
+class LevelBlock {
+  ListTile header;
+  List<Skill> skills;
+  bool isExpanded;
+
+  LevelBlock(String blockName) {
+    header = ListTile(
+        title: Text(blockName,
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)));
+    skills = generateSkills(AppStrings.SKILLS_BY_LEVEL[blockName]);
+    isExpanded = true;
+  }
+}
+
+List<Skill> generateSkills(List<String> skillsBloc) {
+  return List.generate(skillsBloc.length, (int index) {
+    return Skill(skillsBloc[index]);
+  });
+}
 
 List<SkillBlock> generateSkillsBlocks() {
   final blocks = AppStrings.SKILLS_BLOCKS;
@@ -121,3 +235,9 @@ List<SkillBlock> generateSkillsBlocks() {
   });
 }
 
+List<LevelBlock> generateLevelBlocks() {
+  final blocks = AppStrings.LEVEL_BLOCKS;
+  return List.generate(blocks.length, (int index) {
+    return LevelBlock(blocks[index]);
+  });
+}
