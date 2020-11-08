@@ -19,7 +19,9 @@ class _StudentGridState extends State<StudentGrid>{
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3),
+            crossAxisCount: 3,
+            childAspectRatio: 2
+        ),
       itemBuilder: (BuildContext context, int index){
         return _getStudentWidget(_filteredStudents[index]);
       },
@@ -27,12 +29,26 @@ class _StudentGridState extends State<StudentGrid>{
   }
 
   Widget _getStudentWidget(String name){//TODO student class
-    return Align(
-        alignment: Alignment.center,
-        child:FlatButton(
-          child:Text(name),
-          onPressed: (){},//TODO
-        )
+    return FlatButton(
+      child:Container(
+          margin: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+              color: Colors.grey[400],//TODO theme colors
+              borderRadius: BorderRadius.circular(5)
+          ),
+          child: Container(
+            margin: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius: BorderRadius.circular(5)
+            ),
+            child: Align(
+                alignment: Alignment.center,
+                child:Text(name)
+            ),
+          )
+      ),
+      onPressed: (){},//TODO
     );
   }
 
