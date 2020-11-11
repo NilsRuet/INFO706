@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Student/Pages/skills_route.dart';
 import 'package:info706/Teacher/StudentsSelection/student_selection_route.dart';
-
 import 'Common/navigation_drawer_route.dart';
 import 'Common/common_drawer.dart';
 
@@ -15,8 +14,8 @@ class HomeState extends State<HomeView>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: _pageAppBar(),
-        floatingActionButton: _addButton(),
+        //appBar: _pageAppBar(),
+        //floatingActionButton: _addButton(),
         drawer: NavigationDrawer(
           homeState: this,
           views: [MySkillsDrawerRoute(), MyStudentsDrawerView()],
@@ -33,12 +32,12 @@ class HomeState extends State<HomeView>{
    });
   }
 
-  AppBar _pageAppBar() {
+  /*AppBar _pageAppBar() {
     return AppBar(
       title: Text('Salut'),
       centerTitle: true,
     );
-  }
+  }*/
 
   FloatingActionButton _addButton(){
     return FloatingActionButton(
