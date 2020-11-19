@@ -20,10 +20,6 @@ class Student extends User
 {
   //Constructeur par défaut
   Student(Map<String, dynamic> json) : super(json);
-
-  String repr() {
-    return "repr : $name ($_id)";
-  }
 }
 
 // Utilisateur enseignant

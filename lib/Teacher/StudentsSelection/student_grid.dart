@@ -4,16 +4,23 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:info706/Common/navigation_drawer_route.dart';
+import 'package:info706/Model/Cache/CacheManager.dart';
+import 'package:info706/Model/Data/User.dart';
 
 class _StudentGridState extends State<StudentGrid>{
 
-  List<String> _students = ["Alain","Bastien","Ccc","Xavier","Alex","Jean","Jeanne","qdqsdf","sdlflkjl","soepo","dsmfksqdfkm"];//TODO student class
-  List<String> _filteredStudents;
+  List<Student> _students = List<Student>();
+  List<Student> _filteredStudents = List<Student>();
   String _filter = "";
 
   @override
+  void initState(){
+    super.initState();
+    _loadStudents();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _filteredStudents = _students.where((student) => matches(student, _filter)).toList();
     return GridView.builder(
       itemCount: _filteredStudents.length,
       scrollDirection: Axis.vertical,
@@ -28,7 +35,7 @@ class _StudentGridState extends State<StudentGrid>{
     );
   }
 
-  Widget _getStudentWidget(String name){//TODO student class
+  Widget _getStudentWidget(Student student){
     return FlatButton(
       child:Container(
           margin: EdgeInsets.all(5),
@@ -44,7 +51,7 @@ class _StudentGridState extends State<StudentGrid>{
             ),
             child: Align(
                 alignment: Alignment.center,
-                child:Text(name)
+                child:Text(student.name)
             ),
           )
       ),
@@ -52,14 +59,27 @@ class _StudentGridState extends State<StudentGrid>{
     );
   }
 
-  bool matches(String name, String filter){
+  bool matches(Student student, String filter){
     if(filter.length == 0) return true;
-    return name.toLowerCase().startsWith(filter.toLowerCase());
+    return student.name.toLowerCase().startsWith(filter.toLowerCase());
   }
 
   void filter(String filter){
     setState(() {
       this._filter = filter;
+      _filteredStudents = _students.where((student) => matches(student, _filter)).toList();
+    });
+  }
+
+  void _loadStudents() async{
+    final students = await CacheManager.getStudents();
+    _updateStudents(students);
+  }
+
+  void _updateStudents(List<Student> students){
+    setState(() {
+      this._students = students;
+      _filteredStudents = _students.where((student) => matches(student, _filter)).toList();
     });
   }
 }

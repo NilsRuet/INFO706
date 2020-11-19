@@ -16,9 +16,6 @@ class HomeState extends State<HomeView>{
 
   @override
   Widget build(BuildContext context) {
-    CacheManager.getStudents().then(
-            (students) => students.forEach((student) => print(student.repr()))
-    );
     return Scaffold(
         appBar: _pageAppBar(),
         floatingActionButton: _addButton(),
