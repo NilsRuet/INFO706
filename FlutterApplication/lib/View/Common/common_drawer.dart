@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:info706/home_route.dart';
+import 'package:info706/View/home_route.dart';
 import 'package:info706/Resources/app_strings.dart';
-
-import 'navigation_drawer_route.dart';
+import 'package:info706/View/Common/navigation_drawer_route.dart';
 
 class _DrawerState extends State<NavigationDrawer>{
   @override

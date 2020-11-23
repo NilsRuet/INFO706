@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:info706/Student/Pages/skills_route.dart';
-import 'package:info706/Teacher/StudentsSelection/student_selection_route.dart';
-import 'Common/navigation_drawer_route.dart';
-import 'Common/common_drawer.dart';
-import 'Model/Cache/CacheManager.dart';
-import 'Model/Data/User.dart';
+import 'package:info706/View/Student/Pages/skills_route.dart';
+import 'package:info706/View/Teacher/StudentsSelection/student_selection_route.dart';
+import 'package:info706/View/Common/navigation_drawer_route.dart';
+import 'package:info706/View/Common/common_drawer.dart';
+import 'package:info706/Model/Cache/CacheManager.dart';
+import 'package:info706/Model/Data/User.dart';
 
 class HomeView extends StatefulWidget {
   @override

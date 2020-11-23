@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:info706/Common/navigation_drawer_route.dart';
+import 'package:info706/View/Common/navigation_drawer_route.dart';
 import 'package:info706/Resources/app_strings.dart';
-import 'package:info706/Teacher/StudentsSelection/student_grid.dart';
+import 'package:info706/View/Teacher/StudentsSelection/student_grid.dart';
 
 
 class MyStudentsDrawerView implements NavigationDrawerRoute{

@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:info706/Common/navigation_drawer_route.dart';
+import 'package:info706/View/Common/navigation_drawer_route.dart';
 import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Data/User.dart';
 

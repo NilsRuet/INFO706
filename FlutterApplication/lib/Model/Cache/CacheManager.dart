@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:info706/Config.dart';
+import 'package:info706/Info706Config.dart';
 import 'package:info706/Model/Data/User.dart';
 import 'package:path_provider/path_provider.dart';
 
