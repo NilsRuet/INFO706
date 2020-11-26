@@ -89,11 +89,15 @@ abstract class SortedViewState extends State<SortedViewWidget> {
   List<SkillBlock> blocksList;
   List<ExpansionPanel> _childrenPanels;
 
+  @override
+  void initState() {
+    super.initState();
+    blocksList = generateBlocks();
+  }
+
   //TODO encapsulation? return value?
   @override
   Widget build(BuildContext context) {
-    blocksList = generateBlocks();
-    _childrenPanels = _blocksPanel(blocksList);
     return SingleChildScrollView(
       padding: EdgeInsets.all(20.0),
       child: Container(
@@ -101,26 +105,27 @@ abstract class SortedViewState extends State<SortedViewWidget> {
               expandedHeaderPadding: EdgeInsets.all(10.0),
               animationDuration: Duration(milliseconds: 800),
               expansionCallback: (int index, bool isExpanded) {
-                //TODO
+                setState(() {
+                  blocksList[index].isExpanded = !isExpanded;
+                });
               },
-              children: _childrenPanels)));}
+              children: _blocksPanel(blocksList))));}
 
   List<SkillBlock> generateBlocks() {
     return List.generate(blocksNames.length, (int index) {
-      return SkillBlock(blocksNames[index], blocks[blocksNames[index]]);
+      return SkillBlock(blocksNames[index], blocks[blocksNames[index]], true);
     });
   }
 
   List<ExpansionPanel> _blocksPanel(List<SkillBlock> blocksList) {
     List<ExpansionPanel> panels = new List.empty(growable: true);
-
     for (SkillBlock block in blocksList)
       panels.add(ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
             return block.header;
           },
-          body: block,
           isExpanded: block.isExpanded,
+          body: block,
           canTapOnHeader: true));
     return panels;
   }
@@ -162,6 +167,43 @@ class SortedBySkillBlockState extends SortedViewState{
   List<String> blocksNames = AppStrings.SKILLS_BLOCKS;
   @override
   Map<String, List<String>> blocks = AppStrings.SKILLS_BY_BLOCK;
+}
+
+class SkillBlock extends StatefulWidget{
+  SkillBlockState _selfState;
+  ListTile header;
+  List<Skill> skills;
+  bool isExpanded;
+
+  SkillBlock(String blockName, List<String> skillsNames, bool isExpanded) {
+    this.isExpanded = isExpanded;
+    header = ListTile(
+        title: Text(blockName,
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)));
+    skills = generateSkills(skillsNames, true);//TODO booleen constant à retirer
+  }
+
+  @override
+  State<StatefulWidget> createState() {
+    _selfState = SkillBlockState();
+    return _selfState;
+  }
+}
+
+class SkillBlockState extends State<SkillBlock>{
+
+  SkillBlockState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(10.0, .0, 10.0, 10.0),
+      child: Column(
+        children: widget.skills,
+        mainAxisSize: MainAxisSize.min,
+      ),
+    );
+  }
 }
 
 class Skill extends StatefulWidget{
@@ -223,55 +265,6 @@ class SkillState extends State<Skill>{
       elevation: 20.0,
       semanticContainer: false,
     );
-  }
-}
-
-class SkillBlock extends StatefulWidget{
-  SkillBlockState _selfState;
-  ListTile header;
-  List<Skill> skills;
-  bool isExpanded;
-
-  SkillBlock(String blockName, List<String> skillsNames) {
-    header = ListTile(
-        title: Text(blockName,
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)));
-    skills = generateSkills(skillsNames, true);//TODO booleen constant
-    isExpanded = true;
-  }
-  @override
-  State<StatefulWidget> createState() {
-    _selfState = SkillBlockState(header,skills,isExpanded);
-    return _selfState;
-  }
-}
-
-class SkillBlockState extends State<SkillBlock>{
-  ListTile header;
-  List<Skill> skills;
-  bool isExpanded;
-
-  SkillBlockState(ListTile header, List<Skill> skills, bool isExpanded){
-    this.header = header;
-    this.skills = skills;
-    this.isExpanded = isExpanded;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(10.0, .0, 10.0, 10.0),
-      child: Column(
-        children: skills,
-        mainAxisSize: MainAxisSize.min,
-      ),
-    );
-  }
-
-  void InvertExpand() {
-    setState(() {
-      isExpanded = !isExpanded;
-    });
   }
 }
 
