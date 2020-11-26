@@ -10,6 +10,9 @@ user_id = "user_id"
 student_table = "Students"
 student_id = "student_id"
 
+teacher_table = "Teachers"
+teacher_id = "teacher_id"
+
 blocks_table = "SkillBlocks"
 
 skills_table = "Skills"
@@ -44,6 +47,13 @@ def get_students(db):
     res = db.fetchall()
     return {root_keyword:res}
 
+@app.route('/teachers')
+def get_students(db):
+    db.execute('SELECT * from {0} INNER JOIN {2} ON {0}.{1}={2}.{3}'
+    .format(user_table, user_id, teacher_table, teacher_id))
+    res = db.fetchall()
+    return {root_keyword:res}
+
 @app.route('/skill_blocks')
 def get_blocks(db):
     db.execute('SELECT * from {}'.format(blocks_table))
@@ -75,7 +85,7 @@ def get_skills_of(db, user_id):
 @app.route('/self_assessments_of/<user_id>')
 def get_self_assessments_of(db, user_id):
     db.execute(
-      """(SELECT {0}.* FROM {0}
+      """(SELECT * FROM {0}
       INNER JOIN {3} ON {0}.{1} = {3}.{4} AND {0}.{2} = {5})
       """.format(assessments_table,
       assessment_id,
@@ -96,7 +106,7 @@ def get_self_assessments_of(db, user_id):
 @app.route('/teacher_assessments_of/<user_id>')
 def get_teacher_assessments_of(db, user_id):
     db.execute(
-      """(SELECT {0}.* FROM {0}
+      """(SELECT * FROM {0}
       INNER JOIN {3} ON {0}.{1} = {3}.{4} AND {0}.{2} = {5})
       """.format(assessments_table,
       assessment_id,
