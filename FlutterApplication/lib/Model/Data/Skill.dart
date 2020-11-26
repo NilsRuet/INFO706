@@ -22,6 +22,20 @@ CompetencyLevel levelFromInt(int i){
   }
 }
 
+class SkillBlock{
+  int _id;
+  String title;
+
+  int get id {
+    return _id;
+  }
+
+  SkillBlock(Map<String, dynamic> json){
+    this._id = json['block_id'];
+    this.title = json['title'];
+  }
+}
+
 // Une compétence qui peut-être acquise
 abstract class Skill
 {

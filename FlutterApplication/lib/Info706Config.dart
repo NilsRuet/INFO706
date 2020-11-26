@@ -13,6 +13,10 @@ abstract class Config{
     return host+"global_skills";
   }
 
+  static String get skillsBlocksURL{
+    return host+"skill_blocks";
+  }
+
   static String personalSkillsURL(int id){
     return host+"skills_of/$id";
   }
