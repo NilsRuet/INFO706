@@ -85,7 +85,7 @@ def get_skills_of(db, user_id):
 @app.route('/self_assessments_of/<user_id>')
 def get_self_assessments_of(db, user_id):
     db.execute(
-      """(SELECT {0}.* FROM {0}
+      """(SELECT * FROM {0}
       INNER JOIN {3} ON {0}.{1} = {3}.{4} AND {0}.{2} = {5})
       """.format(assessments_table,
       assessment_id,
@@ -106,7 +106,7 @@ def get_self_assessments_of(db, user_id):
 @app.route('/teacher_assessments_of/<user_id>')
 def get_teacher_assessments_of(db, user_id):
     db.execute(
-      """(SELECT {0}.* FROM {0}
+      """(SELECT * FROM {0}
       INNER JOIN {3} ON {0}.{1} = {3}.{4} AND {0}.{2} = {5})
       """.format(assessments_table,
       assessment_id,

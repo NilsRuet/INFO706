@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:info706/Info706Config.dart';
+import 'package:info706/Model/Data/Assessment.dart';
 import 'package:info706/Model/Data/Skill.dart';
 import 'package:info706/Model/Data/User.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,9 +20,9 @@ abstract class CacheManager{
   static String _userListReponseName = "USERS";
   static String _teacherListReponseName = "TEACHERS";
   static String _globalSkillsReponseName = "GLOBALSKILLS";
-  static String _personnalSkillsReponseName(int id){
-    return "PERSONNALSKILLS$id";
-  }
+  static String _personnalSkillsReponseName(int id){ return "PERSONNALSKILLS$id";}
+  static String _selfAssessmentsReponseName(int id){ return "SELFASSESSMENTS$id";}
+  static String _teacherAssessmentsReponseName(int id){ return "TEACHERASSESSMENTS$id";}
 
   // Mets dans le cache la réponse à une requête
   static void _cacheResponse(String fileName, String content) async{
@@ -123,6 +124,36 @@ abstract class CacheManager{
       if(skillsRaw is List){
         List list = skillsRaw;
         list.forEach((element) => res.add(PersonalSkill(element)));
+      }
+    }
+    return res;//TODO valeur spéciale pour quand les données n'ont pas pu être récupérées
+  }
+
+  //Récupère la liste des compétences autovalidées d'un étudiant
+  static Future<List<SelfAssessment>> getSelfAssessedSkills(int studentId) async{
+    List<SelfAssessment> res = List();
+    final stringContent = await _getContent(Config.selfAssessmentsURL(studentId), _selfAssessmentsReponseName(studentId));
+    if(stringContent != null){
+      final data = (jsonDecode(stringContent));
+      final assessmentsRaw = data[_jsonRootKeyword];
+      if(assessmentsRaw is List){
+        List list = assessmentsRaw;
+        list.forEach((element) => res.add(SelfAssessment(element)));
+      }
+    }
+    return res;//TODO valeur spéciale pour quand les données n'ont pas pu être récupérées
+  }
+
+  //Récupère la liste des compétences autovalidées d'un étudiant
+  static Future<List<TeacherAssessment>> getTeacherAssessedSkills(int studentId) async{
+    List<TeacherAssessment> res = List();
+    final stringContent = await _getContent(Config.teacherAssessmentsURL(studentId), _teacherAssessmentsReponseName(studentId));
+    if(stringContent != null){
+      final data = (jsonDecode(stringContent));
+      final assessmentsRaw = data[_jsonRootKeyword];
+      if(assessmentsRaw is List){
+        List list = assessmentsRaw;
+        list.forEach((element) => res.add(TeacherAssessment(element)));
       }
     }
     return res;//TODO valeur spéciale pour quand les données n'ont pas pu être récupérées

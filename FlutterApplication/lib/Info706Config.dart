@@ -17,5 +17,14 @@ abstract class Config{
     return host+"skills_of/$id";
   }
 
+  static String selfAssessmentsURL(int id) {
+    return host+"self_assessments_of/$id";
+  }
+
+  static String teacherAssessmentsURL(int id) {
+    return host+"teacher_assessments_of/$id";
+  }
+
   static final int timeoutDelay = 5;
+
 }
