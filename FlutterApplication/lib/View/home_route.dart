@@ -3,8 +3,6 @@ import 'package:info706/View/Student/Pages/skills_route.dart';
 import 'package:info706/View/Teacher/StudentsSelection/student_selection_route.dart';
 import 'package:info706/View/Common/navigation_drawer_route.dart';
 import 'package:info706/View/Common/common_drawer.dart';
-import 'package:info706/Model/Cache/CacheManager.dart';
-import 'package:info706/Model/Data/User.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -25,10 +23,6 @@ class HomeState extends State<HomeView>{
         ),
         body : currentPage==null?MySkillsDrawerRoute().build():currentPage.build()//TODO default page
     );
-  }
-
-  void somePrint(String s){
-    print(s);
   }
 
   void setView(NavigationDrawerRoute page){

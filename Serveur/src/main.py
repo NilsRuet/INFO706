@@ -10,6 +10,9 @@ user_id = "user_id"
 student_table = "Students"
 student_id = "student_id"
 
+teacher_table = "Teachers"
+teacher_id = "teacher_id"
+
 blocks_table = "SkillBlocks"
 
 skills_table = "Skills"
@@ -41,6 +44,13 @@ app.install(plugin)
 def get_students(db):
     db.execute('SELECT * from {0} INNER JOIN {2} ON {0}.{1}={2}.{3}'
     .format(user_table, user_id, student_table, student_id))
+    res = db.fetchall()
+    return {root_keyword:res}
+
+@app.route('/teachers')
+def get_students(db):
+    db.execute('SELECT * from {0} INNER JOIN {2} ON {0}.{1}={2}.{3}'
+    .format(user_table, user_id, teacher_table, teacher_id))
     res = db.fetchall()
     return {root_keyword:res}
 

@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:info706/Info706Config.dart';
+import 'package:info706/Model/Data/Skill.dart';
 import 'package:info706/Model/Data/User.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -17,6 +17,11 @@ abstract class CacheManager{
 
   //Constantes pour les noms de fichier qui contiennent des données
   static String _userListReponseName = "USERS";
+  static String _teacherListReponseName = "TEACHERS";
+  static String _globalSkillsReponseName = "GLOBALSKILLS";
+  static String _personnalSkillsReponseName(int id){
+    return "PERSONNALSKILLS$id";
+  }
 
   // Mets dans le cache la réponse à une requête
   static void _cacheResponse(String fileName, String content) async{
@@ -73,6 +78,51 @@ abstract class CacheManager{
       if(studentsRaw is List){
         List list = studentsRaw;
         list.forEach((element) => res.add(Student(element)));
+      }
+    }
+    return res;//TODO valeur spéciale pour quand les données n'ont pas pu être récupérées
+  }
+
+  //Récupère la liste de tous les enseignants
+  static Future<List<Teacher>> getTeachers() async{
+    List<Teacher> res = List();
+    final stringContent = await _getContent(Config.teachersURL, _teacherListReponseName);
+    if(stringContent != null){
+      final data = (jsonDecode(stringContent));
+      final teachersRaw = data[_jsonRootKeyword];
+      if(teachersRaw is List){
+        List list = teachersRaw;
+        list.forEach((element) => res.add(Teacher(element)));
+      }
+    }
+    return res;//TODO valeur spéciale pour quand les données n'ont pas pu être récupérées
+  }
+
+  //Récupère la liste de toutes les compétences communes
+  static Future<List<GlobalSkill>> getGlobalSkills() async{
+    List<GlobalSkill> res = List();
+    final stringContent = await _getContent(Config.globalSkillsURL, _globalSkillsReponseName);
+    if(stringContent != null){
+      final data = (jsonDecode(stringContent));
+      final skillsRaw = data[_jsonRootKeyword];
+      if(skillsRaw is List){
+        List list = skillsRaw;
+        list.forEach((element) => res.add(GlobalSkill(element)));
+      }
+    }
+    return res;//TODO valeur spéciale pour quand les données n'ont pas pu être récupérées
+  }
+
+  //Récupère la liste des compétences propres à un étudiant
+  static Future<List<PersonalSkill>> getPersonalSkills(int studentId) async{
+    List<PersonalSkill> res = List();
+    final stringContent = await _getContent(Config.personalSkillsURL(studentId), _personnalSkillsReponseName(studentId));
+    if(stringContent != null){
+      final data = (jsonDecode(stringContent));
+      final skillsRaw = data[_jsonRootKeyword];
+      if(skillsRaw is List){
+        List list = skillsRaw;
+        list.forEach((element) => res.add(PersonalSkill(element)));
       }
     }
     return res;//TODO valeur spéciale pour quand les données n'ont pas pu être récupérées
