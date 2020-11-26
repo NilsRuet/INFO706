@@ -27,7 +27,6 @@ abstract class CacheManager{
 
     String wd = (await getApplicationDocumentsDirectory()).path;
     String path = '$wd/$fileName';
-
     final file = File(path);
     file.writeAsString('$rawData');
   }

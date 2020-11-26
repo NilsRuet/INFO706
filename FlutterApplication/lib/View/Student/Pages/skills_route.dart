@@ -83,19 +83,16 @@ abstract class SortedViewWidget extends StatefulWidget {
 }
 
 abstract class SortedViewState extends State<SortedViewWidget> {
-  //TODO private members?
-  List<String> blocksNames = AppStrings.SKILLS_BLOCKS;
-  Map<String, List<String>> blocks = AppStrings.SKILLS_BY_BLOCK;
-  List<SkillBlock> blocksList;
-  List<ExpansionPanel> _childrenPanels;
+  List<String> _blocksNames = AppStrings.SKILLS_BLOCKS;
+  Map<String, List<String>> _blocks = AppStrings.SKILLS_BY_BLOCK;
+  List<SkillBlock> _blocksList;
 
   @override
   void initState() {
     super.initState();
-    blocksList = generateBlocks();
+    _blocksList = _generateBlocks();
   }
 
-  //TODO encapsulation? return value?
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -106,18 +103,18 @@ abstract class SortedViewState extends State<SortedViewWidget> {
               animationDuration: Duration(milliseconds: 800),
               expansionCallback: (int index, bool isExpanded) {
                 setState(() {
-                  blocksList[index].isExpanded = !isExpanded;
+                  _blocksList[index].isExpanded = !isExpanded;
                 });
               },
-              children: _blocksPanel(blocksList))));}
+              children: _generateBlocksPanel(_blocksList))));}
 
-  List<SkillBlock> generateBlocks() {
-    return List.generate(blocksNames.length, (int index) {
-      return SkillBlock(blocksNames[index], blocks[blocksNames[index]], true);
+  List<SkillBlock> _generateBlocks() {
+    return List.generate(_blocksNames.length, (int index) {
+      return SkillBlock(_blocksNames[index], _blocks[_blocksNames[index]], true, isLevelMainInfo());
     });
   }
 
-  List<ExpansionPanel> _blocksPanel(List<SkillBlock> blocksList) {
+  List<ExpansionPanel> _generateBlocksPanel(List<SkillBlock> blocksList) {
     List<ExpansionPanel> panels = new List.empty(growable: true);
     for (SkillBlock block in blocksList)
       panels.add(ExpansionPanel(
@@ -129,6 +126,8 @@ abstract class SortedViewState extends State<SortedViewWidget> {
           canTapOnHeader: true));
     return panels;
   }
+
+  bool isLevelMainInfo();
 }
 
 class SortedByLevelWidget extends SortedViewWidget{
@@ -139,15 +138,20 @@ class SortedByLevelWidget extends SortedViewWidget{
 
   @override
   String getName() {
-    return "Trier par niveau";//TODO hardcoded
+    return AppStrings.SORT_BY_LEVEL;
   }
 }
 
 class SortedByLevelState extends SortedViewState{
   @override
-  List<String> blocksNames = AppStrings.LEVEL_BLOCKS;
+  List<String> _blocksNames = AppStrings.LEVEL_BLOCKS;
   @override
-  Map<String, List<String>> blocks = AppStrings.SKILLS_BY_LEVEL;
+  Map<String, List<String>> _blocks = AppStrings.SKILLS_BY_LEVEL;
+
+  @override
+  bool isLevelMainInfo() {
+    return true;
+  }
 }
 
 class SortedBySkillBlockWidget extends SortedViewWidget{
@@ -158,15 +162,20 @@ class SortedBySkillBlockWidget extends SortedViewWidget{
 
   @override
   String getName() {
-    return "Trier par bloc";//TODO hardcoded
+    return AppStrings.SORT_BY_BLOCK;
   }
 }
 
 class SortedBySkillBlockState extends SortedViewState{
   @override
-  List<String> blocksNames = AppStrings.SKILLS_BLOCKS;
+  List<String> _blocksNames = AppStrings.SKILLS_BLOCKS;
   @override
-  Map<String, List<String>> blocks = AppStrings.SKILLS_BY_BLOCK;
+  Map<String, List<String>> _blocks = AppStrings.SKILLS_BY_BLOCK;
+
+  @override
+  bool isLevelMainInfo() {
+    return false;
+  }
 }
 
 class SkillBlock extends StatefulWidget{
@@ -175,18 +184,24 @@ class SkillBlock extends StatefulWidget{
   List<Skill> skills;
   bool isExpanded;
 
-  SkillBlock(String blockName, List<String> skillsNames, bool isExpanded) {
+  SkillBlock(String blockName, List<String> skillsNames, bool isExpanded, bool isLevelMainInfo) {
     this.isExpanded = isExpanded;
     header = ListTile(
         title: Text(blockName,
             style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)));
-    skills = generateSkills(skillsNames, true);//TODO booleen constant à retirer
+    skills = _generateSkills(skillsNames, isLevelMainInfo);
   }
 
   @override
   State<StatefulWidget> createState() {
     _selfState = SkillBlockState();
     return _selfState;
+  }
+
+  List<Skill> _generateSkills(List<String> skillsNames, bool levelIsMainInfo) {
+    return List.generate(skillsNames.length, (int index) {
+      return Skill(skillsNames[index], levelIsMainInfo);
+    });
   }
 }
 
@@ -217,7 +232,7 @@ class Skill extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() {
-    return SkillState(name);
+    return SkillState();
   }
 }
 
@@ -228,7 +243,12 @@ class SkillState extends State<Skill>{
   bool isCheckedByTeacher;
   Text entitle;
 
-  SkillState(String skill) {
+  SkillState();
+
+  @override
+  void initState() {
+    super.initState();
+    String skill = widget.name;
     final levelName = AppStrings.LEVELS_BY_SKILL[skill];
     final blockName = AppStrings.BLOCKS_BY_SKILL[skill];
     level = Text(levelName,
@@ -246,7 +266,7 @@ class SkillState extends State<Skill>{
       child: ListTile(
         title: Row(
           children: [
-            Expanded(child: level),//TODO
+            Expanded(child: widget.isLevelMainInfo?block:level),
             Checkbox(
                 value: isAutoChecked,
                 onChanged: (bool newVal) {
@@ -266,10 +286,4 @@ class SkillState extends State<Skill>{
       semanticContainer: false,
     );
   }
-}
-
-List<Skill> generateSkills(List<String> skillsNames, bool levelIsMainInfo) {
-  return List.generate(skillsNames.length, (int index) {
-    return Skill(skillsNames[index], levelIsMainInfo);
-  });
 }
