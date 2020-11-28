@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:info706/sign_in_page.dart';
 
 Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
 }
