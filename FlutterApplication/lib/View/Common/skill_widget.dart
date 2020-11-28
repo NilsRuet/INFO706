@@ -1,15 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:info706/Model/Data/Info.dart';
 import 'package:info706/Resources/app_colors.dart';
-import 'package:info706/Resources/app_strings.dart';
 
 // Competence que peut acquerir un etudiant
 // ignore: must_be_immutable
 class SkillWidget extends StatefulWidget{
-  String _name;
+  SkillInfo _skill;
   bool _isLevelMainInfo;
 
-  SkillWidget(String skillName, bool levelIsMainInfo){
-    _name = skillName;
+  SkillWidget(SkillInfo skill, bool levelIsMainInfo){
+    _skill = skill;
     _isLevelMainInfo = levelIsMainInfo;
   }
 
@@ -31,16 +32,14 @@ class _SkillWidgetState extends State<SkillWidget>{
   @override
   void initState() {
     super.initState();
-    String skill = widget._name;
-    final levelName = AppStrings.LEVELS_BY_SKILL[skill];
-    final blockName = AppStrings.BLOCKS_BY_SKILL[skill];
-    _level = Text(levelName,
-        style: TextStyle(color: AppColors.LEVELS_COLORS[levelName]));
-    _block = Text(blockName,
-        style: TextStyle(color: AppColors.BLOCKS_COLORS[blockName]));
-    _isAutoChecked = AppStrings.AUTO_CHECKS_BY_SKILL[skill];
-    _isCheckedByTeacher = AppStrings.TEACHERS_CHECKS_BY_SKILL[skill];
-    _entitle = Text(skill);
+    SkillInfo skill = widget._skill;
+    _level = Text(describeEnum(skill.level),
+            style: TextStyle(color: AppColors.CATEGORY_COLORS[skill.level.index]));
+    _block = Text(skill.category.name,
+        style: TextStyle(color: AppColors.CATEGORY_COLORS[skill.category.index]));
+    _isAutoChecked = skill.isAutoChecked;
+    _isCheckedByTeacher = skill.isCheckedByTeacher;
+    _entitle = Text(skill.name);
   }
 
   @override

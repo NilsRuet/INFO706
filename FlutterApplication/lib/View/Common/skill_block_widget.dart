@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:info706/Model/Data/Info.dart';
 import 'package:info706/View/Common/skill_widget.dart';
 
 // Bloc regroupant differentes competences, selon leur niveau ou leur categorie
@@ -9,12 +10,12 @@ class SkillBlockWidget extends StatefulWidget{
   List<SkillWidget> _skills;
   bool isExpanded;
 
-  SkillBlockWidget(String blockName, List<String> skillsNames, bool isExpanded, bool isLevelMainInfo) {
+  SkillBlockWidget(BlockInfo block, bool isExpanded, bool isLevelMainInfo) {
     this.isExpanded = isExpanded;
     header = ListTile(
-        title: Text(blockName,
+        title: Text(block.name,
             style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)));
-    _skills = _generateSkills(skillsNames, isLevelMainInfo);
+    _skills = _generateSkills(block.skills, isLevelMainInfo);
   }
 
   @override
@@ -23,9 +24,9 @@ class SkillBlockWidget extends StatefulWidget{
     return _selfState;
   }
 
-  List<SkillWidget> _generateSkills(List<String> skillsNames, bool levelIsMainInfo) {
-    return List.generate(skillsNames.length, (int index) {
-      return SkillWidget(skillsNames[index], levelIsMainInfo);
+  List<SkillWidget> _generateSkills(List<SkillInfo> skills, bool levelIsMainInfo) {
+    return List.generate(skills.length, (int index) {
+      return SkillWidget(skills[index], levelIsMainInfo);
     });
   }
 }

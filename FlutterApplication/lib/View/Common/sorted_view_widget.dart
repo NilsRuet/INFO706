@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:info706/Model/Data/Info.dart';
 import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/Common/skill_block_widget.dart';
 
@@ -8,8 +9,7 @@ abstract class SortedViewWidget extends StatefulWidget {
 }
 
 abstract class _SortedViewState extends State<SortedViewWidget> {
-  List<String> _blocksNames = AppStrings.SKILLS_BLOCKS;
-  Map<String, List<String>> _blocks = AppStrings.SKILLS_BY_BLOCK;
+  List<BlockInfo> _blocks;
   List<SkillBlockWidget> _blocksList;
 
   @override
@@ -34,8 +34,8 @@ abstract class _SortedViewState extends State<SortedViewWidget> {
                 children: _generateBlocksPanel(_blocksList))));}
 
   List<SkillBlockWidget> _generateBlocks() {
-    return List.generate(_blocksNames.length, (int index) {
-      return SkillBlockWidget(_blocksNames[index], _blocks[_blocksNames[index]], true, _isLevelMainInfo());
+    return List.generate(_blocks.length, (int index) {
+      return SkillBlockWidget(_blocks[index], true, _isLevelMainInfo());
     });
   }
 
@@ -70,9 +70,7 @@ class SortedByLevelWidget extends SortedViewWidget{
 
 class _SortedByLevelState extends _SortedViewState{
   @override
-  List<String> _blocksNames = AppStrings.LEVEL_BLOCKS;
-  @override
-  Map<String, List<String>> _blocks = AppStrings.SKILLS_BY_LEVEL;
+  List<BlockInfo> _blocks = BlocksListInfo.sortedByLevel;
 
   @override
   bool _isLevelMainInfo() {
@@ -95,9 +93,8 @@ class SortedBySkillBlockWidget extends SortedViewWidget{
 
 class SortedBySkillBlockState extends _SortedViewState{
   @override
-  List<String> _blocksNames = AppStrings.SKILLS_BLOCKS;
-  @override
-  Map<String, List<String>> _blocks = AppStrings.SKILLS_BY_BLOCK;
+  List<BlockInfo> _blocks = BlocksListInfo.sortedByCategory;
+
 
   @override
   bool _isLevelMainInfo() {

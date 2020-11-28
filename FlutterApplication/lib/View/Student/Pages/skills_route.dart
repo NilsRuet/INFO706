@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:info706/Model/Data/Info.dart';
 import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/Common/navigation_drawer_route.dart';
 import 'package:info706/View/Common/sorted_view_widget.dart';
@@ -18,7 +19,10 @@ class MySkillsDrawerRoute implements NavigationDrawerRoute{
 
 class _MySkillsView extends StatefulWidget {
   @override
-  _MySkillsViewState createState() => _MySkillsViewState();
+  _MySkillsViewState createState() {
+    InfoManager.loadSkillRouteInformation();
+    return _MySkillsViewState();
+  }
 }
 
 class _MySkillsViewState extends State<_MySkillsView> {

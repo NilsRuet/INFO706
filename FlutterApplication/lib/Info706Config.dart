@@ -1,5 +1,5 @@
 abstract class Config{
-  static final String host = "http://192.168.0.16:8080/";
+  static final String host = "http://25.39.200.109:8080";
 
   static String get studentsURL{
     return host+"students";
