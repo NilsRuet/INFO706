@@ -1,8 +1,13 @@
 abstract class Config{
   static final String host = "http://192.168.0.16:8080/";
+  static final int timeoutDelay = 5;
 
   static String get studentsURL{
     return host+"students";
+  }
+
+  static String get addStudentURL{
+    return host+"add_student";
   }
 
   static String get teachersURL{
@@ -29,6 +34,5 @@ abstract class Config{
     return host+"teacher_assessments_of/$id";
   }
 
-  static final int timeoutDelay = 5;
 
 }
