@@ -27,4 +27,20 @@ abstract class DataManager{
       return null;
     }
   }
+
+  //Récupère la liste de tous les étudiants
+  static Future<Teacher> createTeacher(String name) async{
+    Map data = {'name': name};
+    final response = await http.post(
+      Config.addTeacherURL,
+      body: data,
+    );
+    if (response.statusCode == 201) {
+      // 201 CREATED response,
+      var teacher = Teacher(jsonDecode(response.body));
+      return teacher;
+    } else {
+      return null;
+    }
+  }
 }

@@ -14,6 +14,10 @@ abstract class Config{
     return host+"teachers";
   }
 
+  static String get addTeacherURL{
+    return host+"add_teacher";
+  }
+
   static String get globalSkillsURL{
     return host+"global_skills";
   }

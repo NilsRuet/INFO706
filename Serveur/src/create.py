@@ -16,8 +16,15 @@ def add_student(db):
 
 @app.route('/add_teacher')
 def add_teacher(db):
-
-    return {root_keyword:"success"}
+    username = bottle.request.forms.get('name')
+    query = "INSERT INTO {0} ({1}) VALUES ('{2}');".format(user_table, user_name, username)
+    query2 = "INSERT INTO {0}({1}) VALUES (LAST_INSERT_ID())".format(teacher_table, teacher_id)
+    db.execute(query)
+    db.execute(query2)
+    db.execute('SELECT * from {0} INNER JOIN {2} ON {0}.{1}={2}.{3} AND {0}.{1} = LAST_INSERT_ID()'
+    .format(user_table, user_id, teacher_table, teacher_id))
+    bottle.response.status = 201
+    return db.fetchone()
 
 @app.route('/add_global_skill')
 def add_global_skill(db):
