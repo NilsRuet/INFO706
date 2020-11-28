@@ -9,31 +9,34 @@ def add_student(db):
     query2 = "INSERT INTO {0}({1}) VALUES (LAST_INSERT_ID())".format(student_table, student_id)
     db.execute(query)
     db.execute(query2)
-    return {root_keyword:"success"}
+    db.execute('SELECT * from {0} INNER JOIN {2} ON {0}.{1}={2}.{3} AND {0}.{1} = LAST_INSERT_ID()'
+    .format(user_table, user_id, student_table, student_id))
+    bottle.response.status = 201
+    return db.fetchone()
 
 @app.route('/add_teacher')
 def add_teacher(db):
 
-    return {root_keyword:res}
+    return {root_keyword:"success"}
 
 @app.route('/add_global_skill')
 def add_global_skill(db):
 
-    return {root_keyword:res}
+    return {root_keyword:"success"}
 
 @app.route('/add_personal_skill')
 def add_personal_skill(db, user_id):
 
-    return {root_keyword:res}
+    return {root_keyword:"success"}
 
 @app.route('/add_self_assessment')
 def add_self_assessment(db, user_id):
 
 
-    return {root_keyword:res}
+    return {root_keyword:"success"}
 
 @app.route('/add_teacher_assessment')
 def add_teacher_assessment(db, user_id):
 
 
-    return {root_keyword:res}
+    return {root_keyword:"success"}

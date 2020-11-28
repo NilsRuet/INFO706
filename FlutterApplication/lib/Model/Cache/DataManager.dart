@@ -19,14 +19,12 @@ abstract class DataManager{
       Config.addStudentURL,
       body: data,
     );
-    print(jsonEncode(data));
     if (response.statusCode == 201) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      print("Succes ajout");
-      return Student(jsonDecode(response.body));
+      // 201 CREATED response,
+      var student = Student(jsonDecode(response.body));
+      return student;
     } else {
-      print("Erreur");
+      return null;
     }
   }
 }
