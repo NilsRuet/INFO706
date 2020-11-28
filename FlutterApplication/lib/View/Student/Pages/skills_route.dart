@@ -19,19 +19,23 @@ class MySkillsDrawerRoute implements NavigationDrawerRoute{
 
 class _MySkillsView extends StatefulWidget {
   @override
-  _MySkillsViewState createState() {
-    InfoManager.loadSkillRouteInformation();
-    return _MySkillsViewState();
-  }
+  _MySkillsViewState createState() => _MySkillsViewState();
 }
 
 class _MySkillsViewState extends State<_MySkillsView> {
   SortedViewWidget _currentSortedView;
   SortedBySkillBlockWidget _sortedBySkillBlockView = SortedBySkillBlockWidget();
   SortedByLevelWidget _sortedByLevelView = SortedByLevelWidget();
+  bool _loaded = false;
 
   _MySkillsViewState(){
     _currentSortedView = _sortedBySkillBlockView;
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _loadDataForDisplay();
   }
 
   @override
@@ -39,8 +43,8 @@ class _MySkillsViewState extends State<_MySkillsView> {
     return Scaffold(
         appBar: _skillsPageAppBar(),
         floatingActionButton: _addingSkillButton(),
-        body: Column(
-            children: [_sortingButton(), Expanded(child: _currentSortedView)]));
+        body: _loaded? Column(children: [_sortingButton(), Expanded(child: _currentSortedView)])
+                      :Center(child:CircularProgressIndicator()));
   }
 
   AppBar _skillsPageAppBar() {
@@ -79,4 +83,15 @@ class _MySkillsViewState extends State<_MySkillsView> {
 
   // TODO: a lier au formulaire, et surement à deplacer en meme temps
   void _addingSkillForm() {}
+
+  void _loadDataForDisplay() async {
+    await InfoManager.loadSkillRouteInformation();
+    _updateDataForDisplay();
+  }
+
+  void _updateDataForDisplay() {
+    setState(() {
+      this._loaded = true;
+    });
+  }
 }

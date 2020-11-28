@@ -70,9 +70,12 @@ class BlocksListInfo
 
 class InfoManager
 {
-  static loadSkillRouteInformation(){
+  static loadSkillRouteInformation() async{
     BlocksListInfo.clear();
     _debugLoading();
+    //await new Future.delayed(const Duration(seconds: 3));
+    //var skills = CacheManager.getGlobalSkills();
+
   }
 
   static void _debugLoading() {
