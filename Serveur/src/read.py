@@ -1,5 +1,5 @@
 from init import *
-from datetime import date, datetime
+import datetime
 
 @app.route('/students')
 def get_students(db):
@@ -59,7 +59,7 @@ def get_self_assessments_of(db, user_id):
 
     for i in range(len(res)):
       for key in res[i]:
-        if(isinstance(res[i][key], (datetime, date))):
+        if(isinstance(res[i][key], (datetime.datetime, datetime.date))):
           res[i][key] = str(res[i][key])
 
     return {root_keyword:res}
@@ -80,7 +80,7 @@ def get_teacher_assessments_of(db, user_id):
 
     for i in range(len(res)):
       for key in res[i]:
-        if(isinstance(res[i][key], (datetime, date))):
+        if(isinstance(res[i][key], (datetime.datetime, datetime.date))):
           res[i][key] = str(res[i][key])
 
     return {root_keyword:res}
