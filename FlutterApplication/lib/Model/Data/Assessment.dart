@@ -8,6 +8,10 @@ abstract class Assessment
   int _skillId;
   DateTime validationDate;
 
+  int get id{
+    return _id;
+  }
+
   int get studentId {
     return _studentId;
   }

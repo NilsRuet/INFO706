@@ -32,6 +32,11 @@ abstract class DataManager{
     }
   }
 
+  static Future<bool> deleteStudent(Student s) async{
+    final response = await http.delete(Config.deleteStudentURL(s.id));
+    return response.statusCode == 202;
+  }
+
   //Crée un enseignant avec le nom spécifié, renvoie l'objet enseignant correspondant
   static Future<Teacher> createTeacher(String name) async{
     Map data = {'name': name };
@@ -48,11 +53,16 @@ abstract class DataManager{
     }
   }
 
+  static Future<bool> deleteTeacher(Teacher t) async{
+    final response = await http.delete(Config.deleteTeacherURL(t.id));
+    return response.statusCode == 202;
+  }
+
   //Crée un bloc de compétences
   static Future<SkillBlock> createSkillBlock(String title) async{
     Map data = {'title': title };
     final response = await http.post(
-      Config.addSkillBlockUrl,
+      Config.addSkillBlockURL,
       body: data,
     );
     if (response.statusCode == 201) {
@@ -64,13 +74,18 @@ abstract class DataManager{
     }
   }
 
+  static Future<bool> deleteSkillBlock(SkillBlock sb) async{
+    final response = await http.delete(Config.deleteSkillBlockURL(sb.id));
+    return response.statusCode == 202;
+  }
+
   //Crée une compétence commune
   static Future<GlobalSkill> createGlobalSkill(String name, CompetencyLevel level, int blockId) async{
     Map data = {'name': name,
                 'level': levelToInt(level).toString(),
                 'block_id':blockId.toString()};
     final response = await http.post(
-      Config.addGlobalSkillUrl,
+      Config.addGlobalSkillURL,
       body: data,
     );
     if (response.statusCode == 201) {
@@ -82,6 +97,11 @@ abstract class DataManager{
     }
   }
 
+  static Future<bool> deleteGlobalSkill(GlobalSkill s) async{
+    final response = await http.delete(Config.deleteGlobalSkillURL(s.id));
+    return response.statusCode == 202;
+  }
+
   //Crée une compétence personnelle
   static Future<PersonalSkill> createPersonalSkill(String name, CompetencyLevel level, int blockId, int studentId) async{
     Map data = {'name': name,
@@ -89,7 +109,7 @@ abstract class DataManager{
                 'block_id':blockId.toString(),
                 'student_id':studentId.toString()};
     final response = await http.post(
-      Config.addPersonalSkillUrl,
+      Config.addPersonalSkillURL,
       body: data,
     );
     if (response.statusCode == 201) {
@@ -101,13 +121,18 @@ abstract class DataManager{
     }
   }
 
+  static Future<bool> deletePersonalSkill(PersonalSkill s) async{
+    final response = await http.delete(Config.deletePersonalSkillURL(s.id));
+    return response.statusCode == 202;
+  }
+
   //Crée une auto évaluation
   static Future<SelfAssessment> createSelfAssessment(int studentId, int skillId) async{
     Map data = {'student_id': studentId.toString(),
                 'skill_id': skillId.toString(),
                 'validation_date':_datetimeToString(DateTime.now())};
     final response = await http.post(
-      Config.addSelfAssessmentUrl,
+      Config.addSelfAssessmentURL,
       body: data,
     );
     if (response.statusCode == 201) {
@@ -119,6 +144,11 @@ abstract class DataManager{
     }
   }
 
+  static Future<bool> deleteSelfAssessment(SelfAssessment a) async{
+    final response = await http.delete(Config.deleteSelfAssessmentURL(a.id));
+    return response.statusCode == 202;
+  }
+
   //Crée une auto évaluation
   static Future<TeacherAssessment> createTeacherAssessment(int studentId, int skillId, int assessorId) async{
     Map data = {'student_id': studentId.toString(),
@@ -126,7 +156,7 @@ abstract class DataManager{
                 'assessor_id': assessorId.toString(),
                 'validation_date':_datetimeToString(DateTime.now())};
     final response = await http.post(
-      Config.addTeacherAssessmentUrl,
+      Config.addTeacherAssessmentURL,
       body: data,
     );
     if (response.statusCode == 201) {
@@ -136,5 +166,10 @@ abstract class DataManager{
     } else {
       return null;
     }
+  }
+
+  static Future<bool> deleteTeacherAssessment(TeacherAssessment a) async{
+    final response = await http.delete(Config.deleteSelfAssessmentURL(a.id));
+    return response.statusCode == 202;
   }
 }
