@@ -14,6 +14,10 @@ abstract class Config{
     return host+"delete_user/$id";
   }
 
+  static String get updateStudentURL{
+    return host+"update_student";
+  }
+
   static String get teachersURL{
     return host+"teachers";
   }
@@ -24,6 +28,10 @@ abstract class Config{
 
   static String deleteTeacherURL(int id){
     return host+"delete_user/$id";
+  }
+
+  static String get updateTeacherURL{
+    return host+"update_teacher";
   }
 
   static String get globalSkillsURL{
@@ -38,6 +46,10 @@ abstract class Config{
     return host+"delete_skill/$id";
   }
 
+  static String get updateGlobalSkillURL{
+    return host+"update_global_skill";
+  }
+
   static String get skillsBlocksURL{
     return host+"skill_blocks";
   }
@@ -50,6 +62,10 @@ abstract class Config{
     return host+"delete_skill_block/$id";
   }
 
+  static String get updateSkillBlockURL{
+    return host+"update_skill_block";
+  }
+
   static String personalSkillsURL(int id){
     return host+"skills_of/$id";
   }
@@ -60,6 +76,10 @@ abstract class Config{
 
   static String deletePersonalSkillURL(int id){
     return host+"delete_skill/$id";
+  }
+
+  static String get updatePersonalSkillURL{
+    return host+"update_personal_skill";
   }
 
   static String selfAssessmentsURL(int id) {

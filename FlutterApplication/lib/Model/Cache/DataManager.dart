@@ -37,6 +37,21 @@ abstract class DataManager{
     return response.statusCode == 202;
   }
 
+  static Future<Student> updateStudent(Student s) async{
+    Map data = {'id' : s.id.toString(),
+                'name': s.name };
+    final response = await http.put(
+      Config.updateStudentURL,
+      body: data,
+    );
+    if (response.statusCode == 200) {
+      var student = Student(jsonDecode(response.body));
+      return student;
+    } else {
+      return null;
+    }
+  }
+
   //Crée un enseignant avec le nom spécifié, renvoie l'objet enseignant correspondant
   static Future<Teacher> createTeacher(String name) async{
     Map data = {'name': name };
@@ -58,6 +73,21 @@ abstract class DataManager{
     return response.statusCode == 202;
   }
 
+  static Future<Teacher> updateTeacher(Teacher t) async{
+    Map data = {'id' : t.id.toString(),
+                'name': t.name };
+    final response = await http.put(
+      Config.updateTeacherURL,
+      body: data,
+    );
+    if (response.statusCode == 200) {
+      var res = Teacher(jsonDecode(response.body));
+      return res;
+    } else {
+      return null;
+    }
+  }
+
   //Crée un bloc de compétences
   static Future<SkillBlock> createSkillBlock(String title) async{
     Map data = {'title': title };
@@ -77,6 +107,21 @@ abstract class DataManager{
   static Future<bool> deleteSkillBlock(SkillBlock sb) async{
     final response = await http.delete(Config.deleteSkillBlockURL(sb.id));
     return response.statusCode == 202;
+  }
+
+  static Future<SkillBlock> updateSkillBlock(SkillBlock sb) async{
+    Map data = {'id' : sb.id.toString(),
+                'title': sb.title };
+    final response = await http.put(
+      Config.updateSkillBlockURL,
+      body: data,
+    );
+    if (response.statusCode == 200) {
+      var res = SkillBlock(jsonDecode(response.body));
+      return res;
+    } else {
+      return null;
+    }
   }
 
   //Crée une compétence commune
@@ -102,6 +147,23 @@ abstract class DataManager{
     return response.statusCode == 202;
   }
 
+  static Future<GlobalSkill> updateGlobalSkill(GlobalSkill s) async{
+    Map data = {'id' : s.id.toString(),
+                'name': s.name,
+                'level': levelToInt(s.level).toString(),
+                'block_id': s.blockId.toString()};
+    final response = await http.put(
+      Config.updateGlobalSkillURL,
+      body: data,
+    );
+    if (response.statusCode == 200) {
+      var res = GlobalSkill(jsonDecode(response.body));
+      return res;
+    } else {
+      return null;
+    }
+  }
+
   //Crée une compétence personnelle
   static Future<PersonalSkill> createPersonalSkill(String name, CompetencyLevel level, int blockId, int studentId) async{
     Map data = {'name': name,
@@ -124,6 +186,23 @@ abstract class DataManager{
   static Future<bool> deletePersonalSkill(PersonalSkill s) async{
     final response = await http.delete(Config.deletePersonalSkillURL(s.id));
     return response.statusCode == 202;
+  }
+
+  static Future<PersonalSkill> updatePersonalSkill(PersonalSkill s) async{
+    Map data = {'id' : s.id.toString(),
+                'name': s.name,
+                'level': levelToInt(s.level).toString(),
+                'block_id': s.blockId.toString()};
+    final response = await http.put(
+      Config.updatePersonalSkillURL,
+      body: data,
+    );
+    if (response.statusCode == 200) {
+      var res = PersonalSkill(jsonDecode(response.body));
+      return res;
+    } else {
+      return null;
+    }
   }
 
   //Crée une auto évaluation
