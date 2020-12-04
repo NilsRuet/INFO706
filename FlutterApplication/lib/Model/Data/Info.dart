@@ -95,7 +95,8 @@ class InfoManager
     teacherAssessments.forEach((element) {teacherAssessedSkillsIds.add(element.skillId);});
 
     // On récupère enfin les compétences
-    List<Skill> skills = await CacheManager.getGlobalSkills();
+    List<Skill> skills = List();
+    skills.addAll((await CacheManager.getGlobalSkills()));
     skills.addAll(await CacheManager.getPersonalSkills(STUDENTID));
     skills.forEach((element) {
       SkillInfo(element.name, idCategories[element.blockId],
