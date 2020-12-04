@@ -4,6 +4,8 @@ import 'package:info706/View/Teacher/StudentsSelection/student_selection_route.d
 import 'package:info706/View/Common/navigation_drawer_route.dart';
 import 'package:info706/View/Common/common_drawer.dart';
 
+import 'Common/debug_view.dart';
+
 class HomeView extends StatefulWidget {
   @override
   HomeState createState() => HomeState();
@@ -18,7 +20,7 @@ class HomeState extends State<HomeView>{
         //floatingActionButton: _addButton(),
         drawer: NavigationDrawer(
           homeState: this,
-          views: [MySkillsDrawerRoute(), MyStudentsDrawerView()],
+          views: [MySkillsDrawerRoute(), MyStudentsDrawerView(), DebugView()],
           name: "Common drawer",
         ),
         body : currentPage==null?MySkillsDrawerRoute().build():currentPage.build()//TODO default page
