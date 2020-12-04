@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 import 'package:info706/Model/Cache/CacheManager.dart';
+import 'package:info706/Model/Cache/DataManager.dart';
 import 'package:info706/Model/Data/Assessment.dart';
 import 'Skill.dart';
 
@@ -77,7 +78,6 @@ class InfoManager
     BlocksListInfo.clear();
     //_debugLoading();
     //await new Future.delayed(const Duration(seconds: 3));
-    //var skills = CacheManager.getGlobalSkills();
 
     // On récupère les catégories
     List<SkillBlock> categories = await CacheManager.getSkillBlocks();
@@ -98,7 +98,7 @@ class InfoManager
     List<Skill> skills = await CacheManager.getGlobalSkills();
     skills.addAll(await CacheManager.getPersonalSkills(STUDENTID));
     skills.forEach((element) {
-      SkillInfo(element.name, idCategories[element.block_id],
+      SkillInfo(element.name, idCategories[element.blockId],
           element.level,
           selfAssessedSkillsIds.contains(element.id),
           teacherAssessedSkillsIds.contains(element.id));
