@@ -22,6 +22,25 @@ CompetencyLevel levelFromInt(int i){
   }
 }
 
+int levelToInt(CompetencyLevel level){
+  switch(level){
+    case CompetencyLevel.A1:
+      return 1;
+    case CompetencyLevel.A2:
+      return 2;
+    case CompetencyLevel.B1:
+      return 3;
+    case CompetencyLevel.B2:
+      return 4;
+    case CompetencyLevel.C1:
+      return 5;
+    case CompetencyLevel.C2:
+      return 6;
+    default:
+      return 1;
+  }
+}
+
 class SkillBlock{
   int _id;
   String title;
@@ -31,7 +50,7 @@ class SkillBlock{
   }
 
   SkillBlock(Map<String, dynamic> json){
-    this._id = json['block_id'];
+    this._id = json['skillBlock_id'];
     this.title = json['title'];
   }
 }
@@ -40,16 +59,21 @@ class SkillBlock{
 abstract class Skill
 {
   int id;
-  int block_id;
+  int blockId;
   String name;
   CompetencyLevel level;
+
+  int get id{
+    return _id;
+  }
+
 
   //Constructeur par défaut à partir d'un json
   Skill(Map<String, dynamic> json){
     this.id = json['skill_id'];
     this.name = json['name'];
     this.level = levelFromInt(json['level']);
-    this.block_id = json['id_block'];
+    this.blockId = json['id_block'];
   }
 }
 
