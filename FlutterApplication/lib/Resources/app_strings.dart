@@ -7,4 +7,7 @@ class AppStrings{
 
   static const NAVIGATION_DRAWER = ['Compétences','Liste des élèves'];
 
+  // Selected student skills page
+  static String SELECTED_STUDENT_SKILLS_ROUTE_TITLE = 'Compétences de ';
+
 }

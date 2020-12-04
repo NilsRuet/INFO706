@@ -1,9 +1,7 @@
 // Toutes les informations concernant une compétence pour une personne
 import 'dart:collection';
-
 import 'package:flutter/foundation.dart';
 import 'package:info706/Model/Cache/CacheManager.dart';
-import 'package:info706/Model/Cache/DataManager.dart';
 import 'package:info706/Model/Data/Assessment.dart';
 import 'Skill.dart';
 
@@ -75,35 +73,7 @@ class InfoManager
 {
   static const STUDENTID = 1; // TODO stocker ça au bon endroit
   static loadSkillRouteInformation() async{
-    BlocksListInfo.clear();
-    //_debugLoading();
-    //await new Future.delayed(const Duration(seconds: 3));
-
-    // On récupère les catégories
-    List<SkillBlock> categories = await CacheManager.getSkillBlocks();
-    Map<int, CategoryInfo> idCategories = Map();
-    categories.forEach((element) {idCategories.putIfAbsent(element.id, () => CategoryInfo(element.title, element.id%4));});
-
-    // On récupère les auto validations
-    List<SelfAssessment> selfAssessments = await CacheManager.getSelfAssessedSkills(STUDENTID);
-    List<int> selfAssessedSkillsIds = List();
-    selfAssessments.forEach((element) {selfAssessedSkillsIds.add(element.skillId);});
-
-    // On récupère les validations par un enseignant
-    List<TeacherAssessment> teacherAssessments = await CacheManager.getTeacherAssessedSkills(STUDENTID);
-    List<int> teacherAssessedSkillsIds = List();
-    teacherAssessments.forEach((element) {teacherAssessedSkillsIds.add(element.skillId);});
-
-    // On récupère enfin les compétences
-    List<Skill> skills = List();
-    skills.addAll((await CacheManager.getGlobalSkills()));
-    skills.addAll(await CacheManager.getPersonalSkills(STUDENTID));
-    skills.forEach((element) {
-      SkillInfo(element.name, idCategories[element.blockId],
-          element.level,
-          selfAssessedSkillsIds.contains(element.id),
-          teacherAssessedSkillsIds.contains(element.id));
-    });
+    loadSelectedStudentSkillsRouteInformation(STUDENTID);
   }
 
   static void _debugLoading() {
@@ -129,5 +99,35 @@ class InfoManager
         eo, CompetencyLevel.A2, true, true);
     SkillInfo('Je peux raconter une histoire ou l\'intrigue d\'un livre ou d\'un film et exprimer mes réactions.',
         eo, CompetencyLevel.B1, true, true);
+  }
+
+  static loadSelectedStudentSkillsRouteInformation(int studentId) async {
+    BlocksListInfo.clear();
+    _debugLoading();
+    /*// On récupère les catégories
+    List<SkillBlock> categories = await CacheManager.getSkillBlocks();
+    Map<int, CategoryInfo> idCategories = Map();
+    categories.forEach((element) {idCategories.putIfAbsent(element.id, () => CategoryInfo(element.title, element.id%4));});
+
+    // On récupère les auto validations
+    List<SelfAssessment> selfAssessments = await CacheManager.getSelfAssessedSkills(studentId);
+    List<int> selfAssessedSkillsIds = List();
+    selfAssessments.forEach((element) {selfAssessedSkillsIds.add(element.skillId);});
+
+    // On récupère les validations par un enseignant
+    List<TeacherAssessment> teacherAssessments = await CacheManager.getTeacherAssessedSkills(studentId);
+    List<int> teacherAssessedSkillsIds = List();
+    teacherAssessments.forEach((element) {teacherAssessedSkillsIds.add(element.skillId);});
+
+    // On récupère enfin les compétences
+    List<Skill> skills = List();
+    skills.addAll((await CacheManager.getGlobalSkills()));
+    skills.addAll(await CacheManager.getPersonalSkills(studentId));
+    skills.forEach((element) {
+    SkillInfo(element.name, idCategories[element.blockId],
+    element.level,
+    selfAssessedSkillsIds.contains(element.id),
+    teacherAssessedSkillsIds.contains(element.id));
+    });*/
   }
 }
