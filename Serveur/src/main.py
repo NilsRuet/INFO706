@@ -124,4 +124,4 @@ def get_teacher_assessments_of(db, user_id):
 
     return {root_keyword:res}
 
-app.run(host="192.168.0.16")
+app.run(host="192.168.56.1")

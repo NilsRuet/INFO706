@@ -39,17 +39,17 @@ class SkillBlock{
 // Une compétence qui peut-être acquise
 abstract class Skill
 {
-  int _id;
-  int _block_id;
+  int id;
+  int block_id;
   String name;
   CompetencyLevel level;
 
   //Constructeur par défaut à partir d'un json
   Skill(Map<String, dynamic> json){
-    this._id = json['skill_id'];
+    this.id = json['skill_id'];
     this.name = json['name'];
     this.level = levelFromInt(json['level']);
-    this._block_id = json['id_block'];
+    this.block_id = json['id_block'];
   }
 }
 
