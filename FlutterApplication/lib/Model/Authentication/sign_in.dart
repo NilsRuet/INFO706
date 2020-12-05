@@ -42,4 +42,7 @@ abstract class SignIn {
     print("User Signed Out");
   }
 
+  static FirebaseAuth getAuthInstance(){
+    return _auth;
+  }
 }

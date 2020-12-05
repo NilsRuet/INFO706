@@ -9,17 +9,43 @@ import 'package:info706/Model/Authentication/authentication_service.dart';
 import 'package:provider/provider.dart';
 import 'package:info706/View/sign_in_page.dart';
 
-void main() {
+import 'Model/Authentication/sign_in.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Login',
-      theme: ThemeData.dark(),
-      home: LoginPage(),
+    return MultiProvider(
+      providers: [
+        Provider<AuthenticationService>(
+          create: (_) => AuthenticationService(SignIn.getAuthInstance()),
+        ),
+        StreamProvider(
+          create: (context) => context.read<AuthenticationService>().authStateChanges,
+        )
+      ],
+      child: MaterialApp(
+        title: 'INFO706',
+        theme: ThemeData.dark(),
+        home: AuthenticationWrapper(),
+      ),
     );
+  }
+}
+
+class AuthenticationWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User>();
+
+    if (firebaseUser != null) {
+      return HomeView();
+    }
+    return LoginPage();
   }
 }
