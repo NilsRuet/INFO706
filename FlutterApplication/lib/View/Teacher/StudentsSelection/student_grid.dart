@@ -25,17 +25,21 @@ class _StudentGridState extends State<StudentGrid>{
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: _filteredStudents.length,
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 0.8
-        ),
-      itemBuilder: (BuildContext context, int index){
-        return _getStudentWidget(_filteredStudents[index]);
-      },
+    return OrientationBuilder(
+      builder:(context, orientation){
+        return GridView.builder(
+          itemCount: _filteredStudents.length,
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: orientation==Orientation.portrait ? 3 : 6,
+              childAspectRatio: 0.8
+          ),
+          itemBuilder: (BuildContext context, int index){
+            return _getStudentWidget(_filteredStudents[index]);
+          },
+        );
+      }
     );
   }
 
@@ -49,12 +53,16 @@ class _StudentGridState extends State<StudentGrid>{
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _placeholder,
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                color: AppColors.BACKGROUND_COLOR,
-                child: Text(student.name,
-                    textAlign: TextAlign.center),
+              Expanded(
+                child:Container(
+                  margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  color: AppColors.BACKGROUND_COLOR,
+                  child: Align(
+                    child: Text(student.name,
+                        textAlign: TextAlign.center),
+                  ),
+                ),
               )
             ],
           ),
