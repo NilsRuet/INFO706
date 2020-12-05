@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/Info.dart';
-import 'package:info706/Resources/app_strings.dart';
-import 'package:info706/View/Common/navigation_drawer_route.dart';
-import 'package:info706/View/Common/sorted_view_widget.dart';
+import 'package:info706/Model/Data/User.dart';
+import 'package:info706/View/Common/SkillsViews/sorted_view_widget.dart';
 
-// The Student skills page
-class MySkillsDrawerRoute implements NavigationDrawerRoute{
-  @override
-  Widget build() {
-    return _MySkillsView();
-  }
+/// Vue des compétences, à surcharger selon s'il on veux le point de vue étudiant ou enseignant
 
-  @override
-  String getViewName() {
-    return AppStrings.MY_SKILLS_ROUTE_TITLE;
-  }
+// ignore: must_be_immutable
+abstract class SkillsView extends StatefulWidget {
+  Student _currentStudent;
+  String _routeTitle;
+
+  SkillsView(this._currentStudent, this._routeTitle);
 }
 
-class _MySkillsView extends StatefulWidget {
-  @override
-  _MySkillsViewState createState() => _MySkillsViewState();
-}
-
-class _MySkillsViewState extends State<_MySkillsView> {
+abstract class SkillsViewState extends State<SkillsView> {
   SortedViewWidget _currentSortedView;
-  SortedBySkillBlockWidget _sortedBySkillBlockView = SortedBySkillBlockWidget();
-  SortedByLevelWidget _sortedByLevelView = SortedByLevelWidget();
+  SortedViewWidget _sortedBySkillBlockView;
+  SortedViewWidget _sortedByLevelView;
   bool _loaded = false;
 
-  _MySkillsViewState(){
+  SkillsViewState(){
+    _currentSortedView = _sortedBySkillBlockView;
+  }
+
+  SkillsViewState.fromOverridingClass(this._sortedBySkillBlockView, this._sortedByLevelView){
     _currentSortedView = _sortedBySkillBlockView;
   }
 
@@ -49,7 +44,7 @@ class _MySkillsViewState extends State<_MySkillsView> {
 
   AppBar _skillsPageAppBar() {
     return AppBar(
-      title: Text(AppStrings.MY_SKILLS_ROUTE_TITLE),
+      title: Text(widget._routeTitle),
       centerTitle: true,
     );
   }
@@ -60,7 +55,7 @@ class _MySkillsViewState extends State<_MySkillsView> {
           value: _currentSortedView,
           underline: Container(height: 2, color: Theme.of(context).accentColor,),
           onChanged: (SortedViewWidget newValue) {
-            setState(() {_currentSortedView = newValue;});
+            setState(() => _currentSortedView = newValue);
             },
           items: <SortedViewWidget>[_sortedBySkillBlockView, _sortedByLevelView].
           map<DropdownMenuItem<SortedViewWidget>>((SortedViewWidget value) {
@@ -85,13 +80,11 @@ class _MySkillsViewState extends State<_MySkillsView> {
   void _addingSkillForm() {}
 
   void _loadDataForDisplay() async {
-    await InfoManager.loadSkillRouteInformation();
+    await InfoManager.loadSelectedStudentSkillsRouteInformation(widget._currentStudent.id);
     _updateDataForDisplay();
   }
 
   void _updateDataForDisplay() {
-    setState(() {
-      this._loaded = true;
-    });
+    setState(() => this._loaded = true);
   }
 }

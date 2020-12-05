@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Data/User.dart';
 import 'package:info706/View/Teacher/StudentSkills/selected_student_skills_route.dart';
 
@@ -55,7 +54,7 @@ class _StudentGridState extends State<StudentGrid>{
       onPressed: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SelectedStudentSkillsRoute(student)),
+          MaterialPageRoute(builder: (context) => SelectedStudentSkillsView(student)),
         );
       },
     );
