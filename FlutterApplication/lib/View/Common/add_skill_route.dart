@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/Skill.dart';
+import 'package:info706/Resources/app_colors.dart';
 import 'package:info706/Resources/app_strings.dart';
 
 class AddSkillRoute extends StatefulWidget{
@@ -39,9 +40,33 @@ class AddSkillState extends State<AddSkillRoute>{
   Widget _getHeader(String title){
     return Align(
       alignment: Alignment.centerLeft,
-      child: Text(
-          title,
-          style: TextStyle(fontSize: 20)),
+      child: Container(
+          margin: EdgeInsets.all(5),
+          child: Text(title, style: TextStyle(fontSize: 20))
+      ),
+    );
+  }
+
+  Widget _getPanel(Widget title, Widget content){
+    return Card(
+      elevation: 5,
+      child: Container(
+        padding: EdgeInsets.all(5),
+        child: Column(
+          children: [
+            Container(
+                margin: EdgeInsets.fromLTRB(5,5,5,0),
+                child: title)
+            ,
+            Divider(
+              thickness: 2,
+            ),
+            Container(
+                margin: EdgeInsets.fromLTRB(5,0,5,5),
+                child: content)
+          ],
+        ),
+      ),
     );
   }
 
@@ -97,27 +122,41 @@ class AddSkillState extends State<AddSkillRoute>{
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            _getHeader(AppStrings.ADD_SKILL_NAME_FIELD),
-            _nameField,
-            _getHeader(AppStrings.ADD_SKILL_LEVEL_FIELD),
-            _getLevelDropdown(),
-            _getHeader(AppStrings.ADD_SKILL_BLOCK_FIELD),
-            _getBlockDropdown(),
-            RaisedButton(
-              onPressed: (){
-                _skill.name=_nameController.text;
-                _skill.level=_chosenLevel;
-                _skill.blockId=_chosenSkillBlock.id;
-                _onComplete(_skill);
-                },
-              child: Text(AppStrings.CONFIRM_BUTTON),
-            )
-          ],
+          margin: EdgeInsets.all(15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                    child:Column(
+                      children: [
+                        _getPanel(_getHeader(AppStrings.ADD_SKILL_NAME_FIELD),_nameField),
+                        _getPanel(_getHeader(AppStrings.ADD_SKILL_LEVEL_FIELD),_getLevelDropdown()),
+                        _getPanel(_getHeader(AppStrings.ADD_SKILL_BLOCK_FIELD),_getBlockDropdown()),
+                      ],
+                    )
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(5,0,5,0),
+                child: RaisedButton(
+                  color: AppColors.FOREGROUND_COLOR,
+                  padding: EdgeInsets.all(10),
+                  elevation: 10,
+                  onPressed: (){
+                    _skill.name=_nameController.text;
+                    _skill.level=_chosenLevel;
+                    _skill.blockId=_chosenSkillBlock.id;
+                    _onComplete(_skill);
+                  },
+                  child: Text(AppStrings.CONFIRM_BUTTON,
+                    style: TextStyle(fontSize: 20),),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
     );
   }
 
