@@ -59,6 +59,8 @@ abstract class SkillHeaderWidget extends StatefulWidget{
   bool isCheckedByTeacher;
 
   SkillHeaderWidget(this.secondaryInformation, this.isAutoChecked, this.isCheckedByTeacher);
+
+  SkillHeaderWidget.withoutAssessment(this.secondaryInformation);
 }
 
 abstract class SkillHeaderWidgetState extends State<SkillHeaderWidget>{

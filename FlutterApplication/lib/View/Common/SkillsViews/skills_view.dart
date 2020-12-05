@@ -11,6 +11,7 @@ abstract class SkillsView extends StatefulWidget {
   String _routeTitle;
 
   SkillsView(this._currentStudent, this._routeTitle);
+  SkillsView.globalView(this._routeTitle);
 }
 
 abstract class SkillsViewState extends State<SkillsView> {
@@ -30,7 +31,7 @@ abstract class SkillsViewState extends State<SkillsView> {
   @override
   void initState(){
     super.initState();
-    _loadDataForDisplay();
+    loadDataForDisplay();
   }
 
   @override
@@ -79,12 +80,12 @@ abstract class SkillsViewState extends State<SkillsView> {
   // TODO: a lier au formulaire, et surement à deplacer en meme temps
   void _addingSkillForm() {}
 
-  void _loadDataForDisplay() async {
+  void loadDataForDisplay() async {
     await InfoManager.loadSelectedStudentSkillsRouteInformation(widget._currentStudent.id);
-    _updateDataForDisplay();
+    updateDataForDisplay();
   }
 
-  void _updateDataForDisplay() {
+  void updateDataForDisplay() {
     setState(() => this._loaded = true);
   }
 }

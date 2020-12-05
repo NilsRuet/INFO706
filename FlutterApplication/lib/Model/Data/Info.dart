@@ -17,6 +17,11 @@ class SkillInfo
     BlocksListInfo.getLevelBlock(level).add(this);
     BlocksListInfo.getCategoryBlock(category).add(this);
   }
+
+  SkillInfo.withoutAssessment(this.name, this.category, this.level){
+    BlocksListInfo.getLevelBlock(level).add(this);
+    BlocksListInfo.getCategoryBlock(category).add(this);
+  }
 }
 
 class CategoryInfo
@@ -71,10 +76,6 @@ class BlocksListInfo
 
 class InfoManager
 {
-  static const STUDENTID = 1; // TODO stocker ça au bon endroit
-  static loadSkillRouteInformation() async{
-    loadSelectedStudentSkillsRouteInformation(STUDENTID);
-  }
 
   static void _debugLoading() {
 
@@ -112,22 +113,34 @@ class InfoManager
     // On récupère les auto validations
     List<SelfAssessment> selfAssessments = await CacheManager.getSelfAssessedSkills(studentId);
     List<int> selfAssessedSkillsIds = List();
-    selfAssessments.forEach((element) {selfAssessedSkillsIds.add(element.skillId);});
+    selfAssessments.forEach((element) => selfAssessedSkillsIds.add(element.skillId));
 
     // On récupère les validations par un enseignant
     List<TeacherAssessment> teacherAssessments = await CacheManager.getTeacherAssessedSkills(studentId);
     List<int> teacherAssessedSkillsIds = List();
-    teacherAssessments.forEach((element) {teacherAssessedSkillsIds.add(element.skillId);});
+    teacherAssessments.forEach((element) => teacherAssessedSkillsIds.add(element.skillId));
 
-    // On récupère enfin les compétences
+    // On récupère les compétences
     List<Skill> skills = List();
     skills.addAll((await CacheManager.getGlobalSkills()));
     skills.addAll(await CacheManager.getPersonalSkills(studentId));
     skills.forEach((element) {
-    SkillInfo(element.name, idCategories[element.blockId],
-    element.level,
-    selfAssessedSkillsIds.contains(element.id),
-    teacherAssessedSkillsIds.contains(element.id));
+      SkillInfo(element.name, idCategories[element.blockId],
+      element.level,
+      selfAssessedSkillsIds.contains(element.id),
+      teacherAssessedSkillsIds.contains(element.id));
     });
+  }
+
+  static loadGlobalSkillsRouteInformation() async {
+    BlocksListInfo.clear();
+    //_debugLoading();
+    // On récupère les catégories
+    List<SkillBlock> categories = await CacheManager.getSkillBlocks();
+    Map<int, CategoryInfo> idCategories = Map();
+    categories.forEach((element) {idCategories.putIfAbsent(element.id, () => CategoryInfo(element.title, element.id%4));});
+
+    // On récupère les compétences
+    (await CacheManager.getGlobalSkills()).forEach((element) => SkillInfo.withoutAssessment(element.name, idCategories[element.blockId], element.level));
   }
 }

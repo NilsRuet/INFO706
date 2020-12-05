@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:info706/View/Student/PersonalSkills/personal_skills_route.dart';
+import 'package:info706/View/Teacher/GlobalSkills/global_skills_route.dart';
 import 'package:info706/View/Teacher/StudentsSelection/student_selection_route.dart';
 import 'package:info706/View/Common/navigation_drawer_route.dart';
 import 'package:info706/View/Common/common_drawer.dart';
@@ -18,7 +19,7 @@ class HomeState extends State<HomeView>{
         //floatingActionButton: _addButton(),
         drawer: NavigationDrawer(
           homeState: this,
-          views: [PersonalSkillsDrawerRoute(), MyStudentsDrawerView()],
+          views: [PersonalSkillsDrawerRoute(), MyStudentsDrawerView(), GlobalSkillsDrawerRoute()],
           name: "Common drawer",
         ),
         body : currentPage==null?PersonalSkillsDrawerRoute().build():currentPage.build()//TODO default page
@@ -39,10 +40,10 @@ class HomeState extends State<HomeView>{
     );
   }*/
 
-  FloatingActionButton _addButton(){
+ /* FloatingActionButton _addButton(){
     return FloatingActionButton(
       //onPressed : ,
       child: Icon(Icons.add),
     );
-  }
+  }*/
 }
