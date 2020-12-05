@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:info706/Model/Data/User.dart';
 import 'package:info706/View/home_route.dart';
 import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/Common/navigation_drawer_route.dart';
@@ -12,11 +13,26 @@ class _DrawerState extends State<NavigationDrawer>{
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             DrawerHeader(
-              child: Align(
-                  child:Text(
-                      widget.name,
-                      textAlign: TextAlign.center
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage("https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg"),
+                    radius: 40.0,
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(widget.currentUser.name,
+                          style: TextStyle(
+                            fontSize: 20
+                          ),
+                        ),
+                        Text("Etudiant")
+                      ],
+                    ),
                   )
+                ],
               ),
               decoration: BoxDecoration(
                 color: Colors.blue,
@@ -49,10 +65,10 @@ class _DrawerState extends State<NavigationDrawer>{
 
 class NavigationDrawer extends StatefulWidget{
   final HomeState homeState;
-  final String name;
   final List<NavigationDrawerRoute> views;
+  final User currentUser;
 
-  const NavigationDrawer ({ Key key, this.homeState, this.name, this.views }): super(key: key);
+  const NavigationDrawer ({ Key key, this.homeState, this.currentUser, this.views }): super(key: key);
 
   @override
   State<StatefulWidget> createState() => _DrawerState();

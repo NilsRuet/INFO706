@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:info706/Model/Data/User.dart';
 import 'package:info706/View/Student/Pages/skills_route.dart';
 import 'package:info706/View/Teacher/StudentsSelection/student_selection_route.dart';
 import 'package:info706/View/Common/navigation_drawer_route.dart';
 import 'package:info706/View/Common/common_drawer.dart';
 import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Data/User.dart';
+
+import 'Common/debug_view.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -15,20 +18,17 @@ class HomeState extends State<HomeView>{
 
   @override
   Widget build(BuildContext context) {
+    Student s = Student.placeholder("Utilisateur courant");//TODO remove
     return Scaffold(
         //appBar: _pageAppBar(),
         //floatingActionButton: _addButton(),
         drawer: NavigationDrawer(
           homeState: this,
-          views: [MySkillsDrawerRoute(), MyStudentsDrawerView()],
-          name: "Common drawer",
+          views: [MySkillsDrawerRoute(), MyStudentsDrawerView(), DebugView()],
+          currentUser: s,
         ),
         body : currentPage==null?MySkillsDrawerRoute().build():currentPage.build()//TODO default page
     );
-  }
-
-  void somePrint(String s){
-    print(s);
   }
 
   void setView(NavigationDrawerRoute page){
