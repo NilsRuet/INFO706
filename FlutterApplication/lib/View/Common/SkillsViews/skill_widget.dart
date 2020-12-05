@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/Info.dart';
 import 'package:info706/Resources/app_colors.dart';
+import 'package:info706/View/Common/SkillsViews/app_widgets.dart';
 
 /// Competence que peut acquerir un etudiant, à surcharger selon s'il on veux le point de vue étudiant ou enseignant
 
@@ -67,15 +68,16 @@ abstract class SkillWidgetState extends State<SkillWidget>{
     final RenderBox overlay = Overlay.of(context).context.findRenderObject();
     showMenu(
         context: context,
-        items: <PopupMenuEntry<MenuEntries>>[EditDeleteEntry()],
+        items: <PopupMenuEntry<bool>>[EditDeleteEntry(widget._skill)],
         position: RelativeRect.fromRect(
             tapPosition & const Size(40, 40),
             Offset.zero & overlay.semanticBounds.size
         )
-    ).then<void>((MenuEntries value) {
+    ).then<void>((bool value) {
       if (value == null) return;
       setState(() {
-        print(value);
+        if (!value)
+          Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
       });
     });
 
@@ -101,28 +103,31 @@ abstract class SkillHeaderWidgetState extends State<SkillHeaderWidget>{
   List<Widget> headerChildren();
 }
 
-// Choix possibles dans le menu popup
-enum MenuEntries {edit, delete}
-
 // Entrées du menu popup
 // ignore: must_be_immutable
-class EditDeleteEntry extends PopupMenuEntry<MenuEntries> {
+class EditDeleteEntry extends PopupMenuEntry<bool> {
 
+  SkillInfo _skill;
   @override
   double height = 100; // Aucune importance, puisqu'on donne pas de valeur initiale au showMenu()
 
+  EditDeleteEntry(this._skill):super();
+
   @override
-  bool represents(MenuEntries n) => n == MenuEntries.delete || n == MenuEntries.edit;
+  bool represents(bool n) => n == true || n == false;
 
   @override
   EditDeleteEntryState createState() => EditDeleteEntryState();
+
 }
 
 class EditDeleteEntryState extends State<EditDeleteEntry> {
 
-  void _edit() => Navigator.pop<MenuEntries>(context, MenuEntries.edit);
+  void _edit() => Navigator.pop<bool>(context, false);
 
-  void _delete() => Navigator.pop<MenuEntries>(context, MenuEntries.delete);
+  Future<void> _delete() async => closePopupWithResult(await widget._skill.delete());
+
+  void closePopupWithResult(bool res) => Navigator.pop<bool>(context, res);
 
   @override
   Widget build(BuildContext context) {
@@ -133,4 +138,5 @@ class EditDeleteEntryState extends State<EditDeleteEntry> {
       ],
     );
   }
+
 }
