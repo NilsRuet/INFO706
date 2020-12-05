@@ -12,8 +12,32 @@ import 'package:path_provider/path_provider.dart';
 
 abstract class DataManager{
 
+  static Future<bool> checkInfo() async{
+    return true;
+  }
+
   static String _datetimeToString(DateTime time){
     return time.year.toString()+"-"+time.month.toString()+"-"+time.day.toString();
+  }
+
+  static Future<User> authenticate(String accessToken, bool isStudent) async{
+    Map data = {'token' : accessToken,
+                'isStudent' : isStudent.toString()};
+    final response = await http.post(
+      Config.authenticateURL,
+      body: data
+    );
+    if (response.statusCode == 200 || response.statusCode==201) {
+      var res;
+      if(isStudent){
+        res = Student(jsonDecode(response.body));
+      } else {
+        res = Teacher(jsonDecode(response.body));
+      }
+      return res;
+    } else {
+      return null;
+    }
   }
 
   //Crée un étudiant avec le nom spécifié, renvoie l'objet étudiant correspondant

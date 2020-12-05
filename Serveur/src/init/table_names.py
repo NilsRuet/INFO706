@@ -3,6 +3,8 @@ root_keyword = "response"
 user_table = "Users"
 user_id = "user_id"
 user_name = "name"
+user_google_id = "google_id"
+user_picture = "picURL"
 
 student_table = "Students"
 student_id = "student_id"
