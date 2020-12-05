@@ -23,6 +23,7 @@ abstract class SkillWidgetState extends State<SkillWidget>{
   bool isCheckedByTeacher;
   Text _entitle;
   SkillHeaderWidget header;
+  Offset tapPosition;
 
   @override
   void initState() {
@@ -40,14 +41,25 @@ abstract class SkillWidgetState extends State<SkillWidget>{
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
-        title: header,
-        subtitle: _entitle,
-        contentPadding: EdgeInsets.fromLTRB(16.0, .0, 16.0, 16.0),
-      ),
+      child: GestureDetector(
+        onTapDown: _storePosition,
+        child:ListTile(
+          title: header,
+          subtitle: _entitle,
+          contentPadding: EdgeInsets.fromLTRB(16.0, .0, 16.0, 16.0),
+          onLongPress: longPressAction,
+      )),
       elevation: 20.0,
       semanticContainer: false,
     );
+  }
+
+  void _storePosition(TapDownDetails details) {
+    tapPosition = details.globalPosition;
+  }
+
+  void longPressAction() {
+    return null;
   }
 }
 
