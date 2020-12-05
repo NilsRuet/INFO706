@@ -12,13 +12,14 @@ class SkillInfo
   CompetencyLevel level;
   bool isAutoChecked;
   bool isCheckedByTeacher;
+  bool isPersonal;
 
-  SkillInfo(this.name, this.category, this.level, this.isAutoChecked, this.isCheckedByTeacher){
+  SkillInfo(this.name, this.category, this.level, this.isAutoChecked, this.isCheckedByTeacher, this.isPersonal){
     BlocksListInfo.getLevelBlock(level).add(this);
     BlocksListInfo.getCategoryBlock(category).add(this);
   }
 
-  SkillInfo.withoutAssessment(this.name, this.category, this.level){
+  SkillInfo.withoutAssessment(this.name, this.category, this.level, this.isPersonal){
     BlocksListInfo.getLevelBlock(level).add(this);
     BlocksListInfo.getCategoryBlock(category).add(this);
   }
@@ -85,21 +86,21 @@ class InfoManager
     CategoryInfo eo = CategoryInfo('Expression orale', 4);
 
     SkillInfo('Je peux lire des textes courts très simples.',
-        ce, CompetencyLevel.A2, true, true);
+        ce, CompetencyLevel.A2, true, true, false);
     SkillInfo('Je peux comprendre la description d\'événements, l\'expression de sentiments et de souhaits dans des lettres personnelles.',
-        ce, CompetencyLevel.B1, false, false);
+        ce, CompetencyLevel.B1, false, false, false);
     SkillInfo('Je peux comprendre des mots familiers et des expressions très courantes au sujet de moi-même, de ma famille et de l\'environnement concret et immédiat, si les gens parlent lentement et distinctement.',
-        co, CompetencyLevel.A1, true, true);
+        co, CompetencyLevel.A1, true, true, false);
     SkillInfo('Je peux comprendre les émissions de télévision et les films sans trop d\'effort.',
-        co, CompetencyLevel.C1, false, false);
+        co, CompetencyLevel.C1, false, false, false);
     SkillInfo('Je peux écrire des textes clairs et détaillés sur une grande gamme desujets relatifs à mes intérêts.',
-        ee, CompetencyLevel.B2, false, false);
+        ee, CompetencyLevel.B2, false, false, false);
     SkillInfo('Je peux comprendre les livres sans trop d\'effort.',
-        ce, CompetencyLevel.C2, false, false);
+        ce, CompetencyLevel.C2, false, false, false);
     SkillInfo('Je peux utiliser une série de phrases ou d\'expressions pour décrire en termes simples ma famille et d\'autres gens, mes conditions de vie, ma formation et mon activité professionnelle actuelle ou récente.',
-        eo, CompetencyLevel.A2, true, true);
+        eo, CompetencyLevel.A2, true, true, false);
     SkillInfo('Je peux raconter une histoire ou l\'intrigue d\'un livre ou d\'un film et exprimer mes réactions.',
-        eo, CompetencyLevel.B1, true, true);
+        eo, CompetencyLevel.B1, true, true, false);
   }
 
   static loadSelectedStudentSkillsRouteInformation(int studentId) async {
@@ -121,15 +122,10 @@ class InfoManager
     teacherAssessments.forEach((element) => teacherAssessedSkillsIds.add(element.skillId));
 
     // On récupère les compétences
-    List<Skill> skills = List();
-    skills.addAll((await CacheManager.getGlobalSkills()));
-    skills.addAll(await CacheManager.getPersonalSkills(studentId));
-    skills.forEach((element) {
-      SkillInfo(element.name, idCategories[element.blockId],
-      element.level,
-      selfAssessedSkillsIds.contains(element.id),
-      teacherAssessedSkillsIds.contains(element.id));
-    });
+    (await CacheManager.getPersonalSkills(studentId)).forEach((element) =>
+        SkillInfo(element.name, idCategories[element.blockId], element.level, selfAssessedSkillsIds.contains(element.id), teacherAssessedSkillsIds.contains(element.id), true));
+    (await CacheManager.getGlobalSkills()).forEach((element) =>
+        SkillInfo(element.name, idCategories[element.blockId], element.level, selfAssessedSkillsIds.contains(element.id), teacherAssessedSkillsIds.contains(element.id), false));
   }
 
   static loadGlobalSkillsRouteInformation() async {
@@ -141,6 +137,6 @@ class InfoManager
     categories.forEach((element) {idCategories.putIfAbsent(element.id, () => CategoryInfo(element.title, element.id%4));});
 
     // On récupère les compétences
-    (await CacheManager.getGlobalSkills()).forEach((element) => SkillInfo.withoutAssessment(element.name, idCategories[element.blockId], element.level));
+    (await CacheManager.getGlobalSkills()).forEach((element) => SkillInfo.withoutAssessment(element.name, idCategories[element.blockId], element.level, false));
   }
 }
