@@ -14,7 +14,7 @@ class _StudentGridState extends State<StudentGrid>{
   List<Student> _filteredStudents = List<Student>();
   String _filter = "";
   Image _placeholder = Image(
-    image:NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg')
+    image:NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg')//TODO remove
   );
 
   @override
