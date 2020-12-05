@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:info706/Resources/app_colors.dart';
+import 'package:info706/View/Common/navigation_drawer_route.dart';
 import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Data/User.dart';
 import 'package:info706/View/Teacher/StudentSkills/selected_student_skills_route.dart';
@@ -9,6 +11,9 @@ class _StudentGridState extends State<StudentGrid>{
   List<Student> _students = List<Student>();
   List<Student> _filteredStudents = List<Student>();
   String _filter = "";
+  Image _placeholder = Image(
+    image:NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg')//TODO remove
+  );
 
   @override
   void initState(){
@@ -18,47 +23,51 @@ class _StudentGridState extends State<StudentGrid>{
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: _filteredStudents.length,
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 2
-        ),
-      itemBuilder: (BuildContext context, int index){
-        return _getStudentWidget(_filteredStudents[index]);
-      },
+    return OrientationBuilder(
+      builder:(context, orientation){
+        return GridView.builder(
+          itemCount: _filteredStudents.length,
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: orientation==Orientation.portrait ? 3 : 6,
+              childAspectRatio: 0.8
+          ),
+          itemBuilder: (BuildContext context, int index){
+            return _getStudentWidget(_filteredStudents[index]);
+          },
+        );
+      }
     );
   }
 
   Widget _getStudentWidget(Student student){
-    return FlatButton(
-      child:Container(
-          margin: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-              color: Colors.grey[400],//TODO theme colors
-              borderRadius: BorderRadius.circular(5)
+    return InkWell(
+      onTap: (){},//TODO
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.all(5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _placeholder,
+              Expanded(
+                child:Container(
+                  margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  color: AppColors.BACKGROUND_COLOR,
+                  child: Align(
+                    child: Text(student.name,
+                        textAlign: TextAlign.center),
+                  ),
+                ),
+              )
+            ],
           ),
-          child: Container(
-            margin: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(5)
-            ),
-            child: Align(
-                alignment: Alignment.center,
-                child:Text(student.name)
-            ),
-          )
+        ),
       ),
-      onPressed: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => SelectedStudentSkillsView(student)),
-        );
-      },
     );
+
   }
 
   bool matches(Student student, String filter){

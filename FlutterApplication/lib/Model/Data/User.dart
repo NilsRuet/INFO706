@@ -13,11 +13,14 @@ abstract class User{
     this._id = json['user_id'];
     this.name = json['name'];
   }
+
+  User.placeholder(this.name);//TODO remove
 }
 
 // Utilisateur etudiant
 class Student extends User
 {
+  Student.placeholder(name) : super.placeholder(name);//TODO remove
   //Constructeur par défaut
   Student(Map<String, dynamic> json) : super(json);
 }

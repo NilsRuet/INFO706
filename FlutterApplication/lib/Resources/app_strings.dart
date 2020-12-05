@@ -8,6 +8,12 @@ class AppStrings{
 
   static const SORT_BY_BLOCK = "Trier par bloc";
   static const SORT_BY_LEVEL = "Trier par niveau";
+  static const ADD_SKILL_TITLE = "Ajouter une compétence";
+  static const EDIT_SKILL_TITLE = "Modifier la compétence";
+  static const ADD_SKILL_NAME_FIELD = "Intitulé";
+  static const ADD_SKILL_LEVEL_FIELD = "Niveau de la compétence";
+  static const ADD_SKILL_BLOCK_FIELD = "Bloc de la compétence";
+  static const CONFIRM_BUTTON = "Valider";
 
   static const NAVIGATION_DRAWER = ['Mes Compétences','Liste des élèves'];
 
