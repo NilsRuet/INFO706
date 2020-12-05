@@ -103,8 +103,8 @@ class InfoManager
 
   static loadSelectedStudentSkillsRouteInformation(int studentId) async {
     BlocksListInfo.clear();
-    _debugLoading();
-    /*// On récupère les catégories
+    //_debugLoading();
+    // On récupère les catégories
     List<SkillBlock> categories = await CacheManager.getSkillBlocks();
     Map<int, CategoryInfo> idCategories = Map();
     categories.forEach((element) {idCategories.putIfAbsent(element.id, () => CategoryInfo(element.title, element.id%4));});
@@ -128,6 +128,6 @@ class InfoManager
     element.level,
     selfAssessedSkillsIds.contains(element.id),
     teacherAssessedSkillsIds.contains(element.id));
-    });*/
+    });
   }
 }

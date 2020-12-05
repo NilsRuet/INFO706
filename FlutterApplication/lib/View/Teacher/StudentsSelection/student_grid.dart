@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Data/User.dart';
 import 'package:info706/View/Teacher/StudentSkills/selected_student_skills_route.dart';
 
@@ -73,9 +74,9 @@ class _StudentGridState extends State<StudentGrid>{
   }
 
   void _loadStudents() async{
-    //final students = await CacheManager.getStudents();
-    final List<Student> students = List();
-    students.add(Student({'user_id': 1, 'name': 'Paul'}));
+    final students = await CacheManager.getStudents();
+    //final List<Student> students = List();
+    //students.add(Student({'user_id': 1, 'name': 'Paul'}));
     _updateStudents(students);
   }
 
