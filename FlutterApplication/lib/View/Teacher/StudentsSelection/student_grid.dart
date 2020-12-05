@@ -74,9 +74,9 @@ class _StudentGridState extends State<StudentGrid>{
   }
 
   void _loadStudents() async{
-    final students = await CacheManager.getStudents();
-    //final List<Student> students = List();
-    //students.add(Student({'user_id': 1, 'name': 'Paul'}));
+    //final students = await CacheManager.getStudents();
+    final List<Student> students = List();
+    students.add(Student({'user_id': 1, 'name': 'Paul'}));
     _updateStudents(students);
   }
 
