@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/User.dart';
 import 'package:info706/View/home_route.dart';
@@ -16,7 +17,7 @@ class _DrawerState extends State<NavigationDrawer>{
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(widget.currentUser.picURL),
+                    backgroundImage: CachedNetworkImageProvider(widget.currentUser.picURL),
                     radius: 40.0,
                   ),
                   Expanded(
