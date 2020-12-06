@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Authentication/sign_in.dart';
+import 'package:info706/Model/Cache/DataManager.dart';
 import 'package:info706/View/home_route.dart';
 import 'package:provider/provider.dart';
 
@@ -57,6 +58,12 @@ class _LoginPageState extends State<LoginPage> {
   authenticateCallback() {
     SignIn.signInWithGoogle().then((result) {
       if (result != null) {
+        /*var user = DataManager.GetUser(result);
+        if(user != null){
+
+        } else {
+          // choix de rôle et inscription
+        }*/
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {

@@ -28,10 +28,8 @@ abstract class SignIn {
 
       final User currentUser = _auth.currentUser;
       assert(user.uid == currentUser.uid);
-
-      print('signInWithGoogle succeeded: $user');
-
-      return '$user';
+      
+      return googleSignInAuthentication.accessToken;
     }
 
     return null;
@@ -40,7 +38,6 @@ abstract class SignIn {
   static Future<void> signOutGoogle() async {
     await googleSignIn.signOut();
 
-    print("User Signed Out");
   }
 
   static FirebaseAuth getAuthInstance(){
