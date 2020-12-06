@@ -27,12 +27,14 @@ abstract class DataManager{
       Config.authenticateURL,
       body: data
     );
+    var responseData = jsonDecode(response.body);
+    var isActuallyStudent = responseData["isStudent"];
     if (response.statusCode == 200 || response.statusCode==201) {
       var res;
-      if(isStudent){
-        res = Student(jsonDecode(response.body));
+      if(isActuallyStudent){
+        res = Student(responseData);
       } else {
-        res = Teacher(jsonDecode(response.body));
+        res = Teacher(responseData);
       }
       return res;
     } else {

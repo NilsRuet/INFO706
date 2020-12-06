@@ -16,19 +16,29 @@ def authenticate(db):
         db.execute('SELECT * from {0} WHERE {0}.{1}={2}'
         .format(user_table, user_google_id, id))
         if(db.rowcount>0):
-            print("Existing user log in "+name)
-            return db.fetchone()
+            res = db.fetchone()
+            db.execute('SELECT * from {0} WHERE {0}.{1}={2}'
+            .format(student_table, student_id, id))
+            if(db.rowcount>0):
+                res["isStudent"] = True
+            else:
+                res["isStudent"] = False
+            bottle.response.status = 200
+            return res
         else:
             if isStudent is None:
-                print("New user but no role "+name)
                 bottle.response.status=442
                 return ""
-            elif isStudent:                    
-                print("new student : "+name)
-                return create_student_from_data(db, name, id, pic)
+            elif isStudent:
+                res = create_student_from_data(db, name, id, pic)
+                res["isStudent"] = True 
+                bottle.response.status = 201
+                return res
             else:
-                print("new teacher : "+name)
-                return create_teacher_from_data(db, name, id, pic)
+                res = create_teacher_from_data(db, name, id, pic)
+                res["isStudent"] = False
+                bottle.response.status = 201
+                return res
     else:
         bottle.response.status=442
         return ""
@@ -39,6 +49,7 @@ def add_student(db):
     username = bottle.request.forms.get('name')
     google_id = bottle.request.forms.get('id')
     pic = bottle.request.forms.get('picture')
+    bottle.response.status = 201
     return create_student_from_data(db, username, google_id, pic)
 
 def create_student_from_data(db, username, google_id, pic):
@@ -56,14 +67,16 @@ def create_student_from_data(db, username, google_id, pic):
     db.execute(query2)
     db.execute('SELECT * from {0} INNER JOIN {2} ON {0}.{1}={2}.{3} AND {0}.{1} = LAST_INSERT_ID()'
     .format(user_table, user_id, student_table, student_id))
-    bottle.response.status = 201
-    return db.fetchone()
+
+    res = db.fetchone()
+    return res
 
 @app.route('/add_teacher', method='POST')
 def add_teacher(db):
     username = bottle.request.forms.get('name')
     google_id = bottle.request.forms.get('id')
     pic = bottle.request.forms.get('picture')
+    bottle.response.status = 201
     return create_teacher_from_data(db, username, google_id, pic)
 
 def create_teacher_from_data(db, username, google_id, pic):
@@ -80,8 +93,8 @@ def create_teacher_from_data(db, username, google_id, pic):
     db.execute(query2)
     db.execute('SELECT * from {0} INNER JOIN {2} ON {0}.{1}={2}.{3} AND {0}.{1} = LAST_INSERT_ID()'
     .format(user_table, user_id, teacher_table, teacher_id))
-    bottle.response.status = 201
-    return db.fetchone()
+    res = db.fetchone()
+    return res
 
 @app.route('/add_skill_block', method='POST')
 def add_block(db):

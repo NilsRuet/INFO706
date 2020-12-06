@@ -10,15 +10,23 @@ import 'package:info706/Model/Data/User.dart';
 import 'Common/debug_view.dart';
 
 class HomeView extends StatefulWidget {
+  final User _currentUser;
+
+  HomeView(this._currentUser);
+
   @override
-  HomeState createState() => HomeState();
+  HomeState createState() => HomeState(_currentUser);
 }
+
 class HomeState extends State<HomeView>{
   NavigationDrawerRoute currentPage;
+  User _currentUser;
+
+  HomeState(this._currentUser);
 
   @override
   Widget build(BuildContext context) {
-    Student s = Student.placeholder("Utilisateur courant");//TODO remove
+    Student s = _currentUser;//TODO remove
     return Scaffold(
         //appBar: _pageAppBar(),
         //floatingActionButton: _addButton(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Authentication/sign_in.dart';
 import 'package:info706/Model/Cache/DataManager.dart';
+import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/home_route.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  bool _isTeacherCheckbox;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +24,15 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               FlutterLogo(size: 150),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(AppStrings.ASK_ROLE),
+                  Checkbox(
+                    onChanged: (value) => _isTeacherCheckbox = value,
+                  )
+                ],
+              ),
               SizedBox(height: 50),
               _signInButton(),
             ],
@@ -55,19 +68,15 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  authenticateCallback() {
-    SignIn.signInWithGoogle().then((result) {
+  authenticateCallback(){
+    var isStudent = !_isTeacherCheckbox;
+    SignIn.signInWithGoogle().then((result) async {
       if (result != null) {
-        /*var user = DataManager.GetUser(result);
-        if(user != null){
-
-        } else {
-          // choix de rôle et inscription
-        }*/
+        var user = await DataManager.authenticate(result, isStudent);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return HomeView();
+              return HomeView(user);
             },
           ),
         );
