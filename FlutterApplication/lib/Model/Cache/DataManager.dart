@@ -232,25 +232,45 @@ abstract class DataManager{
 
   //Crée une auto évaluation
   static Future<SelfAssessment> createSelfAssessment(int studentId, int skillId) async{
-    Map data = {'student_id': studentId.toString(),
-                'skill_id': skillId.toString(),
-                'validation_date':_datetimeToString(DateTime.now())};
-    final response = await http.post(
-      Config.addSelfAssessmentURL,
-      body: data,
-    );
-    if (response.statusCode == 201) {
-      // 201 CREATED response,
-      var assessment = SelfAssessment(jsonDecode(response.body));
-      return assessment;
-    } else {
+    try{
+      Map data = {'student_id': studentId.toString(),
+                  'skill_id': skillId.toString(),
+                  'validation_date':_datetimeToString(DateTime.now())};
+      final response = await http.post(
+        Config.addSelfAssessmentURL,
+        body: data,
+      ).timeout(new Duration(seconds: Config.timeoutDelay));
+      if (response.statusCode == 201) {
+        // 201 CREATED response,
+        var assessment = SelfAssessment(jsonDecode(response.body));
+        return assessment;
+      } else {
+        return null;
+      }
+    }
+    on TimeoutException {
+      return null;
+    }
+    on SocketException {
       return null;
     }
   }
 
   static Future<bool> deleteSelfAssessment(SelfAssessment a) async{
-    final response = await http.delete(Config.deleteSelfAssessmentURL(a.id));
-    return response.statusCode == 202;
+    return deleteTeacherAssessmentById(a.id);
+  }
+
+  static Future<bool> deleteSelfAssessmentById(int id) async{
+    try{
+      final response = await http.delete(Config.deleteSelfAssessmentURL(id)).timeout(new Duration(seconds: Config.timeoutDelay));
+      return response.statusCode == 202;
+    }
+    on TimeoutException {
+      return false;
+    }
+    on SocketException {
+      return false;
+    }
   }
 
   //Crée une auto évaluation

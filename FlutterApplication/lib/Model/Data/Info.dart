@@ -16,9 +16,11 @@ class SkillInfo
   bool isCheckedByTeacher;
   int _teacherAssessmentId;
   bool isPersonal;
+  int _selfAssessmentId;
 
-  SkillInfo(this._id, this.name, this.category, this.level, this.isAutoChecked, this._teacherAssessmentId, this.isPersonal){
+  SkillInfo(this._id, this.name, this.category, this.level, this._selfAssessmentId, this._teacherAssessmentId, this.isPersonal){
     isCheckedByTeacher = _teacherAssessmentId != null;
+    isAutoChecked = _selfAssessmentId != null;
     BlocksListInfo.getLevelBlock(level).add(this);
     BlocksListInfo.getCategoryBlock(category).add(this);
   }
@@ -52,6 +54,24 @@ class SkillInfo
       if (!await DataManager.deleteTeacherAssessmentById(_teacherAssessmentId))
         return false;
       isCheckedByTeacher = false;
+    }
+    return true;
+  }
+
+  Future<bool> trySetIsAutoChecked(bool checked) async{
+    if (isAutoChecked == checked)
+      return true;
+
+    if (checked) {
+      var assessment = await DataManager.createSelfAssessment(InfoManager.currentStudentId, _id);
+      if (assessment == null)
+        return false;
+      isAutoChecked = true;
+      _selfAssessmentId = assessment.id;
+    }else {
+      if (!await DataManager.deleteSelfAssessmentById(_selfAssessmentId))
+        return false;
+      isAutoChecked = false;
     }
     return true;
   }
@@ -130,21 +150,21 @@ class InfoManager
     CategoryInfo eo = CategoryInfo('Expression orale', 4);
 
     SkillInfo(1,'Je peux lire des textes courts très simples.',
-        ce, CompetencyLevel.A2, true, 1, false);
+        ce, CompetencyLevel.A2, 5, 1, false);
     SkillInfo(2,'Je peux comprendre la description d\'événements, l\'expression de sentiments et de souhaits dans des lettres personnelles.',
-        ce, CompetencyLevel.B1, false, null, false);
+        ce, CompetencyLevel.B1, null, null, false);
     SkillInfo(3,'Je peux comprendre des mots familiers et des expressions très courantes au sujet de moi-même, de ma famille et de l\'environnement concret et immédiat, si les gens parlent lentement et distinctement.',
-        co, CompetencyLevel.A1, true, 2, false);
+        co, CompetencyLevel.A1, 6, 2, false);
     SkillInfo(4,'Je peux comprendre les émissions de télévision et les films sans trop d\'effort.',
-        co, CompetencyLevel.C1, false, null, false);
+        co, CompetencyLevel.C1, null, null, false);
     SkillInfo(5,'Je peux écrire des textes clairs et détaillés sur une grande gamme desujets relatifs à mes intérêts.',
-        ee, CompetencyLevel.B2, false, null, false);
+        ee, CompetencyLevel.B2, null, null, false);
     SkillInfo(6,'Je peux comprendre les livres sans trop d\'effort.',
-        ce, CompetencyLevel.C2, false, null, false);
+        ce, CompetencyLevel.C2, null, null, false);
     SkillInfo(7,'Je peux utiliser une série de phrases ou d\'expressions pour décrire en termes simples ma famille et d\'autres gens, mes conditions de vie, ma formation et mon activité professionnelle actuelle ou récente.',
-        eo, CompetencyLevel.A2, true, 3, false);
+        eo, CompetencyLevel.A2, 7, 3, false);
     SkillInfo(8,'Je peux raconter une histoire ou l\'intrigue d\'un livre ou d\'un film et exprimer mes réactions.',
-        eo, CompetencyLevel.B1, true, 4, false);
+        eo, CompetencyLevel.B1, 8, 4, false);
   }
 
   static loadSelectedStudentSkillsRouteInformation(int studentId) async {
@@ -158,8 +178,8 @@ class InfoManager
 
     // On récupère les auto validations
     List<SelfAssessment> selfAssessments = await CacheManager.getSelfAssessedSkills(studentId);
-    List<int> selfAssessedSkillsIds = List();
-    selfAssessments.forEach((element) => selfAssessedSkillsIds.add(element.skillId));
+    Map<int, int> selfAssessedSkillsIds = Map();
+    selfAssessments.forEach((element) => selfAssessedSkillsIds.putIfAbsent(element.skillId, () => element.id));
 
     // On récupère les validations par un enseignant
     List<TeacherAssessment> teacherAssessments = await CacheManager.getTeacherAssessedSkills(studentId);
@@ -168,9 +188,9 @@ class InfoManager
 
     // On récupère les compétences
     (await CacheManager.getPersonalSkills(studentId)).forEach((element) =>
-        SkillInfo(element.id, element.name, idCategories[element.blockId], element.level, selfAssessedSkillsIds.contains(element.id), teacherAssessedSkillsIds[element.id], true));
+        SkillInfo(element.id, element.name, idCategories[element.blockId], element.level, selfAssessedSkillsIds[element.id], teacherAssessedSkillsIds[element.id], true));
     (await CacheManager.getGlobalSkills()).forEach((element) =>
-        SkillInfo(element.id, element.name, idCategories[element.blockId], element.level, selfAssessedSkillsIds.contains(element.id), teacherAssessedSkillsIds[(element.id)], false));
+        SkillInfo(element.id, element.name, idCategories[element.blockId], element.level, selfAssessedSkillsIds[element.id], teacherAssessedSkillsIds[element.id], false));
   }
 
   static loadGlobalSkillsRouteInformation() async {
