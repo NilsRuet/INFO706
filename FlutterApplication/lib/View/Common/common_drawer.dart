@@ -16,7 +16,7 @@ class _DrawerState extends State<NavigationDrawer>{
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage("https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg"),
+                    backgroundImage: NetworkImage(widget.currentUser.picURL),
                     radius: 40.0,
                   ),
                   Expanded(
@@ -28,7 +28,7 @@ class _DrawerState extends State<NavigationDrawer>{
                             fontSize: 20
                           ),
                         ),
-                        Text("Etudiant")
+                        Text(widget.currentUser is Student ? AppStrings.STUDENT: AppStrings.TEACHER)
                       ],
                     ),
                   )

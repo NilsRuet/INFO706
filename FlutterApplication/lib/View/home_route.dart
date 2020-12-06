@@ -46,13 +46,6 @@ class HomeState extends State<HomeView>{
    });
   }
 
-  /*AppBar _pageAppBar() {
-    return AppBar(
-      title: Text('Salut'),
-      centerTitle: true,
-    );
-  }*/
-
   FloatingActionButton _addButton(){
     return FloatingActionButton(
       //onPressed : ,
