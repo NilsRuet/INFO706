@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/Info.dart';
 import 'package:info706/View/Common/SkillsViews/skill_block_widget.dart';
 import 'package:info706/View/Common/SkillsViews/skill_widget.dart';
@@ -13,5 +15,17 @@ class TeacherSkillBlockWidget extends SkillBlockWidget{
   @override
   List<SkillWidget> generateSkills(List<SkillInfo> skills, bool levelIsMainInfo) {
     return List.generate(skills.length, (int index) => TeacherSkillWidget(skills[index], levelIsMainInfo));
+  }
+
+  @override
+  List<Widget> generateBlockProgression() {
+    return [
+      Container(
+          padding: EdgeInsets.fromLTRB(10.0, .0, 10.0, 10.0),
+          child:LinearProgressIndicator(value: block.selfAssessmentProportion(), minHeight: 10, valueColor: AlwaysStoppedAnimation<Color>(Colors.white),)),
+      Container(
+          padding: EdgeInsets.fromLTRB(10.0, .0, 10.0, 10.0),
+          child:LinearProgressIndicator(value: block.teacherAssessmentProportion(), minHeight: 10,))
+    ];
   }
 }

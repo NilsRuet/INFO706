@@ -36,14 +36,26 @@ class BlockInfo
 {
   String name;
   List<SkillInfo> skills;
+  int _nbAssessedByTeacherSkills;
+  int _nbSelfAssessedSkills;
 
   BlockInfo(this.name){
     skills = [];
+    _nbAssessedByTeacherSkills = 0;
+    _nbSelfAssessedSkills = 0;
   }
 
   void add(SkillInfo skill) {
     skills.add(skill);
+    if (skill.isCheckedByTeacher)
+      _nbAssessedByTeacherSkills ++;
+    if (skill.isAutoChecked)
+      _nbSelfAssessedSkills ++;
   }
+
+  double selfAssessmentProportion() => _nbSelfAssessedSkills / skills.length;
+
+  double teacherAssessmentProportion() => _nbAssessedByTeacherSkills / skills.length;
 }
 
 class BlocksListInfo
@@ -85,9 +97,9 @@ class InfoManager
     CategoryInfo eo = CategoryInfo('Expression orale', 4);
 
     SkillInfo('Je peux lire des textes courts très simples.',
-        ce, CompetencyLevel.A2, true, true);
+        ce, CompetencyLevel.A2, false, true);
     SkillInfo('Je peux comprendre la description d\'événements, l\'expression de sentiments et de souhaits dans des lettres personnelles.',
-        ce, CompetencyLevel.B1, false, false);
+        ce, CompetencyLevel.B1, true, false);
     SkillInfo('Je peux comprendre des mots familiers et des expressions très courantes au sujet de moi-même, de ma famille et de l\'environnement concret et immédiat, si les gens parlent lentement et distinctement.',
         co, CompetencyLevel.A1, true, true);
     SkillInfo('Je peux comprendre les émissions de télévision et les films sans trop d\'effort.',

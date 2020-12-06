@@ -9,19 +9,21 @@ import 'package:info706/View/Common/SkillsViews/skill_widget.dart';
 abstract class SkillBlockWidget extends StatefulWidget{
   //_SkillBlockWidgetState _selfState;
   ListTile header;
-  List<SkillWidget> _skills;
+  List<Widget> _body;
   bool isExpanded;
+  BlockInfo block;
 
-  SkillBlockWidget(BlockInfo block, bool isExpanded, bool isLevelMainInfo) {
-    this.isExpanded = isExpanded;
+  SkillBlockWidget(this.block, this.isExpanded, bool isLevelMainInfo) {
     header = ListTile(
         title: Text(block.name,
             style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)));
-    _skills = generateSkills(block.skills, isLevelMainInfo);
+    _body = generateBlockProgression() + generateSkills(block.skills, isLevelMainInfo);
   }
 
   @override
   State<StatefulWidget> createState() => _SkillBlockWidgetState();
+
+  List<Widget> generateBlockProgression() => [];
 
   List<SkillWidget> generateSkills(List<SkillInfo> skills, bool levelIsMainInfo);
 }
@@ -33,7 +35,7 @@ class _SkillBlockWidgetState extends State<SkillBlockWidget>{
     return Container(
       padding: EdgeInsets.fromLTRB(10.0, .0, 10.0, 10.0),
       child: Column(
-        children: widget._skills,
+        children: widget._body,
         mainAxisSize: MainAxisSize.min,
       ),
     );
