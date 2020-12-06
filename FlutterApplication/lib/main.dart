@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:info706/View/sign_in_page.dart';
+import 'package:info706/View/home_route.dart';
 
 import 'Model/Authentication/sign_in.dart';
 import 'Resources/app_strings.dart';
