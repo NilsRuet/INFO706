@@ -22,8 +22,17 @@ class HomeView extends StatefulWidget {
 class HomeState extends State<HomeView>{
   NavigationDrawerRoute currentPage;
   User _currentUser;
+  List<NavigationDrawerRoute> _drawerRoutes;
 
   HomeState(this._currentUser);
+
+  @override
+  void initState() {
+    super.initState();
+    currentPage = (_currentUser is Student)
+    ? PersonalSkillsDrawerRoute(_currentUser)
+    : GlobalSkillsDrawerRoute();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +42,12 @@ class HomeState extends State<HomeView>{
         //floatingActionButton: _addButton(),
         drawer: NavigationDrawer(
           homeState: this,
-          views: [PersonalSkillsDrawerRoute(), MyStudentsDrawerView(), DebugView(), GlobalSkillsDrawerRoute()],
+          views: _currentUser is Student
+              ? [PersonalSkillsDrawerRoute(_currentUser)]
+              : [MyStudentsDrawerView(), GlobalSkillsDrawerRoute()],
           currentUser: s,
         ),
-        body : currentPage==null?PersonalSkillsDrawerRoute().build():currentPage.build()//TODO default page
+        body : currentPage.build()//TODO default page
     );
   }
 
@@ -46,11 +57,4 @@ class HomeState extends State<HomeView>{
      Navigator.pop(context);
    });
   }
-
-  FloatingActionButton _addButton(){
-    return FloatingActionButton(
-      //onPressed : ,
-      child: Icon(Icons.add),
-    );
-  }*/
 }

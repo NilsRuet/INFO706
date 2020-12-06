@@ -8,8 +8,13 @@ import 'package:info706/View/Student/PersonalSkills/student_sorted_view_widget.d
 /// Vue des compétences personnelles, du point de vue étudiant
 
 class PersonalSkillsDrawerRoute implements NavigationDrawerRoute{
+
+  Student _student;
+
+  PersonalSkillsDrawerRoute(this._student);
+
   @override
-  Widget build() => _PersonalSkillsView();
+  Widget build() => _PersonalSkillsView(_student);
 
   @override
   String getViewName() => AppStrings.MY_SKILLS_ROUTE_TITLE;
@@ -17,9 +22,7 @@ class PersonalSkillsDrawerRoute implements NavigationDrawerRoute{
 
 // ignore: must_be_immutable
 class _PersonalSkillsView extends SkillsView {
-  //TODO: l'étudiant doit être pris là où les infos perso sont stockées
-  _PersonalSkillsView() : super(Student({'user_id': 1, 'name': 'Paul'}), AppStrings.MY_SKILLS_ROUTE_TITLE);
-
+  _PersonalSkillsView(Student s) : super(s, AppStrings.MY_SKILLS_ROUTE_TITLE);
 
   @override
   SkillsViewState createState() => _PersonalSkillsViewState();
