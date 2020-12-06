@@ -15,6 +15,7 @@ abstract class SkillsView extends StatefulWidget {
 }
 
 abstract class SkillsViewState extends State<SkillsView> {
+  static SkillsViewState currentSkillViewState;
   SortedViewWidget _currentSortedView;
   SortedViewWidget _sortedBySkillBlockView;
   SortedViewWidget _sortedByLevelView;
@@ -31,6 +32,7 @@ abstract class SkillsViewState extends State<SkillsView> {
   @override
   void initState(){
     super.initState();
+    currentSkillViewState = this;
     loadDataForDisplay();
   }
 

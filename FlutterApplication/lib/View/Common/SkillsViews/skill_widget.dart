@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/Info.dart';
 import 'package:info706/Resources/app_colors.dart';
 import 'package:info706/View/Common/SkillsViews/app_widgets.dart';
+import 'package:info706/View/Common/SkillsViews/skills_view.dart';
 
 /// Competence que peut acquerir un etudiant, à surcharger selon s'il on veux le point de vue étudiant ou enseignant
 
@@ -78,6 +79,8 @@ abstract class SkillWidgetState extends State<SkillWidget>{
       setState(() {
         if (!value)
           Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
+        else
+          SkillsViewState.currentSkillViewState.loadDataForDisplay();
       });
     });
 
