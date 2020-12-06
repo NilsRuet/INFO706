@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Authentication/sign_in.dart';
+import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Cache/DataManager.dart';
+import 'package:info706/Model/Data/User.dart';
 import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/home_route.dart';
 import 'package:info706/main.dart';
@@ -91,7 +93,10 @@ class _LoginPageState extends State<LoginPage> {
     SignIn.signInWithGoogle().then((result) async {
       if (result != null) {
         var user = await DataManager.authenticate(result, isStudent);
-        _parent.setUser(user);
+        if(user != null){
+          _parent.setUser(user);
+          CacheManager.rememberUser(user, user is Student);
+        }
       }
     });
   }

@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:info706/View/sign_in_page.dart';
 
 import 'Model/Authentication/sign_in.dart';
+import 'Resources/app_strings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,20 +21,10 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<FirebaseAuth>(
-          create: (_) => SignIn.getAuthInstance(),
-        ),
-        StreamProvider(
-          create: (context) => context.read<FirebaseAuth>().authStateChanges(),
-        )
-      ],
-      child: MaterialApp(
-        title: 'INFO706',
-        theme: ThemeData.dark(),
-        home: AuthenticationWrapper(),
-      ),
+    return MaterialApp(
+      title: 'INFO706',
+      theme: ThemeData.dark(),
+      home: AuthenticationWrapper(),
     );
   }
 }
@@ -47,7 +38,6 @@ class AuthenticationWrapper extends StatefulWidget {
 
 class AuthenticationWrapperState extends State<AuthenticationWrapper> {
   Widget _currentView;
-  bool _init;
 
   void setUser(model.User u) {
     setState(() {
@@ -55,21 +45,32 @@ class AuthenticationWrapperState extends State<AuthenticationWrapper> {
     });
   }
 
+  Widget _getLoadingScreen() {
+    return Scaffold(
+      body: Center(
+        child: Text(AppStrings.LOADING,
+        style: TextStyle(
+        fontSize: 20))),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-    _init = false;
+    _currentView = _getLoadingScreen();
+    loadUser();
+  }
+
+  void loadUser() async {
+    var currentUser = await CacheManager.getCurrentUser();
+    setState(() {
+      _currentView =
+          currentUser != null ? HomeView(currentUser) : LoginPage(this);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_init) {
-      final firebaseUser = context.watch<User>();
-      _currentView = firebaseUser != null
-          ? HomeView(model.Student.placeholder("placeholder name"))
-          : LoginPage(this);
-      _init = true;
-    }
     return _currentView;
   }
 }

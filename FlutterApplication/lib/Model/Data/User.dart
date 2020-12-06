@@ -2,6 +2,7 @@
 abstract class User{
   int _id;
   String name;
+  String picURL;
 
   //Accès à id en lecture seule
   int get id{
@@ -12,6 +13,7 @@ abstract class User{
   User(Map<String, dynamic> json){
     this._id = json['user_id'];
     this.name = json['name'];
+    this.picURL = json['picUrl'];
   }
 
   User.placeholder(this.name);//TODO remove

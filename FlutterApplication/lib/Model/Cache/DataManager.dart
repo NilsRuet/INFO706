@@ -12,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 
 abstract class DataManager{
 
+
   static Future<bool> checkInfo() async{
     return true;
   }
@@ -29,7 +30,6 @@ abstract class DataManager{
     );
     var responseData = jsonDecode(response.body);
     var isActuallyStudent = responseData["isStudent"];
-    print("IS ACTUAAAAAAAAAAAAAAAAAAAAAALLY STUDENT :"+isActuallyStudent.toString());
     if (response.statusCode == 200 || response.statusCode==201) {
       var res;
       if(isActuallyStudent){
