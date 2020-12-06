@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
@@ -145,8 +146,17 @@ abstract class DataManager{
   }
 
   static Future<bool> deleteGlobalSkillById(int id) async{
-    final response = await http.delete(Config.deleteGlobalSkillURL(id));
-    return response.statusCode == 202;
+    try {
+      final response = await http.delete(Config.deleteGlobalSkillURL(id))
+          .timeout(new Duration(seconds: Config.timeoutDelay));
+      return response.statusCode == 202;
+    }
+    on TimeoutException {
+      return false;
+    }
+    on SocketException {
+      return false;
+    }
   }
 
   static Future<GlobalSkill> updateGlobalSkill(GlobalSkill s) async{
@@ -190,8 +200,17 @@ abstract class DataManager{
   }
 
   static Future<bool> deletePersonalSkillById(int id) async{
-    final response = await http.delete(Config.deletePersonalSkillURL(id));
-    return response.statusCode == 202;
+    try {
+      final response = await http.delete(Config.deletePersonalSkillURL(id))
+          .timeout(new Duration(seconds: Config.timeoutDelay));
+      return response.statusCode == 202;
+    }
+    on TimeoutException {
+      return false;
+    }
+    on SocketException {
+      return false;
+    }
   }
 
   static Future<PersonalSkill> updatePersonalSkill(PersonalSkill s) async{

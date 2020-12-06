@@ -29,6 +29,7 @@ class _GlobalSkillsViewState extends SkillsViewState {
 
   @override
   void loadDataForDisplay() async {
+    setState(() => this.loaded = false);
     await InfoManager.loadGlobalSkillsRouteInformation();
     updateDataForDisplay();
   }

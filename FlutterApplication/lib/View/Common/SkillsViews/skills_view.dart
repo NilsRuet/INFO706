@@ -19,7 +19,7 @@ abstract class SkillsViewState extends State<SkillsView> {
   SortedViewWidget _currentSortedView;
   SortedViewWidget _sortedBySkillBlockView;
   SortedViewWidget _sortedByLevelView;
-  bool _loaded = false;
+  bool loaded = false;
 
   SkillsViewState(){
     _currentSortedView = _sortedBySkillBlockView;
@@ -41,7 +41,7 @@ abstract class SkillsViewState extends State<SkillsView> {
     return Scaffold(
         appBar: _skillsPageAppBar(),
         floatingActionButton: _addingSkillButton(),
-        body: _loaded? Column(children: [_sortingButton(), Expanded(child: _currentSortedView)])
+        body: loaded? Column(children: [_sortingButton(), Expanded(child: _currentSortedView)])
                       :Center(child:CircularProgressIndicator()));
   }
 
@@ -83,11 +83,12 @@ abstract class SkillsViewState extends State<SkillsView> {
   void _addingSkillForm() {}
 
   void loadDataForDisplay() async {
+    setState(() => this.loaded = false);
     await InfoManager.loadSelectedStudentSkillsRouteInformation(widget._currentStudent.id);
     updateDataForDisplay();
   }
 
   void updateDataForDisplay() {
-    setState(() => this._loaded = true);
+    setState(() => this.loaded = true);
   }
 }

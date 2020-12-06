@@ -7,7 +7,6 @@ import 'package:info706/View/Common/SkillsViews/skill_widget.dart';
 
 // ignore: must_be_immutable
 abstract class SkillBlockWidget extends StatefulWidget{
-  //_SkillBlockWidgetState _selfState;
   ListTile header;
   List<SkillWidget> _skills;
   bool isExpanded;
