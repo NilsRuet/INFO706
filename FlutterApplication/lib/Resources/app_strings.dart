@@ -2,6 +2,7 @@ class AppStrings{
 
   //SkillsPage
   static const ASK_ROLE = 'Je suis un enseignant';
+  static const LOG_OUT = 'Se déconnecter';
   static const STUDENT = 'Etudiant';
   static const TEACHER = 'Enseignant';
   static const LOADING = 'Chargement';

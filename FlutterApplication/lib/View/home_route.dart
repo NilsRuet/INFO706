@@ -7,13 +7,15 @@ import 'package:info706/View/Common/navigation_drawer_route.dart';
 import 'package:info706/View/Common/common_drawer.dart';
 import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Data/User.dart';
+import 'package:info706/main.dart';
 
 import 'Common/debug_view.dart';
 
 class HomeView extends StatefulWidget {
   final User _currentUser;
+  final AuthenticationWrapperState _parent;
 
-  HomeView(this._currentUser);
+  HomeView(this._currentUser, this._parent);
 
   @override
   HomeState createState() => HomeState(_currentUser);
@@ -22,7 +24,6 @@ class HomeView extends StatefulWidget {
 class HomeState extends State<HomeView>{
   NavigationDrawerRoute currentPage;
   User _currentUser;
-  List<NavigationDrawerRoute> _drawerRoutes;
 
   HomeState(this._currentUser);
 
@@ -42,6 +43,7 @@ class HomeState extends State<HomeView>{
         //floatingActionButton: _addButton(),
         drawer: NavigationDrawer(
           homeState: this,
+          authentication: widget._parent,
           views: _currentUser is Student
               ? [PersonalSkillsDrawerRoute(_currentUser)]
               : [MyStudentsDrawerView(), GlobalSkillsDrawerRoute()],

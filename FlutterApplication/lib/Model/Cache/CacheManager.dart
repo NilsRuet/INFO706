@@ -81,6 +81,13 @@ abstract class CacheManager{
     _cacheResponse(_currentUserFile, jsonEncode(savedData));
   }
 
+  static void forgetCurrentUser() async{
+    String wd = (await getApplicationDocumentsDirectory()).path;
+    String path = '$wd/$_currentUserFile';
+    final file = File(path);
+    file.deleteSync();
+  }
+
   static Future<User> getCurrentUser() async{
     var rawData = await _getCachedResponse(_currentUserFile);
     if(rawData == null) return null;

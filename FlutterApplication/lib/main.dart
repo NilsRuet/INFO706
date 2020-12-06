@@ -41,7 +41,7 @@ class AuthenticationWrapperState extends State<AuthenticationWrapper> {
 
   void setUser(model.User u) {
     setState(() {
-      _currentView = HomeView(u);
+      _currentView = HomeView(u, this);
     });
   }
 
@@ -65,7 +65,7 @@ class AuthenticationWrapperState extends State<AuthenticationWrapper> {
     var currentUser = await CacheManager.getCurrentUser();
     setState(() {
       _currentView =
-          currentUser != null ? HomeView(currentUser) : LoginPage(this);
+          currentUser != null ? HomeView(currentUser, this) : LoginPage(this);
     });
   }
 
