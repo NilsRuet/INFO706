@@ -42,9 +42,9 @@ class _TeacherSkillHeaderWidgetState extends SkillHeaderWidgetState{
       Icon(widget.isAutoChecked ? Icons.check_box : Icons.check_box_outline_blank),
       Checkbox(
           value: widget.isCheckedByTeacher,
-          onChanged: (bool newVal) {
-            setState(() async {
-              bool res = await widget.skill.trySetIsCheckedByTeacher(newVal);
+          onChanged: (bool newVal) async {
+            bool res = await widget.skill.trySetIsCheckedByTeacher(newVal);
+            setState(() {
               if (!res)
                 Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
               else

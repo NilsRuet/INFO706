@@ -40,9 +40,9 @@ class _StudentSkillHeaderWidgetState extends SkillHeaderWidgetState{
       Expanded(child:widget.secondaryInformation),
       Checkbox(
         value: widget.isAutoChecked,
-        onChanged: (bool newVal) {
-          setState(() async {
-            bool res = await widget.skill.trySetIsAutoChecked(newVal);
+        onChanged: (bool newVal) async {
+          bool res = await widget.skill.trySetIsAutoChecked(newVal);
+          setState(() {
             if (!res)
               Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
             else
