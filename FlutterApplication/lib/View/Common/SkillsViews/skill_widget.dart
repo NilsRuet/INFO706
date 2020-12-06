@@ -2,8 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/Info.dart';
 import 'package:info706/Resources/app_colors.dart';
+import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/Common/SkillsViews/app_widgets.dart';
 import 'package:info706/View/Common/SkillsViews/skills_view.dart';
+
+import '../add_skill_route.dart';
 
 /// Competence que peut acquerir un etudiant, à surcharger selon s'il on veux le point de vue étudiant ou enseignant
 
@@ -124,7 +127,13 @@ class EditDeleteEntry extends PopupMenuEntry<bool> {
 
 class EditDeleteEntryState extends State<EditDeleteEntry> {
 
-  void _edit() => Navigator.pop<bool>(context, false);
+  void _edit() {
+      Navigator.push(context,
+        MaterialPageRoute(builder: (context) =>
+            AddSkillRoute(AppStrings.EDIT_SKILL_TITLE, widget._skill.modelSkill, BlocksListInfo.modelCategoryBlocksList,
+                    (skill) async => closePopupWithResult(await widget._skill.tryEdit(skill)))),
+      );
+  }
 
   Future<void> _delete() async => closePopupWithResult(await widget._skill.delete());
 

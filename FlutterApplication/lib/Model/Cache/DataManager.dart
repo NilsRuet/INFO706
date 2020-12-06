@@ -142,12 +142,8 @@ abstract class DataManager{
   }
 
   static Future<bool> deleteGlobalSkill(GlobalSkill s) async{
-    return deleteGlobalSkillById(s.id);
-  }
-
-  static Future<bool> deleteGlobalSkillById(int id) async{
     try {
-      final response = await http.delete(Config.deleteGlobalSkillURL(id))
+      final response = await http.delete(Config.deleteGlobalSkillURL(s.id))
           .timeout(new Duration(seconds: Config.timeoutDelay));
       return response.statusCode == 202;
     }
@@ -196,12 +192,8 @@ abstract class DataManager{
   }
 
   static Future<bool> deletePersonalSkill(PersonalSkill s) async{
-    return deletePersonalSkillById(s.id);
-  }
-
-  static Future<bool> deletePersonalSkillById(int id) async{
     try {
-      final response = await http.delete(Config.deletePersonalSkillURL(id))
+      final response = await http.delete(Config.deletePersonalSkillURL(s.id))
           .timeout(new Duration(seconds: Config.timeoutDelay));
       return response.statusCode == 202;
     }

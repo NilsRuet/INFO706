@@ -8,35 +8,37 @@ import 'Skill.dart';
 
 class SkillInfo
 {
-  int _id;
-  String name;
+  Skill modelSkill;
+  String get name => modelSkill.name;
+  CompetencyLevel get level => modelSkill.level;
+
   CategoryInfo category;
-  CompetencyLevel level;
   bool isAutoChecked;
   bool isCheckedByTeacher;
   int _teacherAssessmentId;
   bool isPersonal;
   int _selfAssessmentId;
 
-  SkillInfo(this._id, this.name, this.category, this.level, this._selfAssessmentId, this._teacherAssessmentId, this.isPersonal){
+  SkillInfo(this.modelSkill, this.category, this._selfAssessmentId, this._teacherAssessmentId, this.isPersonal){
     isCheckedByTeacher = _teacherAssessmentId != null;
     isAutoChecked = _selfAssessmentId != null;
     BlocksListInfo.getLevelBlock(level).add(this);
     BlocksListInfo.getCategoryBlock(category).add(this);
   }
 
-  SkillInfo.withoutAssessment(this._id, this.name, this.category, this.level, this.isPersonal){
+  SkillInfo.withoutAssessment(this.modelSkill, this.category, this.isPersonal){
     BlocksListInfo.getLevelBlock(level).add(this);
     BlocksListInfo.getCategoryBlock(category).add(this);
   }
 
   Future<bool> delete() async {
-    bool res = isPersonal? await DataManager.deletePersonalSkillById(_id): await DataManager.deleteGlobalSkillById(_id);
+    bool res = isPersonal? await DataManager.deletePersonalSkill(modelSkill): await DataManager.deleteGlobalSkill(modelSkill);
     if (!res)
       return false;
 
-    BlocksListInfo.getLevelBlock(level).remove(this);
-    BlocksListInfo.getCategoryBlock(category).remove(this);
+    // Utile si on reload pas la bdd
+    /*BlocksListInfo.getLevelBlock(level).remove(this);
+    BlocksListInfo.getCategoryBlock(category).remove(this);*/
     return true;
   }
 
@@ -45,15 +47,17 @@ class SkillInfo
       return true;
 
     if (checked) { //TODO l'assossor id doit être récupéré dans les données de l'user courant
-      var assessment = await DataManager.createTeacherAssessment(InfoManager.currentStudentId, _id, 1);
+      var assessment = await DataManager.createTeacherAssessment(InfoManager.currentStudentId, modelSkill.id, 1);
       if (assessment == null)
         return false;
-      isCheckedByTeacher = true;
-      _teacherAssessmentId = assessment.id;
+      // Utile si on reload pas la bdd
+      /*isCheckedByTeacher = true;
+      _teacherAssessmentId = assessment.id;*/
     }else {
       if (!await DataManager.deleteTeacherAssessmentById(_teacherAssessmentId))
         return false;
-      isCheckedByTeacher = false;
+      // Utile si on reload pas la bdd
+      //isCheckedByTeacher = false;
     }
     return true;
   }
@@ -63,17 +67,26 @@ class SkillInfo
       return true;
 
     if (checked) {
-      var assessment = await DataManager.createSelfAssessment(InfoManager.currentStudentId, _id);
+      var assessment = await DataManager.createSelfAssessment(InfoManager.currentStudentId, modelSkill.id);
       if (assessment == null)
         return false;
-      isAutoChecked = true;
-      _selfAssessmentId = assessment.id;
+      // Utile si on reload pas la bdd
+      /*isAutoChecked = true;
+      _selfAssessmentId = assessment.id;*/
     }else {
       if (!await DataManager.deleteSelfAssessmentById(_selfAssessmentId))
         return false;
-      isAutoChecked = false;
+      // Utile si on reload pas la bdd
+      //isAutoChecked = false;
     }
     return true;
+  }
+
+  Future<bool> tryEdit(Skill skill) async {
+    if (isPersonal)
+      return (await DataManager.updatePersonalSkill(skill) != null);
+    return (await DataManager.updateGlobalSkill(skill) != null);
+
   }
 }
 
@@ -108,6 +121,8 @@ class BlockInfo
 class BlocksListInfo
 {
   static SplayTreeMap<String, BlockInfo> _sortedByLevel = SplayTreeMap();
+
+  static List<SkillBlock> modelCategoryBlocksList;
   static List<BlockInfo> get sortedByLevel => _sortedByLevel.values.toList();
 
   static SplayTreeMap<String, BlockInfo> _sortedByCategory = SplayTreeMap();
@@ -144,7 +159,7 @@ class InfoManager
   static int currentStudentId;
   static void _debugLoading() {
 
-    CategoryInfo ce = CategoryInfo('Compréhension écrite', 1);
+    /*CategoryInfo ce = CategoryInfo('Compréhension écrite', 1);
     CategoryInfo co = CategoryInfo('Compréhension orale', 2);
     CategoryInfo ee = CategoryInfo('Expression écrite', 3);
     CategoryInfo eo = CategoryInfo('Expression orale', 4);
@@ -164,7 +179,7 @@ class InfoManager
     SkillInfo(7,'Je peux utiliser une série de phrases ou d\'expressions pour décrire en termes simples ma famille et d\'autres gens, mes conditions de vie, ma formation et mon activité professionnelle actuelle ou récente.',
         eo, CompetencyLevel.A2, 7, 3, false);
     SkillInfo(8,'Je peux raconter une histoire ou l\'intrigue d\'un livre ou d\'un film et exprimer mes réactions.',
-        eo, CompetencyLevel.B1, 8, 4, false);
+        eo, CompetencyLevel.B1, 8, 4, false);*/
   }
 
   static loadSelectedStudentSkillsRouteInformation(int studentId) async {
@@ -172,9 +187,9 @@ class InfoManager
     currentStudentId = studentId;
     //_debugLoading();
     // On récupère les catégories
-    List<SkillBlock> categories = await CacheManager.getSkillBlocks();
+    BlocksListInfo.modelCategoryBlocksList = await CacheManager.getSkillBlocks();
     Map<int, CategoryInfo> idCategories = Map();
-    categories.forEach((element) {idCategories.putIfAbsent(element.id, () => CategoryInfo(element.title, element.id%4));});
+    BlocksListInfo.modelCategoryBlocksList.forEach((element) {idCategories.putIfAbsent(element.id, () => CategoryInfo(element.title, element.id%4));});
 
     // On récupère les auto validations
     List<SelfAssessment> selfAssessments = await CacheManager.getSelfAssessedSkills(studentId);
@@ -188,21 +203,21 @@ class InfoManager
 
     // On récupère les compétences
     (await CacheManager.getPersonalSkills(studentId)).forEach((element) =>
-        SkillInfo(element.id, element.name, idCategories[element.blockId], element.level, selfAssessedSkillsIds[element.id], teacherAssessedSkillsIds[element.id], true));
+        SkillInfo(element, idCategories[element.blockId], selfAssessedSkillsIds[element.id], teacherAssessedSkillsIds[element.id], true));
     (await CacheManager.getGlobalSkills()).forEach((element) =>
-        SkillInfo(element.id, element.name, idCategories[element.blockId], element.level, selfAssessedSkillsIds[element.id], teacherAssessedSkillsIds[element.id], false));
+        SkillInfo(element, idCategories[element.blockId], selfAssessedSkillsIds[element.id], teacherAssessedSkillsIds[element.id], false));
   }
 
   static loadGlobalSkillsRouteInformation() async {
     BlocksListInfo.clear();
     currentStudentId = null;
-    //_debugLoading();
+    _debugLoading();
     // On récupère les catégories
     List<SkillBlock> categories = await CacheManager.getSkillBlocks();
     Map<int, CategoryInfo> idCategories = Map();
     categories.forEach((element) {idCategories.putIfAbsent(element.id, () => CategoryInfo(element.title, element.id%4));});
 
     // On récupère les compétences
-    (await CacheManager.getGlobalSkills()).forEach((element) => SkillInfo.withoutAssessment(element.id, element.name, idCategories[element.blockId], element.level, false));
+    (await CacheManager.getGlobalSkills()).forEach((element) => SkillInfo.withoutAssessment(element, idCategories[element.blockId], false));
   }
 }
