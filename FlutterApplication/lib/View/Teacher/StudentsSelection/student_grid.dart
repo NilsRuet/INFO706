@@ -7,15 +7,13 @@ import 'package:info706/Resources/app_colors.dart';
 import 'package:info706/View/Common/navigation_drawer_route.dart';
 import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Data/User.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class _StudentGridState extends State<StudentGrid>{
 
   List<Student> _students = List<Student>();
   List<Student> _filteredStudents = List<Student>();
   String _filter = "";
-  Image _placeholder = Image(
-    image:NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg')//TODO remove
-  );
 
   @override
   void initState(){
@@ -52,7 +50,13 @@ class _StudentGridState extends State<StudentGrid>{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _placeholder,
+              AspectRatio(
+                child: CachedNetworkImage(
+                  imageUrl: student.picURL,
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                ),
+                aspectRatio: 1,
+              ),
               Expanded(
                 child:Container(
                   margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
