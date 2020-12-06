@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/Info.dart';
+import 'package:info706/View/Common/SkillsViews/app_widgets.dart';
 import 'package:info706/View/Common/SkillsViews/skill_widget.dart';
+import 'package:info706/View/Common/SkillsViews/skills_view.dart';
 
 /// Competence que peut acquerir un etudiant, selon le point de vue enseignant
 
@@ -16,7 +18,7 @@ class _TeacherSkillWidgetState extends SkillWidgetState{
   @override
   initState(){
     super.initState();
-    header = _TeacherSkillHeaderWidget(widget.isLevelMainInfo?block:level, isAutoChecked, isCheckedByTeacher);
+    header = _TeacherSkillHeaderWidget(widget.skill, widget.isLevelMainInfo?block:level, isAutoChecked, isCheckedByTeacher);
   }
 }
 
@@ -25,7 +27,7 @@ class _TeacherSkillWidgetState extends SkillWidgetState{
 // ignore: must_be_immutable
 class _TeacherSkillHeaderWidget extends SkillHeaderWidget{
 
-  _TeacherSkillHeaderWidget(Text secondaryInformation, bool isAutoChecked, bool isCheckedByTeacher) : super(secondaryInformation, isAutoChecked, isCheckedByTeacher);
+  _TeacherSkillHeaderWidget(SkillInfo skill, Text secondaryInformation, bool isAutoChecked, bool isCheckedByTeacher) : super(skill, secondaryInformation, isAutoChecked, isCheckedByTeacher);
 
   @override
   _TeacherSkillHeaderWidgetState createState() => _TeacherSkillHeaderWidgetState();
@@ -41,7 +43,13 @@ class _TeacherSkillHeaderWidgetState extends SkillHeaderWidgetState{
       Checkbox(
           value: widget.isCheckedByTeacher,
           onChanged: (bool newVal) {
-            setState(() => widget.isCheckedByTeacher = newVal);
+            setState(() async {
+              bool res = await widget.skill.trySetIsCheckedByTeacher(newVal);
+              if (!res)
+                Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
+              else
+                SkillsViewState.currentSkillViewState.loadDataForDisplay();
+            });
           })
     ];
   }

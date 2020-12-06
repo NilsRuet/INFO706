@@ -16,7 +16,7 @@ class _StudentSkillWidgetState extends SkillWidgetState{
   @override
   initState(){
     super.initState();
-    header = _StudentSkillHeaderWidget(widget.isLevelMainInfo?block:level, isAutoChecked, isCheckedByTeacher);
+    header = _StudentSkillHeaderWidget(widget.skill, widget.isLevelMainInfo?block:level, isAutoChecked, isCheckedByTeacher);
   }
 }
 
@@ -24,7 +24,7 @@ class _StudentSkillWidgetState extends SkillWidgetState{
 // ignore: must_be_immutable
 class _StudentSkillHeaderWidget extends SkillHeaderWidget{
 
-  _StudentSkillHeaderWidget(Text secondaryInformation, bool isAutoChecked, bool isCheckedByTeacher) : super(secondaryInformation, isAutoChecked, isCheckedByTeacher);
+  _StudentSkillHeaderWidget(SkillInfo skill, Text secondaryInformation, bool isAutoChecked, bool isCheckedByTeacher) : super(skill, secondaryInformation, isAutoChecked, isCheckedByTeacher);
 
   @override
   _StudentSkillHeaderWidgetState createState() => _StudentSkillHeaderWidgetState();

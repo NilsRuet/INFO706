@@ -9,13 +9,10 @@ import 'package:info706/View/Common/SkillsViews/skills_view.dart';
 
 // ignore: must_be_immutable
 abstract class SkillWidget extends StatefulWidget{
-  SkillInfo _skill;
+  SkillInfo skill;
   bool isLevelMainInfo;
 
-  SkillWidget(SkillInfo skill, bool levelIsMainInfo){
-    _skill = skill;
-    isLevelMainInfo = levelIsMainInfo;
-  }
+  SkillWidget(this.skill, this.isLevelMainInfo);
 }
 
 abstract class SkillWidgetState extends State<SkillWidget>{
@@ -30,14 +27,14 @@ abstract class SkillWidgetState extends State<SkillWidget>{
   @override
   void initState() {
     super.initState();
-    SkillInfo skill = widget._skill;
-    level = Text(describeEnum(skill.level),
-            style: TextStyle(color: AppColors.CATEGORY_COLORS[skill.level.index]));
-    block = Text(skill.category.name,
-        style: TextStyle(color: AppColors.CATEGORY_COLORS[skill.category.index]));
-    isAutoChecked = skill.isAutoChecked;
-    isCheckedByTeacher = skill.isCheckedByTeacher;
-    _entitle = Text(skill.name);
+    SkillInfo currentSkill = widget.skill;
+    level = Text(describeEnum(currentSkill.level),
+            style: TextStyle(color: AppColors.CATEGORY_COLORS[currentSkill.level.index]));
+    block = Text(currentSkill.category.name,
+        style: TextStyle(color: AppColors.CATEGORY_COLORS[currentSkill.category.index]));
+    isAutoChecked = currentSkill.isAutoChecked;
+    isCheckedByTeacher = currentSkill.isCheckedByTeacher;
+    _entitle = Text(currentSkill.name);
   }
 
   @override
@@ -61,7 +58,7 @@ abstract class SkillWidgetState extends State<SkillWidget>{
   }
 
   void longPressAction() {
-    if (widget._skill.isPersonal)
+    if (widget.skill.isPersonal)
       openPopupMenu();
   }
 
@@ -69,7 +66,7 @@ abstract class SkillWidgetState extends State<SkillWidget>{
     final RenderBox overlay = Overlay.of(context).context.findRenderObject();
     showMenu(
         context: context,
-        items: <PopupMenuEntry<bool>>[EditDeleteEntry(widget._skill)],
+        items: <PopupMenuEntry<bool>>[EditDeleteEntry(widget.skill)],
         position: RelativeRect.fromRect(
             tapPosition & const Size(40, 40),
             Offset.zero & overlay.semanticBounds.size
@@ -90,11 +87,12 @@ abstract class SkillWidgetState extends State<SkillWidget>{
 /// En-tête d'une compétence, à surcharger selon s'il on veux le point de vue étudiant ou enseignant
 // ignore: must_be_immutable
 abstract class SkillHeaderWidget extends StatefulWidget{
+  SkillInfo skill;
   Text secondaryInformation;
   bool isAutoChecked;
   bool isCheckedByTeacher;
 
-  SkillHeaderWidget(this.secondaryInformation, this.isAutoChecked, this.isCheckedByTeacher);
+  SkillHeaderWidget(this.skill, this.secondaryInformation, this.isAutoChecked, this.isCheckedByTeacher);
 
   SkillHeaderWidget.withoutAssessment(this.secondaryInformation);
 }

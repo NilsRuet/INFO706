@@ -255,25 +255,43 @@ abstract class DataManager{
 
   //Crée une auto évaluation
   static Future<TeacherAssessment> createTeacherAssessment(int studentId, int skillId, int assessorId) async{
-    Map data = {'student_id': studentId.toString(),
-                'skill_id': skillId.toString(),
-                'assessor_id': assessorId.toString(),
-                'validation_date':_datetimeToString(DateTime.now())};
-    final response = await http.post(
-      Config.addTeacherAssessmentURL,
-      body: data,
-    );
-    if (response.statusCode == 201) {
-      // 201 CREATED response,
-      var assessment = TeacherAssessment(jsonDecode(response.body));
-      return assessment;
-    } else {
+    try{
+      Map data = {'student_id': studentId.toString(),
+                  'skill_id': skillId.toString(),
+                  'assessor_id': assessorId.toString(),
+                  'validation_date':_datetimeToString(DateTime.now())};
+      final response = await http.post(
+        Config.addTeacherAssessmentURL,
+        body: data,
+      ).timeout(new Duration(seconds: Config.timeoutDelay));
+      if (response.statusCode == 201) {
+        // 201 CREATED response,
+        var assessment = TeacherAssessment(jsonDecode(response.body));
+        return assessment;
+      } else {
+        return null;
+      }
+    }
+    on TimeoutException {
+      return null;
+    }
+    on SocketException {
       return null;
     }
   }
 
-  static Future<bool> deleteTeacherAssessment(TeacherAssessment a) async{
-    final response = await http.delete(Config.deleteSelfAssessmentURL(a.id));
-    return response.statusCode == 202;
+  static Future<bool> deleteTeacherAssessment(TeacherAssessment a) async => deleteTeacherAssessmentById(a.id);
+
+  static Future<bool> deleteTeacherAssessmentById(int id) async{
+    try{
+      final response = await http.delete(Config.deleteSelfAssessmentURL(id)).timeout(new Duration(seconds: Config.timeoutDelay));
+      return response.statusCode == 202;
+    }
+    on TimeoutException {
+    return false;
+    }
+    on SocketException {
+    return false;
+    }
   }
 }
