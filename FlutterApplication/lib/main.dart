@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Cache/CacheManager.dart';
+import 'package:info706/Model/Data/User.dart' as model;
 import 'package:info706/View/home_route.dart';
 import 'package:info706/View/Common/common_drawer.dart';
 import 'package:info706/View/Student/Pages/skills_route.dart';
@@ -37,13 +38,38 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AuthenticationWrapper extends StatelessWidget {
+class AuthenticationWrapper extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return AuthenticationWrapperState();
+  }
+}
+
+class AuthenticationWrapperState extends State<AuthenticationWrapper> {
+  Widget _currentView;
+  bool _init;
+
+  void setUser(model.User u) {
+    setState(() {
+      _currentView = HomeView(u);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _init = false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = context.watch<User>();
-    if (firebaseUser != null) {
-      return HomeView();
+    if (!_init) {
+      final firebaseUser = context.watch<User>();
+      _currentView = firebaseUser != null
+          ? HomeView(model.Student.placeholder("placeholder name"))
+          : LoginPage(this);
+      _init = true;
     }
-    return LoginPage();
+    return _currentView;
   }
 }

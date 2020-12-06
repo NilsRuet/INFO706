@@ -29,6 +29,7 @@ abstract class DataManager{
     );
     var responseData = jsonDecode(response.body);
     var isActuallyStudent = responseData["isStudent"];
+    print("IS ACTUAAAAAAAAAAAAAAAAAAAAAALLY STUDENT :"+isActuallyStudent.toString());
     if (response.statusCode == 200 || response.statusCode==201) {
       var res;
       if(isActuallyStudent){

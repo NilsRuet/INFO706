@@ -26,7 +26,7 @@ class HomeState extends State<HomeView>{
 
   @override
   Widget build(BuildContext context) {
-    Student s = _currentUser;//TODO remove
+    User s = _currentUser;//TODO remove
     return Scaffold(
         //appBar: _pageAppBar(),
         //floatingActionButton: _addButton(),

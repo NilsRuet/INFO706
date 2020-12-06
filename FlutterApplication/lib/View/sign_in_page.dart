@@ -3,16 +3,22 @@ import 'package:info706/Model/Authentication/sign_in.dart';
 import 'package:info706/Model/Cache/DataManager.dart';
 import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/home_route.dart';
+import 'package:info706/main.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
+  AuthenticationWrapperState _parent;
+  LoginPage(this._parent);
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginPageState createState() => _LoginPageState(_parent);
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _isTeacherCheckbox = false;
+  AuthenticationWrapperState _parent;
 
-  bool _isTeacherCheckbox;
+  _LoginPageState(this._parent);
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +30,28 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               FlutterLogo(size: 150),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(AppStrings.ASK_ROLE),
-                  Checkbox(
-                    onChanged: (value) => _isTeacherCheckbox = value,
-                  )
+                  Text(
+                    AppStrings.ASK_ROLE,
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  Transform.scale(
+                      scale: 1.5,
+                      child:Checkbox(
+                          value: _isTeacherCheckbox,
+                          onChanged: (bool newVal) {
+                            setState(() {
+                              _isTeacherCheckbox = newVal;
+                            });
+                          })
+                  ),
                 ],
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 10),
               _signInButton(),
             ],
           ),
@@ -68,18 +86,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  authenticateCallback(){
+  authenticateCallback() {
     var isStudent = !_isTeacherCheckbox;
     SignIn.signInWithGoogle().then((result) async {
       if (result != null) {
         var user = await DataManager.authenticate(result, isStudent);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) {
-              return HomeView(user);
-            },
-          ),
-        );
+        _parent.setUser(user);
       }
     });
   }

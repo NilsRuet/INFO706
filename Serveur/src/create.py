@@ -18,7 +18,7 @@ def authenticate(db):
         if(db.rowcount>0):
             res = db.fetchone()
             db.execute('SELECT * from {0} WHERE {0}.{1}={2}'
-            .format(student_table, student_id, id))
+            .format(student_table, student_id, res[user_id]))
             if(db.rowcount>0):
                 res["isStudent"] = True
             else:
