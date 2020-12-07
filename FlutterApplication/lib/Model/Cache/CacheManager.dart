@@ -64,6 +64,8 @@ abstract class CacheManager{
       }
     } on TimeoutException catch (e){
       //TODO
+    } on http.ClientException catch (e){
+      //TODO
     } on SocketException catch (e){
       //TODO
     }

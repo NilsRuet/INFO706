@@ -156,20 +156,29 @@ abstract class DataManager{
   }
 
   static Future<GlobalSkill> updateGlobalSkill(GlobalSkill s) async{
-    Map data = {'id' : s.id.toString(),
-                'name': s.name,
-                'level': levelToInt(s.level).toString(),
-                'block_id': s.blockId.toString()};
-    final response = await http.put(
-      Config.updateGlobalSkillURL,
-      body: data,
-    );
-    if (response.statusCode == 200) {
-      var res = GlobalSkill(jsonDecode(response.body));
-      return res;
-    } else {
+    try {
+      Map data = {'id' : s.id.toString(),
+        'name': s.name,
+        'level': levelToInt(s.level).toString(),
+        'block_id': s.blockId.toString()};
+      final response = await http.put(
+        Config.updateGlobalSkillURL,
+        body: data,
+      ).timeout(new Duration(seconds: Config.timeoutDelay));
+      if (response.statusCode == 200) {
+        var res = GlobalSkill(jsonDecode(response.body));
+        return res;
+      } else {
+        return null;
+      }
+    }
+    on TimeoutException {
       return null;
     }
+    on SocketException {
+      return null;
+    }
+
   }
 
   //Crée une compétence personnelle
@@ -206,18 +215,26 @@ abstract class DataManager{
   }
 
   static Future<PersonalSkill> updatePersonalSkill(PersonalSkill s) async{
-    Map data = {'id' : s.id.toString(),
-                'name': s.name,
-                'level': levelToInt(s.level).toString(),
-                'block_id': s.blockId.toString()};
-    final response = await http.put(
-      Config.updatePersonalSkillURL,
-      body: data,
-    );
-    if (response.statusCode == 200) {
-      var res = PersonalSkill(jsonDecode(response.body));
-      return res;
-    } else {
+    try {
+      Map data = {'id' : s.id.toString(),
+        'name': s.name,
+        'level': levelToInt(s.level).toString(),
+        'block_id': s.blockId.toString()};
+      final response = await http.put(
+        Config.updatePersonalSkillURL,
+        body: data,
+      );
+      if (response.statusCode == 200) {
+        var res = PersonalSkill(jsonDecode(response.body));
+        return res;
+      } else {
+        return null;
+      }
+    }
+    on TimeoutException {
+      return null;
+    }
+    on SocketException {
       return null;
     }
   }
