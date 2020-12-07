@@ -142,9 +142,9 @@ class BlockInfo
       BlocksListInfo.remove(this);
   }
 
-  double selfAssessmentProportion() => _nbSelfAssessedSkills / globalSkills.length + personalSkills.length;
+  double selfAssessmentProportion() => _nbSelfAssessedSkills / (globalSkills.length + personalSkills.length);
 
-  double teacherAssessmentProportion() => _nbAssessedByTeacherSkills / globalSkills.length + personalSkills.length;
+  double teacherAssessmentProportion() => _nbAssessedByTeacherSkills / (globalSkills.length + personalSkills.length);
 }
 
 class BlocksListInfo
