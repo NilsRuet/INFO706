@@ -1,26 +1,36 @@
 import 'package:info706/Model/Data/Info.dart';
+import 'package:info706/Model/Data/User.dart';
 import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/Common/SkillsViews/skill_block_widget.dart';
 import 'package:info706/View/Common/SkillsViews/sorted_view_widget.dart';
 import 'package:info706/View/Teacher/StudentSkills/teacher_skill_block_widget.dart';
 
 /// Liste de blocs de competences du point de vue enseignant, à surcharger selon la façon dont on veut trier
-abstract class TeacherSortedViewWidget extends SortedViewWidget {}
+abstract class TeacherSortedViewWidget extends SortedViewWidget {
+  Teacher teacher;
+
+  TeacherSortedViewWidget(this.teacher);
+
+}
 
 abstract class _TeacherSortedViewState extends SortedViewState {
+  Teacher teacher;
 
-  _TeacherSortedViewState(List<BlockInfo> blocks) : super(blocks);
+  _TeacherSortedViewState(List<BlockInfo> blocks, this.teacher) : super(blocks);
 
   @override
   List<SkillBlockWidget> generateBlocks() {
-    return List.generate(blocks.length, (int index) => TeacherSkillBlockWidget(blocks[index], true, isLevelMainInfo()));
+    return List.generate(blocks.length, (int index) => TeacherSkillBlockWidget(blocks[index], true, isLevelMainInfo(), teacher));
   }
 }
 
 ///Liste de blocs de competences du point de vue enseignant, tries selon le niveau de chaque competence
 class TeacherSortedByLevelWidget extends TeacherSortedViewWidget{
+
+  TeacherSortedByLevelWidget(Teacher t) : super(t);
+
   @override
-  SortedViewState createState() => _TeacherSortedByLevelState();
+  SortedViewState createState() => _TeacherSortedByLevelState(teacher);
 
   @override
   String getName() => AppStrings.SORT_BY_LEVEL;
@@ -28,7 +38,7 @@ class TeacherSortedByLevelWidget extends TeacherSortedViewWidget{
 
 class _TeacherSortedByLevelState extends _TeacherSortedViewState{
 
-  _TeacherSortedByLevelState() : super(BlocksListInfo.sortedByLevel);
+  _TeacherSortedByLevelState(Teacher t) : super(BlocksListInfo.sortedByLevel, t);
 
   @override
   bool isLevelMainInfo() => true;
@@ -36,16 +46,19 @@ class _TeacherSortedByLevelState extends _TeacherSortedViewState{
 
 ///Liste de blocs de competences du point de vue enseignant, tries selon la categorie de chaque competence
 class TeacherSortedBySkillBlockWidget extends TeacherSortedViewWidget{
+
+  TeacherSortedBySkillBlockWidget(Teacher t) : super(t);
+
   @override
-  SortedViewState createState() => TeacherSortedBySkillBlockState();
+  SortedViewState createState() => TeacherSortedBySkillBlockState(teacher);
 
   @override
   String getName() => AppStrings.SORT_BY_BLOCK;
 }
 
 class TeacherSortedBySkillBlockState extends _TeacherSortedViewState{
-  
-  TeacherSortedBySkillBlockState() : super(BlocksListInfo.sortedByCategory);
+
+  TeacherSortedBySkillBlockState(Teacher t) : super(BlocksListInfo.sortedByCategory, t);
 
   @override
   bool isLevelMainInfo() => false;

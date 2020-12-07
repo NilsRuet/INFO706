@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:info706/Resources/app_colors.dart';
 import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Data/User.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:info706/View/Teacher/StudentSkills/selected_student_skills_route.dart';
+import 'package:info706/View/home_route.dart';
 
 class _StudentGridState extends State<StudentGrid>{
 
   List<Student> _students = List<Student>();
   List<Student> _filteredStudents = List<Student>();
   String _filter = "";
-  Image _placeholder = Image(
-    image:NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg')//TODO remove
-  );
+  bool _loaded = false;
 
   @override
   void initState(){
@@ -22,21 +22,25 @@ class _StudentGridState extends State<StudentGrid>{
 
   @override
   Widget build(BuildContext context) {
+    return _loaded ? _mainView(context) : Center(child: CircularProgressIndicator());
+  }
+
+  Widget _mainView(context){
     return OrientationBuilder(
-      builder:(context, orientation){
-        return GridView.builder(
-          itemCount: _filteredStudents.length,
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: orientation==Orientation.portrait ? 3 : 6,
-              childAspectRatio: 0.8
-          ),
-          itemBuilder: (BuildContext context, int index){
-            return _getStudentWidget(_filteredStudents[index]);
-          },
-        );
-      }
+        builder:(context, orientation){
+          return GridView.builder(
+            itemCount: _filteredStudents.length,
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: orientation==Orientation.portrait ? 3 : 6,
+                childAspectRatio: 0.8
+            ),
+            itemBuilder: (BuildContext context, int index){
+              return _getStudentWidget(_filteredStudents[index]);
+            },
+          );
+        }
     );
   }
 
@@ -45,7 +49,7 @@ class _StudentGridState extends State<StudentGrid>{
       onTap: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SelectedStudentSkillsView(student)),
+          MaterialPageRoute(builder: (context) => SelectedStudentSkillsView(student, widget.teacher))
         );
       },
       child: Card(
@@ -54,7 +58,13 @@ class _StudentGridState extends State<StudentGrid>{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _placeholder,
+              AspectRatio(
+                child: CachedNetworkImage(
+                  imageUrl: student.picURL,
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                ),
+                aspectRatio: 1,
+              ),
               Expanded(
                 child:Container(
                   margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -83,13 +93,17 @@ class _StudentGridState extends State<StudentGrid>{
     setState(() {
       this._filter = filter;
       _filteredStudents = _students.where((student) => matches(student, _filter)).toList();
+      _filteredStudents.sort(_compareNames);
     });
+  }
+
+  int _compareNames(Student s1, Student s2){
+    return s1.name.compareTo(s2.name);
   }
 
   void _loadStudents() async{
     final students = await CacheManager.getStudents();
-    /*final List<Student> students = List();
-    students.add(Student({'user_id': 1, 'name': 'Paul'}));*/
+    _loaded = true;
     _updateStudents(students);
   }
 
@@ -97,6 +111,7 @@ class _StudentGridState extends State<StudentGrid>{
     setState(() {
       this._students = students;
       _filteredStudents = _students.where((student) => matches(student, _filter)).toList();
+      _filteredStudents.sort(_compareNames);
     });
   }
 }
@@ -104,6 +119,9 @@ class _StudentGridState extends State<StudentGrid>{
 class StudentGrid extends StatefulWidget{
 
   _StudentGridState _currentState;
+  Teacher teacher;
+
+  StudentGrid(this.teacher);
 
   @override
   State<StatefulWidget> createState(){

@@ -1,7 +1,11 @@
 class AppStrings{
 
-  //SkillsPages
-
+  //SkillsPage
+  static const ASK_ROLE = 'Je suis un enseignant';
+  static const LOG_OUT = 'Se déconnecter';
+  static const STUDENT = 'Etudiant';
+  static const TEACHER = 'Enseignant';
+  static const LOADING = 'Chargement';
   static const MY_SKILLS_ROUTE_TITLE = 'Mes compétences';
   static const SELECTED_STUDENT_SKILLS_ROUTE_TITLE = 'Compétences de ';
   static const GLOBAL_SKILLS_ROUTE_TITLE = 'Compétences';

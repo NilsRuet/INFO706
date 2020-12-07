@@ -5,6 +5,7 @@ import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Cache/DataManager.dart';
 import 'Assessment.dart';
 import 'Skill.dart';
+import 'User.dart';
 
 class SkillInfo
 {
@@ -13,8 +14,8 @@ class SkillInfo
   CompetencyLevel get level => modelSkill.level;
 
   CategoryInfo category;
-  bool isAutoChecked;
-  bool isCheckedByTeacher;
+  bool isAutoChecked = false;
+  bool isCheckedByTeacher = false;
   int _teacherAssessmentId;
   bool isPersonal;
   int _selfAssessmentId;
@@ -42,12 +43,12 @@ class SkillInfo
     return true;
   }
 
-  Future<bool> trySetIsCheckedByTeacher(bool checked) async {
+  Future<bool> trySetIsCheckedByTeacher(bool checked, Teacher assessor) async {
     if (isCheckedByTeacher == checked)
       return true;
 
-    if (checked) { //TODO l'assossor id doit être récupéré dans les données de l'user courant
-      var assessment = await DataManager.createTeacherAssessment(InfoManager.currentStudentId, modelSkill.id, 1);
+    if (checked) {
+      var assessment = await DataManager.createTeacherAssessment(InfoManager.currentStudentId, modelSkill.id, assessor.id);
       if (assessment == null)
         return false;
       // Utile si on reload pas la bdd
@@ -188,7 +189,7 @@ class InfoManager
   static int currentStudentId;
   static void _debugLoading() {
 
-    /*CategoryInfo ce = CategoryInfo('Compréhension écrite', 1);
+    /*CategoryInfo ce = CategoryInfo('Compréhension écrite', 1);//TODO remove
     CategoryInfo co = CategoryInfo('Compréhension orale', 2);
     CategoryInfo ee = CategoryInfo('Expression écrite', 3);
     CategoryInfo eo = CategoryInfo('Expression orale', 4);

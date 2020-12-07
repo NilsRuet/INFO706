@@ -13,9 +13,13 @@ import 'package:info706/View/Teacher/StudentsSelection/student_grid.dart';
 
 class MyStudentsDrawerView implements NavigationDrawerRoute{
 
+  Teacher teacher;
+
+  MyStudentsDrawerView(this.teacher);
+
   @override
   Widget build() {
-    return StudentSelectionRoute();
+    return StudentSelectionRoute(teacher);
   }
 
   @override
@@ -25,9 +29,14 @@ class MyStudentsDrawerView implements NavigationDrawerRoute{
 }
 
 class StudentSelectionRoute extends StatelessWidget {
+
+    final Teacher teacher;
+
+    StudentSelectionRoute(this.teacher);
+
     @override
     Widget build(BuildContext context) {
-      var studentGrid = StudentGrid();
+      var studentGrid = StudentGrid(teacher);
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

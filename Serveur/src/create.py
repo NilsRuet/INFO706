@@ -1,30 +1,100 @@
 from init import *
 import datetime
 import bottle
+import requests
+
+@app.route('/authenticate', method='POST')
+def authenticate(db):
+    token = bottle.request.forms.get('token')
+    isStudent = bottle.request.forms.get('isStudent')
+    r = requests.get("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token="+token)
+    if r.status_code==200:
+        info = r.json()
+        name = info["name"]
+        id = str(info["id"])
+        pic = info["picture"]
+        db.execute('SELECT * from {0} WHERE {0}.{1}={2}'
+        .format(user_table, user_google_id, id))
+        if(db.rowcount>0):
+            res = db.fetchone()
+            db.execute('SELECT * from {0} WHERE {0}.{1}={2}'
+            .format(student_table, student_id, res[user_id]))
+            if(db.rowcount>0):
+                res["isStudent"] = True
+            else:
+                res["isStudent"] = False
+            bottle.response.status = 200
+            return res
+        else:
+            if isStudent is None:
+                bottle.response.status=442
+                return ""
+            elif isStudent:
+                res = create_student_from_data(db, name, id, pic)
+                res["isStudent"] = True 
+                bottle.response.status = 201
+                return res
+            else:
+                res = create_teacher_from_data(db, name, id, pic)
+                res["isStudent"] = False
+                bottle.response.status = 201
+                return res
+    else:
+        bottle.response.status=442
+        return ""
+
 
 @app.route('/add_student', method='POST')
 def add_student(db):
     username = bottle.request.forms.get('name')
-    query = "INSERT INTO {0} ({1}) VALUES ('{2}');".format(user_table, user_name, username)
+    google_id = bottle.request.forms.get('id')
+    pic = bottle.request.forms.get('picture')
+    bottle.response.status = 201
+    return create_student_from_data(db, username, google_id, pic)
+
+def create_student_from_data(db, username, google_id, pic):
+    print("GID : "+google_id)
+    query = "INSERT INTO {0} ({1},{2},{3}) VALUES ('{4}','{5}','{6}');".format(
+        user_table,
+        user_name,
+        user_google_id,
+        user_picture,
+        username,
+        google_id,
+        pic)
     query2 = "INSERT INTO {0}({1}) VALUES (LAST_INSERT_ID())".format(student_table, student_id)
     db.execute(query)
     db.execute(query2)
     db.execute('SELECT * from {0} INNER JOIN {2} ON {0}.{1}={2}.{3} AND {0}.{1} = LAST_INSERT_ID()'
     .format(user_table, user_id, student_table, student_id))
-    bottle.response.status = 201
-    return db.fetchone()
+
+    res = db.fetchone()
+    return res
 
 @app.route('/add_teacher', method='POST')
 def add_teacher(db):
     username = bottle.request.forms.get('name')
-    query = "INSERT INTO {0} ({1}) VALUES ('{2}');".format(user_table, user_name, username)
+    google_id = bottle.request.forms.get('id')
+    pic = bottle.request.forms.get('picture')
+    bottle.response.status = 201
+    return create_teacher_from_data(db, username, google_id, pic)
+
+def create_teacher_from_data(db, username, google_id, pic):
+    query = "INSERT INTO {0} ({1},{2},{3}) VALUES ('{4}','{5}','{6}');".format(
+        user_table,
+        user_name,
+        user_google_id,
+        user_picture,
+        username,
+        google_id,
+        pic)
     query2 = "INSERT INTO {0}({1}) VALUES (LAST_INSERT_ID())".format(teacher_table, teacher_id)
     db.execute(query)
     db.execute(query2)
     db.execute('SELECT * from {0} INNER JOIN {2} ON {0}.{1}={2}.{3} AND {0}.{1} = LAST_INSERT_ID()'
     .format(user_table, user_id, teacher_table, teacher_id))
-    bottle.response.status = 201
-    return db.fetchone()
+    res = db.fetchone()
+    return res
 
 @app.route('/add_skill_block', method='POST')
 def add_block(db):

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Lun 07 Décembre 2020 à 09:05
+-- Généré le :  Lun 07 Décembre 2020 à 09:42
 -- Version du serveur :  5.7.32-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.24-0ubuntu0.18.04.7
 
@@ -84,7 +84,21 @@ INSERT INTO `GlobalSkills` (`globalSkill_id`) VALUES
 (28),
 (29),
 (30),
-(31);
+(31),
+(35),
+(36),
+(37),
+(38),
+(39),
+(40),
+(41),
+(42),
+(43),
+(44),
+(45),
+(46),
+(47),
+(48);
 
 -- --------------------------------------------------------
 
@@ -149,7 +163,7 @@ CREATE TABLE `Skills` (
   `name` varchar(200) DEFAULT NULL,
   `level` int(11) DEFAULT NULL,
   `id_block` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Skills`
@@ -182,7 +196,21 @@ INSERT INTO `Skills` (`skill_id`, `name`, `level`, `id_block`) VALUES
 (28, 'Différencier les personnes ou personnages mentionnés dans un texte en repérant les pronoms et déterminants qui se rapportent à eux.', 2, 9),
 (29, 'Ecrire une courte lettre ou un message électronique (email, chat, blog ...etc) pour demander un renseignement ou de l’aide', 2, 10),
 (30, 'Ecrire une courte lettre ou un message électronique (email, chat, blog ...etc) pour faire une suggestion / inviter quelqu’un ou réagir à cette suggestion / invitation', 2, 10),
-(31, 'Raconter un fait ou une expérience personnelle (réelle ou imaginaire) qui se passe dans le passé, le présent ou le futur', 2, 10);
+(31, 'Raconter un fait ou une expérience personnelle (réelle ou imaginaire) qui se passe dans le passé, le présent ou le futur', 2, 10),
+(35, 'Je peux comprendre les points principaux d une intervention sur des sujets familiers rencontres regulierement au travail.', 3, 7),
+(36, 'Je peux comprendre la description d evenements, de sentiments et de souhaits suffisamment bien pour entretenir une correspondance reguliere avec un correspondant ami.', 3, 9),
+(37, 'Je peux rapporter assez couramment une narration ou une description simples sous forme d  une suite de points. ', 3, 8),
+(38, 'Je peux relater les details essentiels d  un evenement fortuit, tel un accident.', 3, 8),
+(39, 'Je peux ecrire de brefs essais simples sur des sujets d  interet general. ', 3, 10),
+(40, 'Je peux generalement corriger lapsus et erreurs apres en avoir pris conscience ou s ils ont debouche sur un malentendu.', 4, 8),
+(41, 'Je peux relater des informations et exprimer des points de vue par ecrit et m  adapter a ceux des autres.', 4, 10),
+(42, 'Je peux comprendre la plupart des documentaires radiodiffuses en langue standard et peut identifier correctement l humeur, le ton, etc., du locuteur.', 4, 7),
+(43, 'Je peux comprendre un long discours meme s il n est pas clairement structure et que les articulations sont seulement implicites.', 5, 7),
+(44, '​Je peux m exprimer dans un texte clair et bien structure et developper mon point de vue.', 5, 10),
+(45, '​Je peux exprimer mes idees et opinions avec precision et lier mes interventions a celles de mes interlocuteurs.', 5, 8),
+(46, '​Je peux m exprimer spontanement et couramment sans trop apparemment devoir chercher mes mots.', 5, 8),
+(47, 'Je peux utiliser des periphrases et des paraphrases pour dissimuler des lacunes lexicales et structurales.', 5, 8),
+(48, 'Je peux comprendre les emissions de television et les films sans trop d effort.', 5, 7);
 
 -- --------------------------------------------------------
 
@@ -378,7 +406,7 @@ ALTER TABLE `SkillBlocks`
 -- AUTO_INCREMENT pour la table `Skills`
 --
 ALTER TABLE `Skills`
-  MODIFY `skill_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `skill_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT pour la table `Users`
 --

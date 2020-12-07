@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/Info.dart';
+import 'package:info706/Model/Data/User.dart';
 import 'package:info706/View/Common/SkillsViews/app_widgets.dart';
 import 'package:info706/View/Common/SkillsViews/skill_widget.dart';
 import 'package:info706/View/Common/SkillsViews/skills_view.dart';
@@ -8,17 +9,23 @@ import 'package:info706/View/Common/SkillsViews/skills_view.dart';
 
 // ignore: must_be_immutable
 class TeacherSkillWidget extends SkillWidget{
-  TeacherSkillWidget(SkillInfo skill, bool levelIsMainInfo) : super(skill, levelIsMainInfo);
+  Teacher assessor;
+
+  TeacherSkillWidget(SkillInfo skill, bool levelIsMainInfo, this.assessor) : super(skill, levelIsMainInfo);
 
   @override
-  SkillWidgetState createState() => _TeacherSkillWidgetState();
+  SkillWidgetState createState() => _TeacherSkillWidgetState(assessor);
 }
 
 class _TeacherSkillWidgetState extends SkillWidgetState{
+  Teacher assessor;
+
+  _TeacherSkillWidgetState(this.assessor);
+
   @override
   initState(){
     super.initState();
-    header = _TeacherSkillHeaderWidget(widget.skill, widget.isLevelMainInfo?block:level, isAutoChecked, isCheckedByTeacher);
+    header = _TeacherSkillHeaderWidget(widget.skill, widget.isLevelMainInfo?block:level, isAutoChecked, isCheckedByTeacher, assessor);
   }
 }
 
@@ -26,14 +33,18 @@ class _TeacherSkillWidgetState extends SkillWidgetState{
 
 // ignore: must_be_immutable
 class _TeacherSkillHeaderWidget extends SkillHeaderWidget{
+  Teacher assessor;
 
-  _TeacherSkillHeaderWidget(SkillInfo skill, Text secondaryInformation, bool isAutoChecked, bool isCheckedByTeacher) : super(skill, secondaryInformation, isAutoChecked, isCheckedByTeacher);
+  _TeacherSkillHeaderWidget(SkillInfo skill, Text secondaryInformation, bool isAutoChecked, bool isCheckedByTeacher, this.assessor) : super(skill, secondaryInformation, isAutoChecked, isCheckedByTeacher);
 
   @override
-  _TeacherSkillHeaderWidgetState createState() => _TeacherSkillHeaderWidgetState();
+  _TeacherSkillHeaderWidgetState createState() => _TeacherSkillHeaderWidgetState(assessor);
 }
 
 class _TeacherSkillHeaderWidgetState extends SkillHeaderWidgetState{
+  Teacher assessor;
+
+  _TeacherSkillHeaderWidgetState(this.assessor);
 
   @override
   List<Widget> headerChildren(){
@@ -43,7 +54,7 @@ class _TeacherSkillHeaderWidgetState extends SkillHeaderWidgetState{
       Checkbox(
           value: widget.isCheckedByTeacher,
           onChanged: (bool newVal) async {
-            bool res = await widget.skill.trySetIsCheckedByTeacher(newVal);
+            bool res = await widget.skill.trySetIsCheckedByTeacher(newVal, assessor);
             setState(() {
               if (!res)
                 Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);

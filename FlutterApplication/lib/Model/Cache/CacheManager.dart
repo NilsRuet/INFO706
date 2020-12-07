@@ -17,6 +17,7 @@ abstract class CacheManager{
   static String _jsonRootKeyword = "response";
 
   //Constantes pour les noms de fichier qui contiennent des données
+  static String _currentUserFile = "CURRENT_USER";
   static String _userListResponseName = "USERS";
   static String _teacherListResponseName = "TEACHERS";
   static String _globalSkillsResponseName = "GLOBALSKILLS";
@@ -70,6 +71,34 @@ abstract class CacheManager{
       //TODO
     }
     return _getCachedResponse(cacheName);
+  }
+
+  static void rememberUser(User u, bool isStudent){
+    Map savedData = {
+      "user_id" : u.id,
+      "name" : u.name,
+      "picUrl" : u.picURL,
+      "isStudent" : isStudent
+    };
+    _cacheResponse(_currentUserFile, jsonEncode(savedData));
+  }
+
+  static void forgetCurrentUser() async{
+    String wd = (await getApplicationDocumentsDirectory()).path;
+    String path = '$wd/$_currentUserFile';
+    final file = File(path);
+    file.deleteSync();
+  }
+
+  static Future<User> getCurrentUser() async{
+    var rawData = await _getCachedResponse(_currentUserFile);
+    if(rawData == null) return null;
+    Map data = jsonDecode(rawData);
+    if(data["isStudent"]){
+      return Student(data);
+    } else {
+      return Teacher(data);
+    }
   }
 
   //Récupère la liste de tous les étudiants
