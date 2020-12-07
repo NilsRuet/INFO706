@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/Info.dart';
+import 'package:info706/Model/Data/Skill.dart';
 import 'package:info706/Model/Data/User.dart';
+import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/Common/SkillsViews/sorted_view_widget.dart';
+
+import '../add_skill_route.dart';
+import 'app_widgets.dart';
 
 /// Vue des compétences, à surcharger selon s'il on veux le point de vue étudiant ou enseignant
 
 // ignore: must_be_immutable
 abstract class SkillsView extends StatefulWidget {
-  Student _currentStudent;
+  Student currentStudent;
   String _routeTitle;
 
-  SkillsView(this._currentStudent, this._routeTitle);
+  SkillsView(this.currentStudent, this._routeTitle);
   SkillsView.globalView(this._routeTitle);
 }
 
@@ -74,21 +79,46 @@ abstract class SkillsViewState extends State<SkillsView> {
 
   FloatingActionButton _addingSkillButton() {
     return FloatingActionButton(
-      onPressed: _addingSkillForm,
+      onPressed: addingSkillForm,
       child: Icon(Icons.add),
     );
   }
 
-  // TODO: a lier au formulaire, et surement à deplacer en meme temps
-  void _addingSkillForm() {}
+  void addingSkillForm(){
+    Skill s = createEmptySkill();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AddSkillRoute(
+                AppStrings.ADD_SKILL_TITLE,
+                s,
+                BlocksListInfo.modelCategoryBlocksList,
+                    (skill) async {
+                  Navigator.pop(context);
+                  bool res = await createSkill(skill);
+                  setState(() {
+                    if (!res)
+                      Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
+                    else
+                      SkillsViewState.currentSkillViewState.loadDataForDisplay();
+                  });
+                }
+            )
+        )
+    );
+  }
+
+  Skill createEmptySkill();
 
   void loadDataForDisplay() async {
     setState(() => this.loaded = false);
-    await InfoManager.loadSelectedStudentSkillsRouteInformation(widget._currentStudent.id);
+    await InfoManager.loadSelectedStudentSkillsRouteInformation(widget.currentStudent.id);
     updateDataForDisplay();
   }
 
   void updateDataForDisplay() {
     setState(() => this.loaded = true);
   }
+
+  Future<bool> createSkill(Skill skill);
 }

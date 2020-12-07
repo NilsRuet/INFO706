@@ -88,6 +88,15 @@ class SkillInfo
     return (await DataManager.updateGlobalSkill(skill) != null);
 
   }
+
+  static tryCreatePersonalSkill(Skill skill) async {
+    return (await DataManager.createPersonalSkill(skill.name, skill.level, skill.blockId, InfoManager.currentStudentId) != null);
+  }
+
+  static tryCreateGlobalSkill(Skill skill) async {
+    return (await DataManager.createGlobalSkill(skill.name, skill.level, skill.blockId) != null);
+  }
+
 }
 
 class CategoryInfo

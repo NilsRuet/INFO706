@@ -1,3 +1,5 @@
+import 'package:info706/Model/Data/Info.dart';
+import 'package:info706/Model/Data/Skill.dart';
 import 'package:info706/Model/Data/User.dart';
 import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/Common/SkillsViews/skills_view.dart';
@@ -18,4 +20,10 @@ class SelectedStudentSkillsView extends SkillsView {
 class _SelectedStudentSkillsViewState extends SkillsViewState {
   _SelectedStudentSkillsViewState():
         super.fromOverridingClass(TeacherSortedBySkillBlockWidget(), TeacherSortedByLevelWidget());
+
+  @override
+  Skill createEmptySkill() => PersonalSkill.fromData(0, 0, "", CompetencyLevel.A1, widget.currentStudent.id);
+
+  @override
+  Future<bool> createSkill(Skill skill) async => await SkillInfo.tryCreatePersonalSkill(skill);
 }

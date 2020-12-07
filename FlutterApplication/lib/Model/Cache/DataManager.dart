@@ -125,18 +125,26 @@ abstract class DataManager{
 
   //Crée une compétence commune
   static Future<GlobalSkill> createGlobalSkill(String name, CompetencyLevel level, int blockId) async{
-    Map data = {'name': name,
-                'level': levelToInt(level).toString(),
-                'block_id':blockId.toString()};
-    final response = await http.post(
-      Config.addGlobalSkillURL,
-      body: data,
-    );
-    if (response.statusCode == 201) {
-      // 201 CREATED response,
-      var skill = GlobalSkill(jsonDecode(response.body));
-      return skill;
-    } else {
+    try {
+      Map data = {'name': name,
+        'level': levelToInt(level).toString(),
+        'block_id': blockId.toString()};
+      final response = await http.post(
+        Config.addGlobalSkillURL,
+        body: data,
+      );
+      if (response.statusCode == 201) {
+        // 201 CREATED response,
+        var skill = GlobalSkill(jsonDecode(response.body));
+        return skill;
+      } else {
+        return null;
+      }
+    }
+    on TimeoutException {
+      return null;
+    }
+    on SocketException {
       return null;
     }
   }
@@ -183,19 +191,27 @@ abstract class DataManager{
 
   //Crée une compétence personnelle
   static Future<PersonalSkill> createPersonalSkill(String name, CompetencyLevel level, int blockId, int studentId) async{
-    Map data = {'name': name,
-                'level': levelToInt(level).toString(),
-                'block_id':blockId.toString(),
-                'student_id':studentId.toString()};
-    final response = await http.post(
-      Config.addPersonalSkillURL,
-      body: data,
-    );
-    if (response.statusCode == 201) {
-      // 201 CREATED response,
-      var skill = PersonalSkill(jsonDecode(response.body));
-      return skill;
-    } else {
+    try {
+      Map data = {'name': name,
+        'level': levelToInt(level).toString(),
+        'block_id':blockId.toString(),
+        'student_id':studentId.toString()};
+      final response = await http.post(
+        Config.addPersonalSkillURL,
+        body: data,
+      ).timeout(new Duration(seconds: Config.timeoutDelay));
+      if (response.statusCode == 201) {
+        // 201 CREATED response,
+        var skill = PersonalSkill(jsonDecode(response.body));
+        return skill;
+      } else {
+        return null;
+      }
+    }
+    on TimeoutException {
+      return null;
+    }
+    on SocketException {
       return null;
     }
   }

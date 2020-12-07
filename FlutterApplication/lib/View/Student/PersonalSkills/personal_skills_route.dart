@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:info706/Model/Data/Info.dart';
+import 'package:info706/Model/Data/Skill.dart';
 import 'package:info706/Model/Data/User.dart';
 import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/Common/SkillsViews/skills_view.dart';
@@ -27,4 +29,10 @@ class _PersonalSkillsView extends SkillsView {
 
 class _PersonalSkillsViewState extends SkillsViewState {
   _PersonalSkillsViewState():super.fromOverridingClass(StudentSortedBySkillBlockWidget(), StudentSortedByLevelWidget());
+
+  @override
+  Skill createEmptySkill() => PersonalSkill.fromData(0, 0, "", CompetencyLevel.A1, widget.currentStudent.id);
+
+  @override
+  Future<bool> createSkill(Skill skill) async => await SkillInfo.tryCreatePersonalSkill(skill);
 }

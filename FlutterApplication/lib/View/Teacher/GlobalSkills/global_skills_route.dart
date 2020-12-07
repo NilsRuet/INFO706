@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/Info.dart';
+import 'package:info706/Model/Data/Skill.dart';
 import 'package:info706/Resources/app_strings.dart';
 import 'package:info706/View/Common/SkillsViews/skills_view.dart';
 import 'package:info706/View/Common/navigation_drawer_route.dart';
@@ -33,4 +34,10 @@ class _GlobalSkillsViewState extends SkillsViewState {
     await InfoManager.loadGlobalSkillsRouteInformation();
     updateDataForDisplay();
   }
+
+  @override
+  Skill createEmptySkill() => GlobalSkill.fromData(0, 0, "", CompetencyLevel.A1);
+
+  @override
+  Future<bool> createSkill(Skill skill) async => await SkillInfo.tryCreateGlobalSkill(skill);
 }
