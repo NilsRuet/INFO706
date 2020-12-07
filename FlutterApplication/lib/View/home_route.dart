@@ -21,7 +21,7 @@ class HomeView extends StatefulWidget {
   HomeState createState() => HomeState(_currentUser);
 }
 
-class HomeState extends State<HomeView>{
+class HomeState extends State<HomeView> {
   NavigationDrawerRoute currentPage;
   User _currentUser;
 
@@ -31,16 +31,14 @@ class HomeState extends State<HomeView>{
   void initState() {
     super.initState();
     currentPage = (_currentUser is Student)
-    ? PersonalSkillsDrawerRoute(_currentUser)
-    : GlobalSkillsDrawerRoute();
+        ? PersonalSkillsDrawerRoute(_currentUser)
+        : GlobalSkillsDrawerRoute();
   }
 
   @override
   Widget build(BuildContext context) {
-    User s = _currentUser;//TODO remove
+    User s = _currentUser;
     return Scaffold(
-        //appBar: _pageAppBar(),
-        //floatingActionButton: _addButton(),
         drawer: NavigationDrawer(
           homeState: this,
           authentication: widget._parent,
@@ -49,14 +47,39 @@ class HomeState extends State<HomeView>{
               : [MyStudentsDrawerView(), GlobalSkillsDrawerRoute()],
           currentUser: s,
         ),
-        body : currentPage.build()//TODO default page
+        body: _getDrawerBody(() => print("open")));//TODO
+  }
+
+  Widget _getDrawerBody(void openDrawerCallback()) {
+    return Stack(
+      children: [
+        currentPage.build(),
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Align(
+            child: GestureDetector(
+              onTap: openDrawerCallback,
+              child: Transform.scale(
+                scale: 0.8,
+                origin: Offset(-20,0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 5,
+                  color: Color.fromRGBO(0, 0, 0, 0.3),
+                  child: Icon(Icons.keyboard_arrow_right),
+                ),
+              ),
+            ),
+            alignment: Alignment.centerLeft,
+          ),
+        )
+      ],
     );
   }
 
-  void setView(NavigationDrawerRoute page){
-   setState(() {
-     currentPage = page;
-     Navigator.pop(context);
-   });
+  void setView(NavigationDrawerRoute page) {
+    setState(() {
+      currentPage = page;
+      Navigator.pop(context);
+    });
   }
 }
