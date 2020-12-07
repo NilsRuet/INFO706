@@ -11,6 +11,7 @@ class _StudentGridState extends State<StudentGrid>{
   List<Student> _students = List<Student>();
   List<Student> _filteredStudents = List<Student>();
   String _filter = "";
+  bool _loaded = false;
 
   @override
   void initState(){
@@ -20,21 +21,25 @@ class _StudentGridState extends State<StudentGrid>{
 
   @override
   Widget build(BuildContext context) {
+    return _loaded ? _mainView(context) : Center(child: CircularProgressIndicator());
+  }
+
+  Widget _mainView(context){
     return OrientationBuilder(
-      builder:(context, orientation){
-        return GridView.builder(
-          itemCount: _filteredStudents.length,
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: orientation==Orientation.portrait ? 3 : 6,
-              childAspectRatio: 0.8
-          ),
-          itemBuilder: (BuildContext context, int index){
-            return _getStudentWidget(_filteredStudents[index]);
-          },
-        );
-      }
+        builder:(context, orientation){
+          return GridView.builder(
+            itemCount: _filteredStudents.length,
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: orientation==Orientation.portrait ? 3 : 6,
+                childAspectRatio: 0.8
+            ),
+            itemBuilder: (BuildContext context, int index){
+              return _getStudentWidget(_filteredStudents[index]);
+            },
+          );
+        }
     );
   }
 
@@ -97,8 +102,7 @@ class _StudentGridState extends State<StudentGrid>{
 
   void _loadStudents() async{
     final students = await CacheManager.getStudents();
-    /*final List<Student> students = List();
-    students.add(Student({'user_id': 1, 'name': 'Paul'}));*/
+    _loaded = true;
     _updateStudents(students);
   }
 
