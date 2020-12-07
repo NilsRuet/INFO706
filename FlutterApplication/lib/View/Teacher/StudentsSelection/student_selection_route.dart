@@ -35,11 +35,11 @@ class StudentSelectionRoute extends StatelessWidget {
 
     StudentSelectionRoute(Teacher teacher){
       this.teacher = teacher;
-      this.grid = StudentGrid(teacher);
     }
 
     @override
     Widget build(BuildContext context) {
+      this.grid = StudentGrid(teacher);
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
