@@ -87,7 +87,12 @@ class _StudentGridState extends State<StudentGrid>{
     setState(() {
       this._filter = filter;
       _filteredStudents = _students.where((student) => matches(student, _filter)).toList();
+      _filteredStudents.sort(_compareNames);
     });
+  }
+
+  int _compareNames(Student s1, Student s2){
+    return s1.name.compareTo(s2.name);
   }
 
   void _loadStudents() async{
@@ -101,6 +106,7 @@ class _StudentGridState extends State<StudentGrid>{
     setState(() {
       this._students = students;
       _filteredStudents = _students.where((student) => matches(student, _filter)).toList();
+      _filteredStudents.sort(_compareNames);
     });
   }
 }
