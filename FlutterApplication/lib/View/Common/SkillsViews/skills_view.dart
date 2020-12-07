@@ -122,5 +122,9 @@ abstract class SkillsViewState extends State<SkillsView> {
     setState(() => this.loaded = true);
   }
 
+  void refreshDataForDisplay(){
+    _currentSortedView.refreshForDisplay();
+  }
+
   Future<bool> createSkill(Skill skill);
 }

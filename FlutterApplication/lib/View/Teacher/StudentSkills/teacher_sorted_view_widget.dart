@@ -30,7 +30,10 @@ class TeacherSortedByLevelWidget extends TeacherSortedViewWidget{
   TeacherSortedByLevelWidget(Teacher t) : super(t);
 
   @override
-  SortedViewState createState() => _TeacherSortedByLevelState(teacher);
+  SortedViewState createState(){
+    state = _TeacherSortedByLevelState(teacher);
+    return state;
+  }
 
   @override
   String getName() => AppStrings.SORT_BY_LEVEL;
@@ -50,7 +53,10 @@ class TeacherSortedBySkillBlockWidget extends TeacherSortedViewWidget{
   TeacherSortedBySkillBlockWidget(Teacher t) : super(t);
 
   @override
-  SortedViewState createState() => TeacherSortedBySkillBlockState(teacher);
+  SortedViewState createState(){
+    state = TeacherSortedBySkillBlockState(teacher);
+    return state;
+  }
 
   @override
   String getName() => AppStrings.SORT_BY_BLOCK;

@@ -11,9 +11,9 @@ class AppColors{
     Colors.tealAccent,
     Colors.teal,
     Colors.pinkAccent,
-    Colors.pink,
+    Colors.red,
     Colors.deepPurpleAccent,
-    Colors.deepPurple
+    Colors.indigo
   ];
 
 

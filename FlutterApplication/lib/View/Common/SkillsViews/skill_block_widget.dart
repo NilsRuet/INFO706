@@ -12,6 +12,8 @@ abstract class SkillBlockWidget extends StatefulWidget{
   bool isExpanded;
   BlockInfo block;
 
+  _SkillBlockWidgetState state;
+
   SkillBlockWidget(this.block, this.isExpanded, bool isLevelMainInfo) {
     header = ListTile(
         title: Text(block.name,
@@ -20,14 +22,23 @@ abstract class SkillBlockWidget extends StatefulWidget{
   }
 
   @override
-  State<StatefulWidget> createState() => _SkillBlockWidgetState();
+  State<StatefulWidget> createState(){
+    state = _SkillBlockWidgetState();
+    return state;
+  }
 
   List<SkillWidget> generateSkills(List<SkillInfo> globalSkills, List<SkillInfo> personalSkills, bool isLevelMainInfo);
 
   List<Widget> generateBlockProgression() => [];
+
+  void refresh(){
+    state.reload();
+  }
 }
 
 class _SkillBlockWidgetState extends State<SkillBlockWidget>{
+
+  bool _loaded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,5 +49,12 @@ class _SkillBlockWidgetState extends State<SkillBlockWidget>{
         mainAxisSize: MainAxisSize.min,
       ),
     );
+  }
+
+  void reload() {
+    _loaded = false;
+    setState(() {
+      _loaded = true;
+    });
   }
 }

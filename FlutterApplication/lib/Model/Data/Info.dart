@@ -146,6 +146,7 @@ class BlockInfo
   double selfAssessmentProportion() => _nbSelfAssessedSkills / (globalSkills.length + personalSkills.length);
 
   double teacherAssessmentProportion() => _nbAssessedByTeacherSkills / (globalSkills.length + personalSkills.length);
+
 }
 
 class BlocksListInfo

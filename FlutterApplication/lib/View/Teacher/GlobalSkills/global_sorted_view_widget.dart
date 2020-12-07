@@ -22,7 +22,10 @@ abstract class _GlobalSortedViewState extends SortedViewState {
 ///Liste de blocs de competences globales, tries selon le niveau de chaque competence
 class GlobalSortedByLevelWidget extends GlobalSortedViewWidget{
   @override
-  SortedViewState createState() => _GlobalSortedByLevelState();
+  SortedViewState createState(){
+    state = _GlobalSortedByLevelState();
+    return state;
+  }
 
   @override
   String getName() => AppStrings.SORT_BY_LEVEL;
@@ -39,7 +42,10 @@ class _GlobalSortedByLevelState extends _GlobalSortedViewState{
 ///Liste de blocs de competences du point de vue étudiant, tries selon la categorie de chaque competence
 class GlobalSortedBySkillBlockWidget extends GlobalSortedViewWidget{
   @override
-  SortedViewState createState() => GlobalSortedBySkillBlockState();
+  SortedViewState createState(){
+    state = GlobalSortedBySkillBlockState();
+    return state;
+  }
 
   @override
   String getName() => AppStrings.SORT_BY_BLOCK;

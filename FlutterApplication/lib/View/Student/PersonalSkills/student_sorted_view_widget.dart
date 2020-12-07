@@ -21,7 +21,10 @@ abstract class _StudentSortedViewState extends SortedViewState {
 ///Liste de blocs de competences du point de vue étudiant, tries selon le niveau de chaque competence
 class StudentSortedByLevelWidget extends StudentSortedViewWidget{
   @override
-  SortedViewState createState() => _StudentSortedByLevelState();
+  SortedViewState createState(){
+    state = _StudentSortedByLevelState();
+    return state;
+  }
 
   @override
   String getName() => AppStrings.SORT_BY_LEVEL;
@@ -33,12 +36,16 @@ class _StudentSortedByLevelState extends _StudentSortedViewState{
 
   @override
   bool isLevelMainInfo() => true;
+
 }
 
 ///Liste de blocs de competences du point de vue étudiant, tries selon la categorie de chaque competence
 class StudentSortedBySkillBlockWidget extends StudentSortedViewWidget{
   @override
-  SortedViewState createState() => StudentSortedBySkillBlockState();
+  SortedViewState createState(){
+    state = StudentSortedBySkillBlockState();
+    return state;
+  }
 
   @override
   String getName() => AppStrings.SORT_BY_BLOCK;

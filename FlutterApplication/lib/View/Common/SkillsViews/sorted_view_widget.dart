@@ -6,19 +6,25 @@ import 'package:info706/View/Common/SkillsViews/skill_block_widget.dart';
 /// puis surcharger la fille selon la façon dont on veut trier
 
 abstract class SortedViewWidget extends StatefulWidget {
+  SortedViewState state;
+
   String getName();
+
+  void refreshForDisplay(){
+    state.refresh();
+  }
 }
 
 abstract class SortedViewState extends State<SortedViewWidget> {
   List<BlockInfo> blocks;
-  List<SkillBlockWidget> _blocksList;
+  List<SkillBlockWidget> blocksList;
 
   SortedViewState(this.blocks);
 
   @override
   void initState() {
     super.initState();
-    _blocksList = generateBlocks();
+    blocksList = generateBlocks();
   }
 
   @override
@@ -30,9 +36,9 @@ abstract class SortedViewState extends State<SortedViewWidget> {
                 expandedHeaderPadding: EdgeInsets.all(10.0),
                 animationDuration: Duration(milliseconds: 800),
                 expansionCallback: (int index, bool isExpanded) {
-                  setState(() => _blocksList[index].isExpanded = !isExpanded);
+                  setState(() => blocksList[index].isExpanded = !isExpanded);
                 },
-                children: _generateBlocksPanel(_blocksList))));
+                children: _generateBlocksPanel(blocksList))));
   }
 
   List<SkillBlockWidget> generateBlocks();
@@ -49,4 +55,10 @@ abstract class SortedViewState extends State<SortedViewWidget> {
   }
 
   bool isLevelMainInfo();
+
+  void refresh(){
+    for(var b in blocksList){
+      b.refresh();
+    }
+  }
 }
