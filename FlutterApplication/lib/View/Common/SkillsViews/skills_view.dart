@@ -45,7 +45,9 @@ abstract class SkillsViewState extends State<SkillsView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: _skillsPageAppBar(),
-        floatingActionButton: _addingSkillButton(),
+        floatingActionButton: Builder(
+          builder: (context) => _addingSkillButton(),
+        ),
         body: loaded? Column(children: [_sortingButton(), Expanded(child: _currentSortedView)])
                       :Center(child:CircularProgressIndicator()));
   }

@@ -33,7 +33,7 @@ class AddSkillState extends State<AddSkillRoute>{
   @override
   void initState() {
     super.initState();
-    _nameField = TextField(controller: _nameController);
+    _nameField = TextField(controller: _nameController, minLines: 1, maxLines: 500);
     _nameController.text = _skill.name;
     _chosenSkillBlock = _blocks.firstWhere((element) => (element.id == _skill.blockId), orElse:() => _blocks[0]);
     _chosenLevel = _skill.level;
