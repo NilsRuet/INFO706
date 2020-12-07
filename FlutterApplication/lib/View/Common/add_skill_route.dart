@@ -33,7 +33,9 @@ class AddSkillState extends State<AddSkillRoute>{
   @override
   void initState() {
     super.initState();
-    _chosenSkillBlock = _blocks.firstWhere((element) => (element.id == _skill.id), orElse:() => _blocks[0]);
+    _nameField = TextField(controller: _nameController);
+    _nameController.text = _skill.name;
+    _chosenSkillBlock = _blocks.firstWhere((element) => (element.id == _skill.blockId), orElse:() => _blocks[0]);
     _chosenLevel = _skill.level;
   }
 
@@ -115,7 +117,6 @@ class AddSkillState extends State<AddSkillRoute>{
 
   @override
   Widget build(BuildContext context) {
-    _nameField = TextField(controller: _nameController);
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
