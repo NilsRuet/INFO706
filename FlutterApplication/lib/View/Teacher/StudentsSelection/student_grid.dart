@@ -118,18 +118,18 @@ class _StudentGridState extends State<StudentGrid>{
 
 class StudentGrid extends StatefulWidget{
 
-  _StudentGridState _currentState;
+  _StudentGridState currentState;
   Teacher teacher;
 
   StudentGrid(this.teacher);
 
   @override
   State<StatefulWidget> createState(){
-    _currentState = _StudentGridState();
-    return _currentState;
+    currentState = _StudentGridState();
+    return currentState;
   }
 
-  void filter(String filter){
-    _currentState.filter(filter);
+  void filter(String filterStr){
+    currentState.filter(filterStr);
   }
 }

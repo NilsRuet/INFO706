@@ -30,20 +30,23 @@ class MyStudentsDrawerView implements NavigationDrawerRoute{
 
 class StudentSelectionRoute extends StatelessWidget {
 
-    final Teacher teacher;
+    Teacher teacher;
+    StudentGrid grid;
 
-    StudentSelectionRoute(this.teacher);
+    StudentSelectionRoute(Teacher teacher){
+      this.teacher = teacher;
+      this.grid = StudentGrid(teacher);
+    }
 
     @override
     Widget build(BuildContext context) {
-      var studentGrid = StudentGrid(teacher);
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-            child: studentGrid
+            child: grid
           ),
-          getSearchBar(studentGrid.filter)
+          getSearchBar(grid.filter)
         ],
       );
     }
