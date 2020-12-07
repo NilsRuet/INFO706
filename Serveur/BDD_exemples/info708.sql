@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Lun 23 Novembre 2020 à 17:16
+-- Généré le :  Lun 07 Décembre 2020 à 09:05
 -- Version du serveur :  5.7.32-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.24-0ubuntu0.18.04.7
 
@@ -39,10 +39,9 @@ CREATE TABLE `AssessedSkills` (
 
 INSERT INTO `AssessedSkills` (`assessment_id`, `student_id`, `skill_id`, `validationDate`) VALUES
 (1, 1, 1, '2020-11-18'),
-(2, 1, 10, '2020-11-11'),
 (3, 1, 10, '2020-11-11'),
 (4, 1, 13, '2019-11-11'),
-(5, 1, 14, '2020-11-12');
+(7, 1, 10, '2020-12-06');
 
 -- --------------------------------------------------------
 
@@ -65,14 +64,10 @@ INSERT INTO `GlobalSkills` (`globalSkill_id`) VALUES
 (4),
 (5),
 (6),
-(7),
 (8),
-(9),
 (10),
 (11),
-(12),
 (13),
-(14),
 (15),
 (16),
 (17),
@@ -102,13 +97,6 @@ CREATE TABLE `PersonalSkills` (
   `student_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `PersonalSkills`
---
-
-INSERT INTO `PersonalSkills` (`personalSkill_id`, `student_id`) VALUES
-(32, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -125,8 +113,7 @@ CREATE TABLE `SelfAssessedSkills` (
 
 INSERT INTO `SelfAssessedSkills` (`assessment_id`) VALUES
 (1),
-(2),
-(5);
+(7);
 
 -- --------------------------------------------------------
 
@@ -147,7 +134,9 @@ INSERT INTO `SkillBlocks` (`skillBlock_id`, `title`) VALUES
 (7, 'Compréhension orale'),
 (8, 'Expression orale'),
 (9, 'Compréhension écrite'),
-(10, 'Expression écrite');
+(10, 'Expression écrite'),
+(11, 'update B Title Block'),
+(12, 'empty skill block');
 
 -- --------------------------------------------------------
 
@@ -173,14 +162,10 @@ INSERT INTO `Skills` (`skill_id`, `name`, `level`, `id_block`) VALUES
 (4, 'combler les vides d’une conversation avec des expressions', 2, 8),
 (5, 'parler de mon école et ma ville : dire qui sont mes\r\nprofesseurs, dire les bâtiments qu’on y trouve...', 2, 8),
 (6, 'parler de ma vie d’écolier : parler de mon emploi du temps,\r\ndes matières scolaires, des horaires ...etc', 2, 8),
-(7, 'décrire l’aspect physique et la personnalité de quelqu’un (personne réelle ou personnage)', 2, 8),
 (8, 'Comprendre des salutations', 1, 7),
-(9, 'Comprendre des excuses', 1, 7),
 (10, 'Comprendre les questions/informations portant sur mon identité (nom, adresse, lieu de vie, activité, âge... )', 1, 7),
 (11, 'Comprendre les nombres jusqu’à 100, les numéros de téléphone, l’âge, l’heure', 1, 7),
-(12, 'Suivre un itinéraire, un parcours', 2, 7),
 (13, 'Comprendre un accord, un désaccord', 2, 7),
-(14, 'Comprendre les questions/informations portant sur l’identité d’une personne', 2, 7),
 (15, 'Comprendre les nombres au delà de 100, les horaires, les prix, les dates', 2, 7),
 (16, 'M’appuyer sur des repères culturels connus pour comprendre', 2, 7),
 (17, 'Remplir une fiche de renseignements, un questionnaire... etc avec des informations personnelles', 1, 10),
@@ -197,8 +182,7 @@ INSERT INTO `Skills` (`skill_id`, `name`, `level`, `id_block`) VALUES
 (28, 'Différencier les personnes ou personnages mentionnés dans un texte en repérant les pronoms et déterminants qui se rapportent à eux.', 2, 9),
 (29, 'Ecrire une courte lettre ou un message électronique (email, chat, blog ...etc) pour demander un renseignement ou de l’aide', 2, 10),
 (30, 'Ecrire une courte lettre ou un message électronique (email, chat, blog ...etc) pour faire une suggestion / inviter quelqu’un ou réagir à cette suggestion / invitation', 2, 10),
-(31, 'Raconter un fait ou une expérience personnelle (réelle ou imaginaire) qui se passe dans le passé, le présent ou le futur', 2, 10),
-(32, 'Compétence perso de l\'utilisateur 1', 3, 8);
+(31, 'Raconter un fait ou une expérience personnelle (réelle ou imaginaire) qui se passe dans le passé, le présent ou le futur', 2, 10);
 
 -- --------------------------------------------------------
 
@@ -217,7 +201,20 @@ CREATE TABLE `Students` (
 INSERT INTO `Students` (`student_id`) VALUES
 (1),
 (2),
-(3);
+(3),
+(18),
+(19),
+(20),
+(21),
+(22),
+(23),
+(24),
+(25),
+(26),
+(27),
+(28),
+(29),
+(30);
 
 -- --------------------------------------------------------
 
@@ -253,7 +250,8 @@ CREATE TABLE `Teachers` (
 --
 
 INSERT INTO `Teachers` (`teacher_id`) VALUES
-(4);
+(4),
+(17);
 
 -- --------------------------------------------------------
 
@@ -263,18 +261,35 @@ INSERT INTO `Teachers` (`teacher_id`) VALUES
 
 CREATE TABLE `Users` (
   `user_id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(20) DEFAULT NULL
+  `name` varchar(20) DEFAULT NULL,
+  `picUrl` varchar(500) NOT NULL,
+  `google_id` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `Users`
 --
 
-INSERT INTO `Users` (`user_id`, `name`) VALUES
-(1, 'Jean'),
-(2, 'Pierre'),
-(3, 'Paul'),
-(4, 'Jacques');
+INSERT INTO `Users` (`user_id`, `name`, `picUrl`, `google_id`) VALUES
+(1, 'Jean', 'https://i.ibb.co/x8M9HH9/1.png', '0'),
+(2, 'Pierre', 'https://i.ibb.co/nwJxLQ2/2.png', '0'),
+(3, 'Paul', 'https://i.ibb.co/k8H03Fb/3.png', '0'),
+(4, 'Jacques', 'https://i.ibb.co/JBQ1y50/4.png', '0'),
+(5, 'Charles', 'https://i.ibb.co/vVsrmgz/5.png', '0'),
+(17, 'Nils Ruet', 'https://lh4.googleusercontent.com/-xJmdJQQk8xM/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmgBXVg-xEp1bGgSIiytGAAU_0_5g/s96-c/photo.jpg', '110017187954083551681'),
+(18, 'Justine', 'https://i.ibb.co/zX246sL/6.png', '10'),
+(19, 'Gaspard', 'https://i.ibb.co/VxpzTkt/3.png', '20'),
+(20, 'Marine', 'https://i.ibb.co/qChVMkB/4.png', '30'),
+(21, 'Tony', 'https://i.ibb.co/nfPrj0g/x.png', '40'),
+(22, 'Elise', 'https://i.ibb.co/1zRcp5B/2.png', '50'),
+(23, 'Gabin', 'https://i.ibb.co/WyqT4Sv/7.png', '60'),
+(24, 'Justine', 'https://i.ibb.co/mRLTHC7/10.png', '70'),
+(25, 'Antonin', 'https://i.ibb.co/kSsGGNg/9.png', '80'),
+(26, 'Fanny', 'https://i.ibb.co/cxx0dHx/5.png', '90'),
+(27, 'Aurelien', 'https://i.ibb.co/nmS7qV4/8.png', '100'),
+(28, 'Marion', 'https://i.ibb.co/2j8pmD5/11.png', '110'),
+(29, 'Sofia', 'https://i.ibb.co/rMPf0DW/12.png', '120'),
+(30, 'Elodie', 'https://i.ibb.co/BcmkmhV/13.png', '130');
 
 --
 -- Index pour les tables exportées
@@ -353,22 +368,22 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT pour la table `AssessedSkills`
 --
 ALTER TABLE `AssessedSkills`
-  MODIFY `assessment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `assessment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `SkillBlocks`
 --
 ALTER TABLE `SkillBlocks`
-  MODIFY `skillBlock_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `skillBlock_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT pour la table `Skills`
 --
 ALTER TABLE `Skills`
-  MODIFY `skill_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `skill_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT pour la table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- Contraintes pour les tables exportées
 --
