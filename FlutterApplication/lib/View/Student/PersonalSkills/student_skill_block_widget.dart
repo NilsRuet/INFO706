@@ -11,7 +11,8 @@ class StudentSkillBlockWidget extends SkillBlockWidget{
   StudentSkillBlockWidget(BlockInfo block, bool isExpanded, bool isLevelMainInfo) : super(block, isExpanded, isLevelMainInfo);
 
   @override
-  List<SkillWidget> generateSkills(List<SkillInfo> skills, bool levelIsMainInfo) {
-    return List.generate(skills.length, (int index) => StudentSkillWidget(skills[index], levelIsMainInfo));
+  List<SkillWidget> generateSkills(List<SkillInfo> globalSkills, List<SkillInfo> personalSkills, bool isLevelMainInfo){
+    return List.generate(globalSkills.length, (int index) => StudentSkillWidget(globalSkills[index], isLevelMainInfo))
+        + List.generate(personalSkills.length, (int index) => StudentSkillWidget(personalSkills[index], isLevelMainInfo));
   }
 }

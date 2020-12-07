@@ -16,13 +16,13 @@ abstract class SkillBlockWidget extends StatefulWidget{
     header = ListTile(
         title: Text(block.name,
             style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)));
-    _skills = generateSkills(block.skills, isLevelMainInfo);
+    _skills = generateSkills(block.globalSkills, block.personalSkills, isLevelMainInfo);
   }
 
   @override
   State<StatefulWidget> createState() => _SkillBlockWidgetState();
 
-  List<SkillWidget> generateSkills(List<SkillInfo> skills, bool levelIsMainInfo);
+  List<SkillWidget> generateSkills(List<SkillInfo> globalSkills, List<SkillInfo> personalSkills, bool isLevelMainInfo);
 }
 
 class _SkillBlockWidgetState extends State<SkillBlockWidget>{

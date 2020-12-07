@@ -110,19 +110,28 @@ class CategoryInfo
 class BlockInfo
 {
   String name;
-  List<SkillInfo> skills;
+  List<SkillInfo> globalSkills;
+  List<SkillInfo> personalSkills;
 
   BlockInfo(this.name){
-    skills = [];
+    globalSkills = [];
+    personalSkills = [];
   }
 
   void add(SkillInfo skill) {
-    skills.add(skill);
+    if (skill.isPersonal)
+      personalSkills.add(skill);
+    else
+      globalSkills.add(skill);
+
   }
 
   void remove(SkillInfo skill) {
-    skills.remove(skill);
-    if (skills.isEmpty)
+    if (skill.isPersonal)
+      personalSkills.remove(skill);
+    else
+      globalSkills.remove(skill);
+    if (personalSkills.isEmpty && globalSkills.isEmpty)
       BlocksListInfo.remove(this);
   }
 }
