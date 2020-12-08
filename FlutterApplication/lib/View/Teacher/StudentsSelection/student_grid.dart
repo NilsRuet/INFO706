@@ -26,6 +26,7 @@ class _StudentGridState extends State<StudentGrid>{
   }
 
   Widget _mainView(context){
+    widget.callback = this.filter;
     return OrientationBuilder(
         builder:(context, orientation){
           return GridView.builder(
