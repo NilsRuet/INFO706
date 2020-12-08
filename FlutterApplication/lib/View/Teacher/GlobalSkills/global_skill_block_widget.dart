@@ -1,3 +1,4 @@
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:info706/Model/Data/Info.dart';
 import 'package:info706/View/Common/SkillsViews/skill_block_widget.dart';
 import 'package:info706/View/Common/SkillsViews/skill_widget.dart';
@@ -15,5 +16,10 @@ class GlobalSkillBlockWidget extends SkillBlockWidget{
   List<SkillWidget> generateSkills(List<SkillInfo> globalSkills, List<SkillInfo> personalSkills, bool isLevelMainInfo) {
     return List.generate(globalSkills.length, (int index) => GlobalSkillWidget(globalSkills[index], isLevelMainInfo))
         + List.generate(personalSkills.length, (int index) => GlobalSkillWidget(personalSkills[index], isLevelMainInfo));
+  }
+
+  @override
+  List<Widget> generateBlockProgression() {
+    return [];
   }
 }

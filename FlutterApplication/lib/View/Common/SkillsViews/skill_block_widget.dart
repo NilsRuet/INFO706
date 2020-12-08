@@ -9,12 +9,13 @@ import 'package:info706/View/Common/SkillsViews/skill_widget.dart';
 abstract class SkillBlockWidget extends StatefulWidget{
   ListTile header;
   List<Widget> _body;
+  bool isLevelMainInfo;
   bool isExpanded;
   BlockInfo block;
 
   _SkillBlockWidgetState state;
 
-  SkillBlockWidget(this.block, this.isExpanded, bool isLevelMainInfo) {
+  SkillBlockWidget(this.block, this.isExpanded, this.isLevelMainInfo) {
     header = ListTile(
         title: Text(block.name,
             style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)));
@@ -29,9 +30,10 @@ abstract class SkillBlockWidget extends StatefulWidget{
 
   List<SkillWidget> generateSkills(List<SkillInfo> globalSkills, List<SkillInfo> personalSkills, bool isLevelMainInfo);
 
-  List<Widget> generateBlockProgression() => [];
+  List<Widget> generateBlockProgression();
 
   void refresh(){
+    _body = generateBlockProgression() + generateSkills(block.globalSkills, block.personalSkills, isLevelMainInfo);
     state.reload();
   }
 }

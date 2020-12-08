@@ -86,9 +86,10 @@ class _TeacherSkillHeaderWidgetState extends SkillHeaderWidgetState {
             _loading = false;
             if (!res)
               Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
-            else
+            else{
               widget.isCheckedByTeacher = newVal;
-            widget.skill.isCheckedByTeacher = newVal;
+              widget.skill.isCheckedByTeacher = newVal;
+            }
             SkillsViewState.currentSkillViewState.refreshDataForDisplay();
           });
         });
