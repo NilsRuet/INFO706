@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:info706/Resources/app_colors.dart';
@@ -46,6 +48,7 @@ class _StudentGridState extends State<StudentGrid>{
   }
 
   Widget _getStudentWidget(Student student){
+    var myFile = newt File(student.picURL); //TODO
     return InkWell(
       onTap: (){
         Navigator.push(
@@ -60,10 +63,7 @@ class _StudentGridState extends State<StudentGrid>{
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               AspectRatio(
-                child: CachedNetworkImage(
-                  imageUrl: student.picURL,
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                ),
+                child: Image.file(myFile),
                 aspectRatio: 1,
               ),
               Expanded(

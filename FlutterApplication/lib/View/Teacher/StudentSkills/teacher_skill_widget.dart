@@ -61,7 +61,7 @@ class _TeacherSkillHeaderWidgetState extends SkillHeaderWidgetState {
     return [
       Expanded(child: widget.secondaryInformation),
       Icon(widget.isAutoChecked
-          ? Icons.check_box
+          ? Icons.check
           : Icons.crop_free),
       _loading
           ? Container(
@@ -76,20 +76,13 @@ class _TeacherSkillHeaderWidgetState extends SkillHeaderWidgetState {
   Widget _getCheckbox() {
     return Checkbox(
         value: widget.isCheckedByTeacher,
-        onChanged: (bool newVal) async {
+        onChanged: (bool newVal) {
           setState(() {
             _loading = true;
           });
-          bool res =
-              await widget.skill.trySetIsCheckedByTeacher(newVal, assessor);
           setState(() {
             _loading = false;
-            if (!res)
-              Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
-            else{
-              widget.isCheckedByTeacher = newVal;
-              widget.skill.isCheckedByTeacher = newVal;
-            }
+            Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
             SkillsViewState.currentSkillViewState.refreshDataForDisplay();
           });
         });

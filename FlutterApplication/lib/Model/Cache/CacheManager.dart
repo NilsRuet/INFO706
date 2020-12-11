@@ -104,7 +104,7 @@ abstract class CacheManager{
   //Récupère la liste de tous les étudiants
   static Future<List<Student>> getStudents() async{
     List<Student> res = List();
-    final stringContent = await _getContent(Config.studentsURL, _userListResponseName);
+    final stringContent = /*TODO*/;
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final studentsRaw = data[_jsonRootKeyword];
@@ -134,7 +134,7 @@ abstract class CacheManager{
   //Récupère la liste de toutes les compétences communes
   static Future<List<GlobalSkill>> getGlobalSkills() async{
     List<GlobalSkill> res = List();
-    final stringContent = await _getContent(Config.globalSkillsURL, _globalSkillsResponseName);
+    final stringContent = /*TODO*/;
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final skillsRaw = data[_jsonRootKeyword];
@@ -149,7 +149,7 @@ abstract class CacheManager{
   //Récupère la liste des compétences propres à un étudiant
   static Future<List<PersonalSkill>> getPersonalSkills(int studentId) async{
     List<PersonalSkill> res = List();
-    final stringContent = await _getContent(Config.personalSkillsURL(studentId), _personalSkillsResponseName(studentId));
+    final stringContent = /*TODO*/;
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final skillsRaw = data[_jsonRootKeyword];
@@ -164,7 +164,7 @@ abstract class CacheManager{
   //Récupère la liste des compétences autovalidées d'un étudiant
   static Future<List<SelfAssessment>> getSelfAssessedSkills(int studentId) async{
     List<SelfAssessment> res = List();
-    final stringContent = await _getContent(Config.selfAssessmentsURL(studentId), _selfAssessmentsResponseName(studentId));
+    final stringContent = /*TODO*/;
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final assessmentsRaw = data[_jsonRootKeyword];
@@ -179,7 +179,7 @@ abstract class CacheManager{
   //Récupère la liste des compétences autovalidées d'un étudiant
   static Future<List<TeacherAssessment>> getTeacherAssessedSkills(int studentId) async{
     List<TeacherAssessment> res = List();
-    final stringContent = await _getContent(Config.teacherAssessmentsURL(studentId), _teacherAssessmentsResponseName(studentId));
+    final stringContent = /*TODO*/);
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final assessmentsRaw = data[_jsonRootKeyword];
@@ -194,7 +194,7 @@ abstract class CacheManager{
   //Récupère la liste des blocs de compétences
   static Future<List<SkillBlock>> getSkillBlocks() async{
     List<SkillBlock> res = List();
-    final stringContent = await _getContent(Config.skillsBlocksURL, _skillBlocksResponseName);
+    final stringContent = /*TODO*/;
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final blocksRaw = data[_jsonRootKeyword];

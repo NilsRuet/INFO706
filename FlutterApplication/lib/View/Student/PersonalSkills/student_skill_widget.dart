@@ -64,16 +64,9 @@ class _StudentSkillHeaderWidgetState extends SkillHeaderWidgetState {
           setState(() {
             _loading = true;
           });
-          bool res = await widget.skill.trySetIsAutoChecked(newVal);
           setState(() {
             _loading = false;
-            if (!res)
-              Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
-            else{
-              widget.isAutoChecked = newVal;
-              widget.skill.isAutoChecked = newVal;
-              //TODO
-            }
+            Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
             SkillsViewState.currentSkillViewState.refreshDataForDisplay();
           });
         });

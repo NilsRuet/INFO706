@@ -26,6 +26,5 @@ class _SelectedStudentSkillsViewState extends SkillsViewState {
   @override
   Skill createEmptySkill() => PersonalSkill.fromData(0, 0, "", CompetencyLevel.A1, widget.currentStudent.id);
 
-  @override
-  Future<bool> createSkill(Skill skill) async => await SkillInfo.tryCreatePersonalSkill(skill);
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

@@ -38,6 +38,5 @@ class _GlobalSkillsViewState extends SkillsViewState {
   @override
   Skill createEmptySkill() => GlobalSkill.fromData(0, 0, "", CompetencyLevel.A1);
 
-  @override
-  Future<bool> createSkill(Skill skill) async => await SkillInfo.tryCreateGlobalSkill(skill);
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

@@ -21,25 +21,16 @@ abstract class DataManager{
   }
 
   static Future<User> authenticate(String accessToken, bool isStudent) async{
-    Map data = {'token' : accessToken,
-                'isStudent' : isStudent.toString()};
-    final response = await http.post(
-      Config.authenticateURL,
-      body: data
-    );
+    final response = isStudent?/*TODO*/:/*TODO*/;
     var responseData = jsonDecode(response.body);
     var isActuallyStudent = responseData["isStudent"];
-    if (response.statusCode == 200 || response.statusCode==201) {
-      var res;
-      if(isActuallyStudent){
-        res = Student(responseData);
-      } else {
-        res = Teacher(responseData);
-      }
-      return res;
+    var res;
+    if(isActuallyStudent){
+      res = Student(responseData);
     } else {
-      return null;
+      res = Teacher(responseData);
     }
+      return res;
   }
 
   //Crée un étudiant avec le nom spécifié, renvoie l'objet étudiant correspondant

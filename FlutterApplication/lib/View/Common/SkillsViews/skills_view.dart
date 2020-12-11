@@ -81,32 +81,8 @@ abstract class SkillsViewState extends State<SkillsView> {
 
   FloatingActionButton _addingSkillButton() {
     return FloatingActionButton(
-      onPressed: addingSkillForm,
+      onPressed: () => Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar),
       child: Icon(Icons.add),
-    );
-  }
-
-  void addingSkillForm(){
-    Skill s = createEmptySkill();
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => AddSkillRoute(
-                AppStrings.ADD_SKILL_TITLE,
-                s,
-                BlocksListInfo.modelCategoryBlocksList,
-                    (skill) async {
-                  Navigator.pop(context);
-                  bool res = await createSkill(skill);
-                  setState(() {
-                    if (!res)
-                      Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
-                    else
-                      SkillsViewState.currentSkillViewState.loadDataForDisplay();
-                  });
-                }
-            )
-        )
     );
   }
 

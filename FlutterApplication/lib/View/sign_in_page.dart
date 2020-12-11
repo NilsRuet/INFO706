@@ -88,16 +88,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  authenticateCallback() {
+  authenticateCallback() async {
     var isStudent = !_isTeacherCheckbox;
-    SignIn.signInWithGoogle().then((result) async {
-      if (result != null) {
-        var user = await DataManager.authenticate(result, isStudent);
-        if(user != null){
-          _parent.setUser(user);
-          CacheManager.rememberUser(user, user is Student);
-        }
-      }
-    });
+        var user = await DataManager.authenticate("result", isStudent);
+        _parent.setUser(user);
   }
 }

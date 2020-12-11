@@ -13,6 +13,7 @@ import 'package:info706/main.dart';
 class _DrawerState extends State<NavigationDrawer>{
   @override
   Widget build(BuildContext context){
+    var myFile = newt File(widget.currentUser.picURL); //TODO
     return Drawer(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -27,7 +28,7 @@ class _DrawerState extends State<NavigationDrawer>{
                     child: Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: CachedNetworkImageProvider(widget.currentUser.picURL),
+                          backgroundImage: FileImage(myFile),
                           radius: 40.0,
                         ),
                         Expanded(
@@ -62,7 +63,6 @@ class _DrawerState extends State<NavigationDrawer>{
             FlatButton(
               color: ThemeData.dark().buttonColor,
               onPressed: (){
-                SignIn.signOutGoogle();
                 CacheManager.forgetCurrentUser();
                 widget.authentication.loadUser();
               },

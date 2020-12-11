@@ -76,10 +76,7 @@ abstract class SkillWidgetState extends State<SkillWidget> {
         .then<void>((bool value) {
       if (value == null) return;
       setState(() {
-        if (!value)
           Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
-        else
-          SkillsViewState.currentSkillViewState.loadDataForDisplay();
       });
     });
   }
@@ -125,24 +122,11 @@ class EditDeleteEntry extends PopupMenuEntry<bool> {
 
 class EditDeleteEntryState extends State<EditDeleteEntry> {
   void _edit() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => AddSkillRoute(
-                    AppStrings.EDIT_SKILL_TITLE,
-                    widget._skill.modelSkill,
-                    BlocksListInfo.modelCategoryBlocksList,
-                    (skill) async {
-                      Navigator.pop(context);
-                      closePopupWithResult(await widget._skill.tryEdit(skill));
-                    }
-                )
-        )
-    );
+    closePopupWithResult(false);
   }
 
   Future<void> _delete() async =>
-      closePopupWithResult(await widget._skill.delete());
+      closePopupWithResult(false);
 
   void closePopupWithResult(bool res) => Navigator.pop<bool>(context, res);
 

@@ -12,7 +12,6 @@ import 'package:info706/View/Student/PersonalSkills/student_sorted_view_widget.d
 class PersonalSkillsDrawerRoute implements NavigationDrawerRoute{
 
   Student _student;
-
   PersonalSkillsDrawerRoute(this._student);
 
   @override
@@ -36,6 +35,5 @@ class _PersonalSkillsViewState extends SkillsViewState {
   @override
   Skill createEmptySkill() => PersonalSkill.fromData(0, 0, "", CompetencyLevel.A1, widget.currentStudent.id);
 
-  @override
-  Future<bool> createSkill(Skill skill) async => await SkillInfo.tryCreatePersonalSkill(skill);
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

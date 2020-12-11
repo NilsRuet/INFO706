@@ -14,8 +14,7 @@ class GlobalSkillBlockWidget extends SkillBlockWidget{
 
   @override
   List<SkillWidget> generateSkills(List<SkillInfo> globalSkills, List<SkillInfo> personalSkills, bool isLevelMainInfo) {
-    return List.generate(globalSkills.length, (int index) => GlobalSkillWidget(globalSkills[index], isLevelMainInfo))
-        + List.generate(personalSkills.length, (int index) => GlobalSkillWidget(personalSkills[index], isLevelMainInfo));
+    return List.generate(globalSkills.length, (int index) => GlobalSkillWidget(globalSkills[index], isLevelMainInfo));
   }
 
   @override
