@@ -27,47 +27,6 @@ class _AboutView extends StatelessWidget {
         title: Text("A propos..."),
         centerTitle: true,
       ),
-      body: Container(child: Center(child: Image(image: AssetImage('assets/About.png'),)),margin: EdgeInsets.all(8.0),
-      /*Column(mainAxisSize: MainAxisSize.min,
-        children: [
-          Center(
-            child:Text(
-                "L'approche par compétences",
-                style: TextStyle(height: 5, fontSize: 25, fontWeight: FontWeight.bold),
-      ),
-    ),
-          Center(
-            child:Text(
-              "en langues vivantes",
-              style: TextStyle(height: 5, fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-          ),
-        Center(
-          child:Text(
-            "Application réalisée par",
-            style: TextStyle(height: 5, fontSize: 20,),
-          ),
-        ),
-        Center(
-          child:Text(
-            "Camille Morand",
-            style: TextStyle(height: 5, fontSize: 20,),
-          ),
-        ),
-        Center(
-          child:Text(
-            "Nils Ruet",
-            style: TextStyle(height: 5, fontSize: 20,),
-          ),
-        ),
-        Center(
-          child:Text(
-            "Xavier Nourry",
-            style: TextStyle(height: 5, fontSize: 20,),
-          ),
-        ),
-      ],*/),
-        )
-    ;
+      body: Container(child: Center(child: Image(image: AssetImage('assets/About.png'),)),margin: EdgeInsets.all(8.0)));
   }
 }
