@@ -50,7 +50,7 @@ class HomeState extends State<HomeView> {
               : [MyStudentsDrawerView(_currentUser as Teacher), GlobalSkillsDrawerRoute()],
           currentUser: s,
         ),
-        body: _getDrawerBody(() => print("open")));//TODO
+        body: _getDrawerBody(() => null));
   }
 
   Widget _getDrawerBody(void openDrawerCallback()) {

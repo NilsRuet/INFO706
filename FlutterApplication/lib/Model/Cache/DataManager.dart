@@ -21,23 +21,33 @@ abstract class DataManager{
   }
 
   static Future<User> authenticate(String accessToken, bool isStudent) async{
-    Map data = {'token' : accessToken,
-                'isStudent' : isStudent.toString()};
-    final response = await http.post(
-      Config.authenticateURL,
-      body: data
-    );
-    var responseData = jsonDecode(response.body);
-    var isActuallyStudent = responseData["isStudent"];
-    if (response.statusCode == 200 || response.statusCode==201) {
-      var res;
-      if(isActuallyStudent){
-        res = Student(responseData);
+    try{
+      Map data = {'token' : accessToken,
+        'isStudent' : isStudent.toString()};
+      final response = await http.post(
+          Config.authenticateURL,
+          body: data
+      );
+      var responseData = jsonDecode(response.body);
+      var isActuallyStudent = responseData["isStudent"];
+      if (response.statusCode == 200 || response.statusCode==201) {
+        var res;
+        if(isActuallyStudent){
+          res = Student(responseData);
+        } else {
+          res = Teacher(responseData);
+        }
+        return res;
       } else {
-        res = Teacher(responseData);
+        return null;
       }
-      return res;
-    } else {
+    } on TimeoutException catch (e){
+      return null;
+    } on http.ClientException catch (e){
+      return null;
+    } on SocketException catch (e){
+      return null;
+    } on Exception catch(e){
       return null;
     }
   }

@@ -1,112 +1,133 @@
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
+
 abstract class Config{
-  static final String host = "http://192.168.43.209:8080/";
-  static final int timeoutDelay = 30;
+
+  static final String configFile = "appserver.config";
+
+  static String host = "127.0.0.1:8080";
+  static String get hostRoot => "http://"+host+"/";
+
+  static void readHost() async{
+    String wd = (await getApplicationDocumentsDirectory()).path;
+    String path = '$wd/$configFile';
+    final file = File(path);
+    if(file.existsSync()){
+      String hostAddr = file.readAsStringSync();
+      host = hostAddr;
+    } else {
+      host = "127.0.0.1:8080";
+    }
+  }
+
+  static final int timeoutDelay = 10;
 
   static String get authenticateURL{
-    return host+"authenticate";
+    return hostRoot+"authenticate";
   }
 
   static String get studentsURL{
-    return host+"students";
+    return hostRoot+"students";
   }
 
   static String get addStudentURL{
-    return host+"add_student";
+    return hostRoot+"add_student";
   }
 
   static String deleteStudentURL(int id){
-    return host+"delete_user/$id";
+    return hostRoot+"delete_user/$id";
   }
 
   static String get updateStudentURL{
-    return host+"update_student";
+    return hostRoot+"update_student";
   }
 
   static String get teachersURL{
-    return host+"teachers";
+    return hostRoot+"teachers";
   }
 
   static String get addTeacherURL{
-    return host+"add_teacher";
+    return hostRoot+"add_teacher";
   }
 
   static String deleteTeacherURL(int id){
-    return host+"delete_user/$id";
+    return hostRoot+"delete_user/$id";
   }
 
   static String get updateTeacherURL{
-    return host+"update_teacher";
+    return hostRoot+"update_teacher";
   }
 
   static String get globalSkillsURL{
-    return host+"global_skills";
+    return hostRoot+"global_skills";
   }
 
   static String get addGlobalSkillURL{
-    return host+"add_global_skill";
+    return hostRoot+"add_global_skill";
   }
 
   static String deleteGlobalSkillURL(int id){
-    return host+"delete_skill/$id";
+    return hostRoot+"delete_skill/$id";
   }
 
   static String get updateGlobalSkillURL{
-    return host+"update_global_skill";
+    return hostRoot+"update_global_skill";
   }
 
   static String get skillsBlocksURL{
-    return host+"skill_blocks";
+    return hostRoot+"skill_blocks";
   }
 
   static String get addSkillBlockURL{
-    return host+"add_skill_block";
+    return hostRoot+"add_skill_block";
   }
 
   static String deleteSkillBlockURL(int id){
-    return host+"delete_skill_block/$id";
+    return hostRoot+"delete_skill_block/$id";
   }
 
   static String get updateSkillBlockURL{
-    return host+"update_skill_block";
+    return hostRoot+"update_skill_block";
   }
 
   static String personalSkillsURL(int id){
-    return host+"skills_of/$id";
+    return hostRoot+"skills_of/$id";
   }
 
   static String get addPersonalSkillURL{
-    return host+"add_personal_skill";
+    return hostRoot+"add_personal_skill";
   }
 
   static String deletePersonalSkillURL(int id){
-    return host+"delete_skill/$id";
+    return hostRoot+"delete_skill/$id";
   }
 
   static String get updatePersonalSkillURL{
-    return host+"update_personal_skill";
+    return hostRoot+"update_personal_skill";
   }
 
   static String selfAssessmentsURL(int id) {
-    return host+"self_assessments_of/$id";
+    return hostRoot+"self_assessments_of/$id";
   }
 
   static String get addSelfAssessmentURL{
-    return host+"add_self_assessment";
+    return hostRoot+"add_self_assessment";
   }
 
   static String deleteSelfAssessmentURL(int id){
-    return host+"delete_assessment/$id";
+    return hostRoot+"delete_assessment/$id";
   }
 
   static String teacherAssessmentsURL(int id) {
-    return host+"teacher_assessments_of/$id";
+    return hostRoot+"teacher_assessments_of/$id";
   }
 
   static String get addTeacherAssessmentURL{
-    return host+"add_teacher_assessment";
+    return hostRoot+"add_teacher_assessment";
   }
 
   static String deleteTeacherAssessmentURL(int id){
-    return host+"delete_assessment/$id";
+    return hostRoot+"delete_assessment/$id";
   }
 }
