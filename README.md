@@ -18,7 +18,7 @@ $ pip install requests
 
 Une fois toutes les dépendances installées, il est alors possible de lancer le serveur en exécutant le fichier "Serveur/src/main.py", avec par exemple la commande :  
 $ python main.py  
-lancée dans le répertoire Serveur/src
+lancée dans le répertoire "Serveur/src"
 
 Il est possible de renseigner l'adresse et le port du serveur, en modifiant le fichier "Serveur/src/host.config".  
 La première ligne de ce fichier est l'adresse IP du serveur, la deuxième ligne est le port sur lequel le serveur écoutera les requêtes HTTP liées à l'application.  
