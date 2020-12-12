@@ -13,7 +13,6 @@ import 'package:info706/main.dart';
 class _DrawerState extends State<NavigationDrawer>{
   @override
   Widget build(BuildContext context){
-    //var myFile = newt File(widget.currentUser.picURL); //TODO
     return Drawer(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,

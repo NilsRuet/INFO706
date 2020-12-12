@@ -9,6 +9,7 @@ import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Data/User.dart';
 import 'package:info706/main.dart';
 
+import 'Common/about_route.dart';
 import 'Common/debug_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -47,8 +48,8 @@ class HomeState extends State<HomeView> {
           homeState: this,
           authentication: widget._parent,
           views: _currentUser is Student
-              ? [PersonalSkillsDrawerRoute(_currentUser)]
-              : [MyStudentsDrawerView(_currentUser as Teacher), GlobalSkillsDrawerRoute()],
+              ? [PersonalSkillsDrawerRoute(_currentUser), AboutDrawerRoute()]
+              : [MyStudentsDrawerView(_currentUser as Teacher), GlobalSkillsDrawerRoute(), AboutDrawerRoute()],
           currentUser: s,
         ),
         body: _getDrawerBody(() => print("open")));//TODO
