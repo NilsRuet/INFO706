@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Lun 07 Décembre 2020 à 09:05
+-- Généré le :  Sam 12 Décembre 2020 à 13:58
 -- Version du serveur :  5.7.32-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.24-0ubuntu0.18.04.7
 
@@ -41,7 +41,58 @@ INSERT INTO `AssessedSkills` (`assessment_id`, `student_id`, `skill_id`, `valida
 (1, 1, 1, '2020-11-18'),
 (3, 1, 10, '2020-11-11'),
 (4, 1, 13, '2019-11-11'),
-(7, 1, 10, '2020-12-06');
+(8, 1, 21, '2020-12-07'),
+(15, 1, 8, '2020-12-07'),
+(34, 30, 10, '2020-12-07'),
+(38, 25, 8, '2020-12-08'),
+(39, 25, 8, '2020-12-08'),
+(40, 25, 8, '2020-12-08'),
+(41, 25, 8, '2020-12-08'),
+(42, 25, 8, '2020-12-08'),
+(43, 25, 8, '2020-12-08'),
+(44, 25, 8, '2020-12-08'),
+(45, 25, 8, '2020-12-08'),
+(46, 25, 8, '2020-12-08'),
+(47, 25, 8, '2020-12-08'),
+(48, 25, 8, '2020-12-08'),
+(49, 25, 8, '2020-12-08'),
+(50, 25, 8, '2020-12-08'),
+(51, 25, 8, '2020-12-08'),
+(52, 25, 8, '2020-12-08'),
+(53, 25, 8, '2020-12-08'),
+(55, 25, 8, '2020-12-08'),
+(56, 25, 8, '2020-12-08'),
+(58, 25, 8, '2020-12-08'),
+(59, 25, 8, '2020-12-08'),
+(60, 25, 8, '2020-12-08'),
+(61, 25, 8, '2020-12-08'),
+(62, 25, 8, '2020-12-08'),
+(63, 25, 8, '2020-12-08'),
+(64, 25, 8, '2020-12-08'),
+(65, 25, 8, '2020-12-08'),
+(66, 25, 8, '2020-12-08'),
+(67, 25, 10, '2020-12-08'),
+(69, 25, 43, '2020-12-08'),
+(70, 31, 1, '2020-12-08'),
+(71, 31, 8, '2020-12-08'),
+(72, 31, 1, '2020-12-08'),
+(73, 31, 10, '2020-12-08'),
+(74, 31, 11, '2020-12-08'),
+(80, 31, 35, '2020-12-08'),
+(82, 31, 13, '2020-12-08'),
+(83, 31, 35, '2020-12-08'),
+(84, 31, 42, '2020-12-08'),
+(85, 31, 51, '2020-12-08'),
+(86, 31, 13, '2020-12-08'),
+(87, 31, 51, '2020-12-08'),
+(88, 31, 13, '2020-12-08'),
+(89, 25, 13, '2020-12-08'),
+(90, 25, 13, '2020-12-08'),
+(91, 25, 13, '2020-12-08'),
+(92, 25, 11, '2020-12-08'),
+(93, 31, 10, '2020-12-12'),
+(94, 27, 8, '2020-12-12'),
+(95, 27, 11, '2020-12-12');
 
 -- --------------------------------------------------------
 
@@ -84,7 +135,20 @@ INSERT INTO `GlobalSkills` (`globalSkill_id`) VALUES
 (28),
 (29),
 (30),
-(31);
+(31),
+(35),
+(36),
+(37),
+(38),
+(39),
+(40),
+(41),
+(42),
+(43),
+(45),
+(46),
+(47),
+(48);
 
 -- --------------------------------------------------------
 
@@ -96,6 +160,13 @@ CREATE TABLE `PersonalSkills` (
   `personalSkill_id` int(10) UNSIGNED DEFAULT NULL,
   `student_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `PersonalSkills`
+--
+
+INSERT INTO `PersonalSkills` (`personalSkill_id`, `student_id`) VALUES
+(51, 31);
 
 -- --------------------------------------------------------
 
@@ -113,7 +184,16 @@ CREATE TABLE `SelfAssessedSkills` (
 
 INSERT INTO `SelfAssessedSkills` (`assessment_id`) VALUES
 (1),
-(7);
+(8),
+(15),
+(70),
+(71),
+(72),
+(82),
+(83),
+(84),
+(85),
+(93);
 
 -- --------------------------------------------------------
 
@@ -134,9 +214,7 @@ INSERT INTO `SkillBlocks` (`skillBlock_id`, `title`) VALUES
 (7, 'Compréhension orale'),
 (8, 'Expression orale'),
 (9, 'Compréhension écrite'),
-(10, 'Expression écrite'),
-(11, 'update B Title Block'),
-(12, 'empty skill block');
+(10, 'Expression écrite');
 
 -- --------------------------------------------------------
 
@@ -149,7 +227,7 @@ CREATE TABLE `Skills` (
   `name` varchar(200) DEFAULT NULL,
   `level` int(11) DEFAULT NULL,
   `id_block` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Skills`
@@ -182,7 +260,21 @@ INSERT INTO `Skills` (`skill_id`, `name`, `level`, `id_block`) VALUES
 (28, 'Différencier les personnes ou personnages mentionnés dans un texte en repérant les pronoms et déterminants qui se rapportent à eux.', 2, 9),
 (29, 'Ecrire une courte lettre ou un message électronique (email, chat, blog ...etc) pour demander un renseignement ou de l’aide', 2, 10),
 (30, 'Ecrire une courte lettre ou un message électronique (email, chat, blog ...etc) pour faire une suggestion / inviter quelqu’un ou réagir à cette suggestion / invitation', 2, 10),
-(31, 'Raconter un fait ou une expérience personnelle (réelle ou imaginaire) qui se passe dans le passé, le présent ou le futur', 2, 10);
+(31, 'Raconter un fait ou une expérience personnelle (réelle ou imaginaire) qui se passe dans le passé, le présent ou le futur', 2, 10),
+(35, 'Je peux comprendre les points principaux d une intervention sur des sujets familiers rencontres regulierement au travail.', 3, 7),
+(36, 'Je peux comprendre la description d evenements, de sentiments et de souhaits suffisamment bien pour entretenir une correspondance reguliere avec un correspondant ami.', 3, 9),
+(37, 'Je peux rapporter assez couramment une narration ou une description simples sous forme d  une suite de points. ', 3, 8),
+(38, 'Je peux relater les details essentiels d  un evenement fortuit, tel un accident.', 3, 8),
+(39, 'Je peux ecrire de brefs essais simples sur des sujets d  interet general. ', 3, 10),
+(40, 'Je peux generalement corriger lapsus et erreurs apres en avoir pris conscience ou s ils ont debouche sur un malentendu.', 4, 8),
+(41, 'Je peux relater des informations et exprimer des points de vue par ecrit et m  adapter a ceux des autres.', 4, 10),
+(42, 'Je peux comprendre la plupart des documentaires radiodiffuses en langue standard et peut identifier correctement l humeur, le ton, etc., du locuteur.', 4, 7),
+(43, 'Je peux comprendre un long discours meme s il n est pas clairement structure et que les articulations sont seulement implicites.', 5, 7),
+(45, '​Je peux exprimer mes idees et opinions avec precision et lier mes interventions a celles de mes interlocuteurs.', 5, 8),
+(46, '​Je peux m exprimer spontanement et couramment sans trop apparemment devoir chercher mes mots.', 5, 8),
+(47, 'Je peux utiliser des periphrases et des paraphrases pour dissimuler des lacunes lexicales et structurales.', 5, 8),
+(48, 'Je peux comprendre les emissions de television et les films sans trop d effort.', 5, 7),
+(51, 'Je peux exprimer clairement avec vocabulaire technique adapté une idée ou un concept sur la micro électronique.', 4, 8);
 
 -- --------------------------------------------------------
 
@@ -214,7 +306,8 @@ INSERT INTO `Students` (`student_id`) VALUES
 (27),
 (28),
 (29),
-(30);
+(30),
+(31);
 
 -- --------------------------------------------------------
 
@@ -233,7 +326,49 @@ CREATE TABLE `TeacherAssessedSkills` (
 
 INSERT INTO `TeacherAssessedSkills` (`assessment_id`, `teacher_id`) VALUES
 (3, 4),
-(4, 4);
+(4, 4),
+(34, 17),
+(38, 17),
+(39, 17),
+(40, 17),
+(41, 17),
+(42, 17),
+(43, 17),
+(44, 17),
+(45, 17),
+(46, 17),
+(47, 17),
+(48, 17),
+(49, 17),
+(50, 17),
+(51, 17),
+(52, 17),
+(53, 17),
+(55, 17),
+(56, 17),
+(58, 17),
+(59, 17),
+(60, 17),
+(61, 17),
+(62, 17),
+(63, 17),
+(64, 17),
+(65, 17),
+(66, 17),
+(67, 17),
+(69, 17),
+(73, 17),
+(74, 17),
+(80, 17),
+(86, 17),
+(87, 17),
+(88, 17),
+(89, 17),
+(90, 17),
+(91, 17),
+(92, 17),
+(94, 17),
+(95, 17);
 
 -- --------------------------------------------------------
 
@@ -289,7 +424,8 @@ INSERT INTO `Users` (`user_id`, `name`, `picUrl`, `google_id`) VALUES
 (27, 'Aurelien', 'https://i.ibb.co/nmS7qV4/8.png', '100'),
 (28, 'Marion', 'https://i.ibb.co/2j8pmD5/11.png', '110'),
 (29, 'Sofia', 'https://i.ibb.co/rMPf0DW/12.png', '120'),
-(30, 'Elodie', 'https://i.ibb.co/BcmkmhV/13.png', '130');
+(30, 'Elodie', 'https://i.ibb.co/BcmkmhV/13.png', '130'),
+(31, 'Michel R', 'https://lh5.googleusercontent.com/-Ty0w2dGbMms/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmPZa0NJUXK_Xd-_NxCEnHtJ0hq6A/s96-c/photo.jpg', '101213281772192612807');
 
 --
 -- Index pour les tables exportées
@@ -368,22 +504,22 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT pour la table `AssessedSkills`
 --
 ALTER TABLE `AssessedSkills`
-  MODIFY `assessment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `assessment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 --
 -- AUTO_INCREMENT pour la table `SkillBlocks`
 --
 ALTER TABLE `SkillBlocks`
-  MODIFY `skillBlock_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `skillBlock_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT pour la table `Skills`
 --
 ALTER TABLE `Skills`
-  MODIFY `skill_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `skill_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 --
 -- AUTO_INCREMENT pour la table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- Contraintes pour les tables exportées
 --
