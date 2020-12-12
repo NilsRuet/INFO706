@@ -48,7 +48,7 @@ class _StudentGridState extends State<StudentGrid>{
   }
 
   Widget _getStudentWidget(Student student){
-    var myFile = newt File(student.picURL); //TODO
+    //var myFile = newt File(student.picURL); //TODO
     return InkWell(
       onTap: (){
         Navigator.push(
@@ -63,7 +63,7 @@ class _StudentGridState extends State<StudentGrid>{
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               AspectRatio(
-                child: Image.file(myFile),
+                //child: Image.file(myFile),
                 aspectRatio: 1,
               ),
               Expanded(

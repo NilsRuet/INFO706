@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:info706/Info706Config.dart';
@@ -21,8 +22,9 @@ abstract class DataManager{
   }
 
   static Future<User> authenticate(String accessToken, bool isStudent) async{
-    final response = isStudent?/*TODO*/:/*TODO*/;
-    var responseData = jsonDecode(response.body);
+    final response = isStudent?await rootBundle.loadString('assets/authStudent.json'):await rootBundle.loadString('assets/authTeacher.json');
+    var responseData = jsonDecode(response);
+    print(responseData);
     var isActuallyStudent = responseData["isStudent"];
     var res;
     if(isActuallyStudent){

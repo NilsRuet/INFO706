@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:info706/Info706Config.dart';
@@ -104,7 +105,7 @@ abstract class CacheManager{
   //Récupère la liste de tous les étudiants
   static Future<List<Student>> getStudents() async{
     List<Student> res = List();
-    final stringContent = /*TODO*/;
+    final stringContent = await rootBundle.loadString('assets/students.json');
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final studentsRaw = data[_jsonRootKeyword];
@@ -134,7 +135,7 @@ abstract class CacheManager{
   //Récupère la liste de toutes les compétences communes
   static Future<List<GlobalSkill>> getGlobalSkills() async{
     List<GlobalSkill> res = List();
-    final stringContent = /*TODO*/;
+    final stringContent = await rootBundle.loadString('assets/global_skills.json');
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final skillsRaw = data[_jsonRootKeyword];
@@ -149,7 +150,7 @@ abstract class CacheManager{
   //Récupère la liste des compétences propres à un étudiant
   static Future<List<PersonalSkill>> getPersonalSkills(int studentId) async{
     List<PersonalSkill> res = List();
-    final stringContent = /*TODO*/;
+    final stringContent = await rootBundle.loadString('assets/personal_skills_31.json');
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final skillsRaw = data[_jsonRootKeyword];
@@ -164,7 +165,7 @@ abstract class CacheManager{
   //Récupère la liste des compétences autovalidées d'un étudiant
   static Future<List<SelfAssessment>> getSelfAssessedSkills(int studentId) async{
     List<SelfAssessment> res = List();
-    final stringContent = /*TODO*/;
+    final stringContent = await rootBundle.loadString('assets/self_assessments_31.json');
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final assessmentsRaw = data[_jsonRootKeyword];
@@ -179,7 +180,7 @@ abstract class CacheManager{
   //Récupère la liste des compétences autovalidées d'un étudiant
   static Future<List<TeacherAssessment>> getTeacherAssessedSkills(int studentId) async{
     List<TeacherAssessment> res = List();
-    final stringContent = /*TODO*/);
+    final stringContent = await rootBundle.loadString('assets/teacher_assessments_31.json');
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final assessmentsRaw = data[_jsonRootKeyword];
@@ -194,7 +195,7 @@ abstract class CacheManager{
   //Récupère la liste des blocs de compétences
   static Future<List<SkillBlock>> getSkillBlocks() async{
     List<SkillBlock> res = List();
-    final stringContent = /*TODO*/;
+    final stringContent =  await rootBundle.loadString('assets/skill_blocks.json');
     if(stringContent != null){
       final data = (jsonDecode(stringContent));
       final blocksRaw = data[_jsonRootKeyword];
