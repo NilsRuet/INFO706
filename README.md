@@ -1,5 +1,5 @@
 # INFO706
-Dans le cadre des séances de TP d’INFO706 nous avons développée une application mobile visant à faciliter l’apprentissage via l’approche par compétences (APC).
+Dans le cadre des séances de TP d’INFO706 nous avons développé une application mobile visant à faciliter l’apprentissage via l’approche par compétences (APC).
 L’objectif de ce projet était de créer une application mobile connectée à un serveur qui devrait permettre à un étudiant de renseigner et d’auto-valider ses propres compétences, ainsi qu’à un enseignant de valider les compétences d’un étudiant s’il jugeait que ce dernier les avait acquises.  
 Nous avons choisi de focaliser l'application sur l'apprentissage des langues, puisqu'il existe un standard pour les évaluer en europe (CECRL).  
 Ce dépôt contient toutes les sources nécessaires pour déployer le serveur et l'application.
@@ -33,3 +33,11 @@ en bas à droite de l'écran de connexion.
 
 Le code source de l'application se trouve dans "FlutterApplication", qui est la racine du projet Flutter permettant de générer l'exécutable.
 Ce projet peut être ouvert à l'aide d'Android Studio, à condition que l'extension flutter pour cette IDE soit installée.
+
+## Version hors-ligne de l'application ##
+
+Pour tester l'application sans avoir accès au serveur ou à une connexion Internet, il est possible d'installer 
+l'APK "info706-offline": celui-ci permet d'avoir une version de "démonstration" qui fonctionne hors connexion. Il est alors possible de se connecter en tant qu'étudiant 
+ou enseignant, selon si la checkbox de la page de connexion est cochée, et ensuite d'accéder à toutes les actions en lecture.
+Les actions en écriture engendrent un message indiquant un problème de connexion. On remarquera également que tous les étudiants
+auxquels peut accéder l'enseignant ont les mêmes valeurs pour cette version de démonstration.
