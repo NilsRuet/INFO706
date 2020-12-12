@@ -28,7 +28,7 @@ class _DrawerState extends State<NavigationDrawer>{
                     child: Row(
                       children: [
                         CircleAvatar(
-                          //backgroundImage: FileImage(myFile),
+                          backgroundImage: AssetImage('assets/'+widget.currentUser.picURL),
                           radius: 40.0,
                         ),
                         Expanded(

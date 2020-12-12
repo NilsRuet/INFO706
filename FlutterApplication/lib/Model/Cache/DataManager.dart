@@ -24,7 +24,6 @@ abstract class DataManager{
   static Future<User> authenticate(String accessToken, bool isStudent) async{
     final response = isStudent?await rootBundle.loadString('assets/authStudent.json'):await rootBundle.loadString('assets/authTeacher.json');
     var responseData = jsonDecode(response);
-    print(responseData);
     var isActuallyStudent = responseData["isStudent"];
     var res;
     if(isActuallyStudent){
