@@ -9,7 +9,6 @@ import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Data/User.dart';
 import 'package:info706/main.dart';
 
-import 'Common/debug_view.dart';
 
 class HomeView extends StatefulWidget {
   final User _currentUser;

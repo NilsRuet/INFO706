@@ -99,8 +99,9 @@ abstract class SkillsViewState extends State<SkillsView> {
                   Navigator.pop(context);
                   bool res = await createSkill(skill);
                   setState(() {
-                    if (!res)
+                    if (!res) {
                       Scaffold.of(context).showSnackBar(AppWidgets.connectionSnackBar);
+                    }
                     else
                       SkillsViewState.currentSkillViewState.loadDataForDisplay();
                   });

@@ -1,5 +1,5 @@
 abstract class Config{
-  static final String host = "http://192.168.0.11:8080/";
+  static final String host = "http://192.168.43.209:8080/";
   static final int timeoutDelay = 30;
 
   static String get authenticateURL{

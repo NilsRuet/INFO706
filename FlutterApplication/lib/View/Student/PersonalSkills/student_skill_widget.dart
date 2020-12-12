@@ -72,7 +72,6 @@ class _StudentSkillHeaderWidgetState extends SkillHeaderWidgetState {
             else{
               widget.isAutoChecked = newVal;
               widget.skill.isAutoChecked = newVal;
-              //TODO
             }
             SkillsViewState.currentSkillViewState.refreshDataForDisplay();
           });
