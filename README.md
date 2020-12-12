@@ -36,8 +36,8 @@ Ce projet peut être ouvert à l'aide d'Android Studio, à condition que l'exten
 
 ## Version hors-ligne de l'application ##
 
-Si l'on souhaite tester l'application sans avoir accès au server ou à une connexion Internet, il est possible d'installer 
-l'APK "info706-offline": celui-ci permet d'avoir une version de "démonstration": on peut se connecter en tant qu'étudiant 
-ou enseignant, selon si la checkbox de la page de connection est cochée, on a ensuite accès à toutes les actions en lecture.
+Pour tester l'application sans avoir accès au serveur ou à une connexion Internet, il est possible d'installer 
+l'APK "info706-offline": celui-ci permet d'avoir une version de "démonstration" qui fonctionne hors connexion. Il est alors possible de se connecter en tant qu'étudiant 
+ou enseignant, selon si la checkbox de la page de connexion est cochée, et ensuite d'accéder à toutes les actions en lecture.
 Les actions en écriture engendrent un message indiquant un problème de connexion. On remarquera également que tous les étudiants
-auxquels peut accéder l'enseignant ont les mêmes valeurs pour cette démonstration.
+auxquels peut accéder l'enseignant ont les mêmes valeurs pour cette version de démonstration.
