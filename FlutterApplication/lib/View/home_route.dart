@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:info706/Model/Data/User.dart';
+import 'package:info706/View/Common/about_route.dart';
 import 'package:info706/View/Student/PersonalSkills/personal_skills_route.dart';
 import 'package:info706/View/Teacher/GlobalSkills/global_skills_route.dart';
 import 'package:info706/View/Teacher/StudentsSelection/student_selection_route.dart';
@@ -46,8 +47,8 @@ class HomeState extends State<HomeView> {
           homeState: this,
           authentication: widget._parent,
           views: _currentUser is Student
-              ? [PersonalSkillsDrawerRoute(_currentUser)]
-              : [MyStudentsDrawerView(_currentUser as Teacher), GlobalSkillsDrawerRoute()],
+              ? [PersonalSkillsDrawerRoute(_currentUser), AboutDrawerRoute()]
+              : [MyStudentsDrawerView(_currentUser as Teacher), GlobalSkillsDrawerRoute(), AboutDrawerRoute()],
           currentUser: s,
         ),
         body: _getDrawerBody(() => print("open")));//TODO
