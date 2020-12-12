@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:info706/Info706Config.dart';
 import 'package:info706/Model/Cache/CacheManager.dart';
 import 'package:info706/Model/Data/User.dart' as model;
 import 'package:info706/View/home_route.dart';
@@ -15,6 +16,7 @@ import 'Resources/app_strings.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Config.readHost();
   runApp(MyApp());
 }
 
