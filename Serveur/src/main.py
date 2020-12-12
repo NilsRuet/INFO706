@@ -5,4 +5,7 @@ from create import *
 from delete import *
 from update import *
 
-app.run(host="192.168.43.209")
+f = open("host.config", "r")
+ip = f.readline()
+p = int(f.readline())
+app.run(host=ip, port=p)
