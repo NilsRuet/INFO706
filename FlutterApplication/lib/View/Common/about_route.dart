@@ -27,7 +27,7 @@ class _AboutView extends StatelessWidget {
         title: Text("A propos..."),
         centerTitle: true,
       ),
-      body: Center(child: Image(image: AssetImage('assets/About.png'),)
+      body: Container(child: Center(child: Image(image: AssetImage('assets/About.png'),)),margin: EdgeInsets.all(8.0),
       /*Column(mainAxisSize: MainAxisSize.min,
         children: [
           Center(
